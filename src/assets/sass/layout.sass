@@ -1,0 +1,105 @@
+header
+	@include pw
+	display: flex
+	align-items: flex-end
+	justify-content: space-between
+	a.logo
+		img
+			margin-top: 14px
+			margin-bottom: 9px
+	.soc
+		width: 195px
+		display: flex
+		gap: 18px
+		margin-bottom: 15px
+		img:hover
+			opacity: .9
+	ul.addr
+		display: flex
+		font-family: "Vollkorn"
+		font-weight: normal
+		font-size: 17px
+		margin-bottom: 22px
+		li
+			&:not(:last-child)
+				margin-right: 45px
+	.cl
+		text-transform: uppercase
+		display: flex
+		font-family: "Montserrat"
+		font-weight: 600
+		margin-bottom: 22px
+		.currency
+			margin-right: 2rem
+		.currency, .lang
+			position: relative
+			cursor: pointer
+			&:after
+				content: url(/assets/img/icons/chevron.svg)
+nav.header
+	@include mw
+	display: flex
+	border-top: 1px solid #000
+	border-bottom: 1px solid #000
+	justify-content: space-between
+	align-items: center
+	>ul
+		display: flex
+		li
+			text-transform: uppercase
+			font-family: 'Rubik'
+			&.active
+				border-bottom: 2px solid #000
+			&.dd
+				padding: 15px 22px
+				padding-left: 0
+				position: relative
+				cursor: pointer
+				&:after
+					content: url(/assets/img/icons/chevron.svg)
+			a
+				padding: 15px 22px
+				display: inline-block
+				&:hover
+					text-decoration: none
+
+	.actions
+		display: flex
+		width: 115px
+		justify-content: space-between
+		align-items: center
+section.main
+	@include mw
+section.prod
+	display: flex
+	justify-content: space-between
+aside
+	max-width: 236px
+	>ul > li
+		font-family: "Montserrat"
+		font-weight: 600
+		display: inline-block
+		width: 100%
+		position: relative
+		cursor: pointer
+		>span
+			pointer-events: none
+		&:hover
+			opacity: 0.6
+		&:not(:last-of-type)
+			margin-bottom: 18px
+		&:after
+			content: url(/assets/img/icons/c612.svg)
+			width: 6px
+			height: 12px
+			position: absolute
+			right: 0
+			top: calc(50% - 6px)
+	ul li ul
+		display: none
+	ul li.open ul
+		display: block	
+body.index-page
+	#head-slider
+		margin-top: 1rem
+
