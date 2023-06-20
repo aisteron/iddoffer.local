@@ -1,4 +1,93 @@
 #prods
-	p фильтр
-	p чипсы
-	p список товаров
+	#pagination
+		ul.pages
+			li.active
+				a(href="#") 1
+			li
+				a(href="#") 2
+			li
+				a(href="#") 3
+			li.next
+				a(href="#")
+					img(src="/assets/img/icons/c612.svg")
+		.sort.dd
+			span Сортировать
+			ul
+				li Сначала дороже
+				li Сначала дешевле
+	ul#chips.mt1
+		li
+			span гомельдрев
+			img.close(src="/assets/img/icons/close.svg")
+
+		li
+			span с элементами металла 
+			img.close(src="/assets/img/icons/close.svg")
+	ul.prod-list.mt1
+		li(data-prodid="1")
+			img(src="/assets/img/ui/prod-list/01.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Выдвижные ящики для шкафов "Лебо"
+			span.size 451 х 520 х 419
+			.price
+				span(byn="618") 618
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+		li(data-prodid="2")
+			img(src="/assets/img/ui/prod-list/02.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Белый журнальный столик Douceur
+			span.size 451 х 520 х 419
+			.price
+				span(byn="120") 120
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+		li(data-prodid="3")
+			img(src="/assets/img/ui/prod-list/03.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Контейнер Nuage White
+			span.size 451 х 520 х 419
+			.price
+				span(byn="300") 300
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+		li(data-prodid="4")
+			img(src="/assets/img/ui/prod-list/04.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Tipi Phosphorecent Rosa
+			span.size 451 х 520 х 419
+			.price
+				span(byn="618") 618
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+		li(data-prodid="5")
+			img(src="/assets/img/ui/prod-list/05.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Attaccapanni Maison Bianco
+			span.size 451 х 520 х 419
+			.price
+				span(byn="120") 120
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+		li(data-prodid="6")
+			img(src="/assets/img/ui/prod-list/06.jpg" width="302" heigth="288")
+			.colors
+				.item(style="background-color: #D9D9D9")
+				.item(style="background-color: #F0D2D2")
+			a(href="#") Sedia Douceur Rosa
+			span.size 451 х 520 х 419
+			.price
+				span(byn="300") 300
+				span.cur BYN
+				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+

@@ -73,6 +73,10 @@ section.main
 section.prod
 	display: flex
 	justify-content: space-between
+	gap: 1rem
+body.index-page
+	#head-slider
+		margin-top: 1rem
 aside
 	max-width: 236px
 	>ul > li
@@ -82,24 +86,201 @@ aside
 		width: 100%
 		position: relative
 		cursor: pointer
+		&.open >span:after
+			transform: rotate(-90deg)
 		>span
 			pointer-events: none
-		&:hover
+			&:after
+				content: url(/assets/img/icons/c612.svg)
+				width: 6px
+				height: 12px
+				position: absolute
+				right: 0
+				top: 2px
+		&:hover span
 			opacity: 0.6
 		&:not(:last-of-type)
 			margin-bottom: 18px
-		&:after
-			content: url(/assets/img/icons/c612.svg)
-			width: 6px
-			height: 12px
-			position: absolute
-			right: 0
-			top: calc(50% - 6px)
+		
 	ul li ul
 		display: none
+		margin: 1rem
+		margin-left: 10px
 	ul li.open ul
-		display: block	
-body.index-page
-	#head-slider
-		margin-top: 1rem
+		display: block
+	ul li ul li
+		font-weight: normal
+		font-size: 14px
+		margin-bottom: 14px
+#prods
+	flex-grow: 1
+	margin-left: 66px
+#pagination
+	display: flex
+	justify-content: space-between
+	border: 1px solid #C0BFBB
+	align-items: center
+	ul.pages
+		display: flex
+		font-family: "Montserrat"
+		font-weight: 600
+		align-items: center
+		li
+			height: 100%
+			&.next img
+				display: inline
+				transform: translateY(1px)
+			&.active
+				background-color: #C0BFBB
+			&:hover
+				background-color: #C0BFBB	
+			a
+				padding: 16px 20px
+				display: block
+				border-right: 1px solid #C0BFBB
+				height: 100%
+
+	.sort
+		font-family: "Montserrat"
+		font-size: 14px
+		font-weight: 600
+		margin-right: 44px
+		cursor: pointer
+		&:hover > span
+			opacity: 0.6
+		span
+			position: relative
+			cursor: pointer
+			pointer-events: none
+			&:after
+				content: url(/assets/img/icons/c612.svg)
+				position: absolute
+				transform: rotate(90deg)
+				right: -20px
+				top: 2px
+		ul
+			background-color: #fff
+			box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+			font-weight: normal
+			padding: 1rem
+			li
+				line-height: 27px
+				cursor: pointer
+				&:hover
+					opacity: 0.6
+ul#chips
+	display: flex
+	gap: 1rem
+	li
+		border: 1px solid #C7C7C7
+		font-family: "Montserrat"
+		font-weight: 600
+		text-transform: uppercase
+		padding: 13px 20px
+		display: flex
+		align-items: center
+		justify-content: space-between
+		img
+			margin-left: 1rem
+			cursor: pointer
+			&:hover
+				opacity: 0.6
+ul.prod-list
+	display: flex
+	gap: 1rem
+	flex-wrap: wrap 
+	li
+		position: relative
+		z-index: 0
+		a
+			font-family: 'Inter'
+			font-weight: normal
+			display: block
+			font-size: 1rem
+			&:hover
+				//text-decoration: none
+			&:before
+				position: absolute
+				content: ''
+				inset: 0
+		.colors
+			margin-top: 12px
+			margin-bottom: 1rem
+			display: flex
+			gap: 10px
+			.item
+				width: 25px
+				height: 25px
+				border-radius: 50%
+		span.size
+			display: block
+			font-family: 'Inter'
+			color: #AAAAAA
+			font-size: 14px
+			font-weight: normal
+			margin: 18px 0
+		.price
+			display: flex
+			align-items: center
+			span
+				font-family: 'Inter'
+				font-weight: bold	
+				color: #376147
+				display: block
+				&.cur
+					margin-left: 5px
+					margin-right: 25px
+			img
+				position: relative
+				z-index: 3
+				cursor: pointer
+				&:hover
+					opacity: 0.5		
+#filter
+	min-width: 238px
+	border: 1px solid #C7C7C7
+	padding: 18px 24px
+	align-self: flex-start
+	.item
+		&:not(:last-child)
+			margin-bottom: 35px
+		ul
+			position: relative
+			margin: 35px 0
+			li
+				&:not(:last-child)
+					margin-bottom: 20px
+				label
+					display: flex
+					align-items: center
+					cursor: pointer
+					input[type="checkbox"]
+						display: none
+					span.mark
+						border: 1px solid #C7C7C7
+						width: 19px
+						height: 19px
+						display: inline-block
+						margin-right: 17px
+					span.name
+						font-family: 'Montserrat'
+						font-weight: 500
+						font-size: 14px	
+		>span
+			font-family: 'Montserrat'
+			font-weight: 600
+			font-size: 1rem
+			text-transform: uppercase
+			position: relative
+			display: inline-block
+			width: 100%
+			cursor: pointer
+			&:after
+				content: url(/assets/img/icons/c612.svg)
+				transform: rotate(90deg)
+				position: absolute
+				right: 0	
+
+
+
 
