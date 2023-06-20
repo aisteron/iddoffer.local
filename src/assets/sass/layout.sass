@@ -192,6 +192,7 @@ ul.prod-list
 	li
 		position: relative
 		z-index: 0
+		max-width: 298px
 		a
 			font-family: 'Inter'
 			font-weight: normal
@@ -225,7 +226,7 @@ ul.prod-list
 			span
 				font-family: 'Inter'
 				font-weight: bold	
-				color: #376147
+				color: $green
 				display: block
 				&.cur
 					margin-left: 5px
@@ -244,28 +245,46 @@ ul.prod-list
 	.item
 		&:not(:last-child)
 			margin-bottom: 35px
+			&.open >span::after
+				transform: scaleY(-1)
 		ul
 			position: relative
 			margin: 35px 0
 			li
 				&:not(:last-child)
-					margin-bottom: 20px
+					margin-bottom: 13px
 				label
 					display: flex
 					align-items: center
 					cursor: pointer
 					input[type="checkbox"]
 						display: none
+						&:checked ~ .name
+							color: #028f38
+						&:checked ~ .mark
+							&:after
+								content: ''
+								width: 11px
+								height: 11px
+								display: block
+								background-color: #C0BFBB
+								position: absolute
+								left: 3px
+								top: 3px
+
 					span.mark
 						border: 1px solid #C7C7C7
 						width: 19px
 						height: 19px
 						display: inline-block
 						margin-right: 17px
+						position: relative
 					span.name
 						font-family: 'Montserrat'
 						font-weight: 500
-						font-size: 14px	
+						font-size: 14px
+						&:hover
+							opacity: 0.5
 		>span
 			font-family: 'Montserrat'
 			font-weight: 600
@@ -279,8 +298,70 @@ ul.prod-list
 				content: url(/assets/img/icons/c612.svg)
 				transform: rotate(90deg)
 				position: absolute
-				right: 0	
+				right: 0
+				//width: 19px
+				//height: 9px
+				//display: inline-block
+				top: calc(50% - 9px)
+		.size
+			margin-top: 1rem
+			.row
+				display: flex
+				gap: 1rem
+				position: relative
+				&:after
+					content: "-"
+					position: absolute
+					top: 25%
+					left: 66px
+			>span
+				font-family: 'Montserrat'
+				font-size: 14px
+				font-weight: 500
+				display: inline-block
+				margin-bottom: 5px
+			input
+				max-width: 60px
+				height: 32px
+				border: 1px solid #c7c7c7
+				&:focus
+					outline: none
+					background-color: #d9d9d930
+				&::-webkit-outer-spin-button,
+				&::-webkit-inner-spin-button
+					-webkit-appearance: none
+					margin: 0
+	.item.design
+		label
+			display: flex
+			align-items: center
+			cursor: pointer
+			&:hover
+				opacity: 0.8
+			input
+				display: none
+				&:checked ~ .mark
+					&:after
+						display: block
+						position: absolute
+						content: ''
+						width: 11px
+						height: 11px
+						background-color: #c0bfbb
+						top: 3px
+						left: 3px
 
+			span.mark
+				position: relative
+				display: inline-block
+				width: 19px
+				height: 19px
+				border: 1px solid #c7c7c7
+				margin-right: 10px
+			span.name
+				font-family: 'Montserrat'
+				font-weight: 500
+				font-size: 14px
 
 
 
