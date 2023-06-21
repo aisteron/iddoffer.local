@@ -68,6 +68,41 @@ nav.header
 		width: 115px
 		justify-content: space-between
 		align-items: center
+footer
+	@include pw
+	background-color: #7E8581
+	padding-bottom: 30px
+	.row
+		padding-top: 50px
+		display: flex
+		align-items: flex-start
+		justify-content: space-between
+		.column
+			font-family: 'Inter'
+			font-weight: normal
+			font-size: 1rem
+			ul
+				li
+					line-height: 30px
+			&.address
+				img
+					margin-top: 2rem		
+			&.soc
+				align-self: flex-end
+				ul
+					display: flex
+					gap: 1rem
+					margin-bottom: 1rem
+					img
+						&:hover
+							opacity: 0.6
+	p
+		margin: 0	
+		padding-bottom: 2rem
+		padding-top: 70px
+		font-family: 'Inter'
+		font-weight: normal
+		font-size: 12px
 section.main
 	@include mw
 section.prod
@@ -77,6 +112,12 @@ section.prod
 body.index-page
 	#head-slider
 		margin-top: 1rem
+	section.block
+		display: grid
+		//justify-content: space-between
+		grid-template-columns: 1fr 1fr
+		gap: 230px
+		
 aside
 	max-width: 236px
 	>ul > li
@@ -363,5 +404,84 @@ ul.prod-list
 				font-weight: 500
 				font-size: 14px
 
+section.whywe
+	.row
+		background-color: #fff
+		box-shadow: 20px 20px 0 #7E8581
+		border: 1px solid #DBE3DE
+		border-bottom: 0
+		display: flex
+		justify-content: space-between
+		align-items: center
+		ul
+			display: flex
+			justify-content: space-between
+			align-items: center
+			flex-grow: 1
+			margin: 0 112px
+			li
+				text-align: center
+				max-width: 205px
+				img
+					margin: 0 auto
+					margin-bottom: 1rem
 
-
+				>span
+					font-family: 'Montserrat'
+					font-weight: 600
+					font-size: 1rem
+				p
+					font-family: 'Inter'
+					font-weight: 300
+					font-size: 14px	
+section.about
+	h2
+		position: relative
+	p
+		font-family: 'Vollkorn'
+		font-weight: normal
+		color: #484848
+section.reviews
+	overflow: hidden
+	position: relative
+	.swiper-pagination-bullet-active
+		background-color: #376147
+	p.name
+		font-family: 'Vollkorn'
+		font-weight: 600
+		font-size: 18px
+	p.txt
+		font-family: 'Vollkorn'
+		font-weight: normal
+		font-size: 15px
+		color: #484848	
+section.partners
+	.row
+		display: flex
+		align-items: center
+		.arrows
+			position: relative
+			left: 4rem
+			top: 2px
+			.swiper-button-prev
+				left: 0
+				right: 0
+				margin-left: -2rem
+			.swiper-button-next
+				left: 0
+				right: 0
+			div
+				transform: scale(0.4)
+	.swiper-slide
+		display: flex
+		align-items: center
+		min-height: 100px	
+section.map
+	min-height: 285px
+	iframe
+		height: 258px
+	&.loading
+		display: flex
+		align-items: center
+		justify-content: center
+		background-color: #eee

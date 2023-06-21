@@ -9,8 +9,8 @@ export async function HeadSlider(){
 
 	let head_slider_options = {
 		navigation: {
-			nextEl: ".swiper-button-next",
-			prevEl: ".swiper-button-prev",
+			nextEl: "#head-slider .swiper-button-next",
+			prevEl: "#head-slider .swiper-button-prev",
 		},
 	}
 
@@ -23,7 +23,6 @@ export const sw = {
 		
 		return new Promise(resolve =>{
 			if(qs(['swiper'])){resolve(true); return}
-			
 			let script = document.createElement("script")
 			script.src="/vendors/swiper/swiper-bundle.min.js"
 			script.setAttribute("swiper","")
