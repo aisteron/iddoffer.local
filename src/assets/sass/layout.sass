@@ -166,6 +166,8 @@ body.prod-page
 					>span:before
 							content: url(/assets/img/icons/mark.svg)
 							margin-right: 1rem
+							display: inline-block
+							transform: translateY(3px)
 			
 			ul.stats
 				font-family: 'Inter'
@@ -234,6 +236,7 @@ body.prod-page
 							filter: invert(53%) sepia(6%) saturate(268%) hue-rotate(93deg) brightness(97%) contrast(89%)	
 	.wrap.thumbs
 			position: relative
+			min-width: 238px
 			.swiper-thumbs
 				height: 513px
 				position: relative
@@ -310,7 +313,41 @@ body.prod-page
 						padding-left: 1rem
 						li
 							list-style-type: disc
-							
+
+section.readyuse
+	@include pw()
+	ul
+		display: flex
+		gap: 1rem
+		li
+			position: relative
+			a
+				font-family: 'Montserrat'
+				font-weight: normal
+				display: inline-block
+				margin: 14px 0
+				&:after
+					position: absolute
+					inset: 0
+					content: ""
+			.price
+				font-family: "Inter"
+				color: #376147
+				font-weight: 600
+				span:first-of-type
+					font-weight: normal
+				span[byn]
+					display: inline-block
+					margin: 0 5px	
+section.similar
+	@include pw()
+	ul.prod-list
+		li
+			max-width: 287px
+			transform: scale(0.95)
+			display: flex
+			flex-direction: column
+			justify-content: space-between
 aside
 	max-width: 236px
 	>ul > li
