@@ -117,7 +117,200 @@ body.index-page
 		//justify-content: space-between
 		grid-template-columns: 1fr 1fr
 		gap: 230px
-		
+body.prod-page
+	section.sub
+		@include pw()
+	section.gallery
+		@include pw()
+		display: flex
+		.dsc
+			min-width: 237px
+			.colors-click-q
+				font-family: 'Inter'
+				font-weight: 500
+				font-size: 14px
+				color: #5C635F
+				.colors
+					>span:before
+							content: url(/assets/img/icons/picker.svg)
+							margin-right: 1rem
+					ul
+						margin-top: 20px
+						margin-bottom: 20px
+						margin-left: 30px
+						li
+							display: flex
+							align-items: center
+							cursor: pointer
+							margin-bottom: 12px
+							&:hover
+								opacity: 0.6
+							span.color
+								display: inline-block
+								width: 19px
+								height: 19px
+								border: 1px solid transparent
+								border-radius: 50%
+								margin-right: 10px
+							&.active span.color
+									border: 1px solid #8B8B8B
+				.click
+					margin-bottom: 1em
+					>span:before
+							content: url(/assets/img/icons/hand.svg)
+							margin-right: 1rem
+							position: relative
+							top: 2px
+				.q
+					margin-bottom: 30px
+					>span:before
+							content: url(/assets/img/icons/mark.svg)
+							margin-right: 1rem
+			
+			ul.stats
+				font-family: 'Inter'
+				font-weight: 500
+				font-size: 14px
+				margin-bottom: 14px
+				li
+					line-height: 25px
+			.price
+				font-family: 'Philosopher'
+				font-weight: 600
+				span[byn]
+					display: inline-block
+					margin: 0 10px
+				.from
+						span
+							font-size: 22px
+						span[byn], span.cur
+								font-size: 35px		
+				.to
+						span
+							font-size: 22px
+						span[byn], span.cur
+								font-size: 35px		
+			.cart-compare
+				display: flex
+				align-items: center
+				justify-content: space-between
+				margin: 1rem 0
+				button.cart
+					background-color: #7E8581
+					font-family: 'Montserrat'
+					font-weight: 500
+					color: #fff
+					font-size: 1rem
+					padding: 20px 40px
+					border: none
+					border-radius: 3px
+					cursor: pointer
+					&:hover
+						background-color: darken(#7E8581, 5%)
+				.compare
+					background-color: #D9D9D9
+					width: 35px
+					height: 35px
+					border-radius: 50%
+					display: flex
+					align-items: center
+					justify-content: center
+					cursor: pointer
+					&:hover
+						background-color: darken(#D9D9D9, 5%)
+			.share
+				> span
+					font-family: 'Philosopher'
+					font-weight: 600
+					font-size: 1rem
+					display: inline-block
+					margin-bottom: 5px
+				.row
+					display: flex
+					gap: 14px
+					cursor: pointer
+					img
+						&:hover
+							filter: invert(53%) sepia(6%) saturate(268%) hue-rotate(93deg) brightness(97%) contrast(89%)	
+	.wrap.thumbs
+			position: relative
+			.swiper-thumbs
+				height: 513px
+				position: relative
+				margin-top: 1rem
+				.swiper-slide
+					border: 1px solid #c7c7c7
+					width: 236px
+					height: 107px !important
+					display: flex
+					justify-content: center
+					align-items: center
+					&.swiper-slide-thumb-active
+						border-color: #8d8d8d
+			.arrows
+				position: absolute
+				width: 100%
+				top: 0
+				bottom: 0
+				.swiper-button-next
+					transform: rotate(90deg) scale(0.5)
+					bottom: -1rem
+					left: calc(50% - 11px)
+					top: auto
+				.swiper-button-prev
+					transform: rotate(90deg) scale(0.5)
+					top: 0
+					left: calc(50% - 11px)
+	.swiper.main
+		width: 995px
+		height: 553px
+		border: 1px solid #C7C7C7
+		img
+			margin: 0 auto
+	section.tabs
+		@include pw()
+		ul.head
+			display: flex
+			gap: 20px
+			font-family: 'Inter'
+			font-weight: normal
+			font-size: 14px
+			li
+				padding: 5px 15px
+				cursor: pointer
+				&:hover
+					opacity: 0.5
+				&.active
+					border-bottom: 2px solid #000
+		.body
+			border: 1px solid #C7C7C7
+			.chars
+				ul.table
+					font-family: 'Inter'
+					font-weight: normal
+					font-size: 14px
+					margin-left: 1rem
+					li
+						display: flex
+						align-items: center
+						padding: 10px 0
+						&:nth-of-type(2n)
+							background-color: #F0F0F0
+							margin-left: -1rem
+							padding-left: 1rem
+						>span
+							min-width: 227px
+				.dsc
+					font-family: 'Inter'			
+					font-weight: normal
+					font-size: 14px
+					color: #4D4D4D
+					padding: 1rem
+					ul
+						padding-left: 1rem
+						li
+							list-style-type: disc
+							
 aside
 	max-width: 236px
 	>ul > li

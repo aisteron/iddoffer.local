@@ -1,5 +1,4 @@
-import { qs } from "../../libs";
-import { sw } from "./head-slider";
+import { qs,sw } from "../../libs";
 
 export async function partners_slider(){
 

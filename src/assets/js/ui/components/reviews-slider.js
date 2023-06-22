@@ -1,5 +1,4 @@
-import { qs } from "../../libs";
-import { sw } from './head-slider';
+import { qs,sw } from "../../libs";
 
 export async function reviews_slider(){
 	if(!qs('section.reviews')) return

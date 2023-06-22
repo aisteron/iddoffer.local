@@ -65,6 +65,10 @@ $notebook: 100%
 	font-family: 'Philosopher'
 	font-weight: 600
 	font-size: 30px
+.p40	
+	font-family: 'Philosopher'
+	font-weight: 600
+	font-size: 40px
 .pika
 	&:after
 		position: absolute
@@ -111,5 +115,22 @@ $notebook: 100%
 					content: ""	
 					background: rgb(40,52,45)
 					background: linear-gradient(90deg, rgba(40,52,45,1) 0%, rgba(40,52,45,0) 100%)
-
+nav.bread
+	ol
+		list-style: none
+		font-family: 'Vollkorn'
+		font-weight: normal
+		color: #676767
+		font-size: 1rem
+		margin: 0
+		padding: 0
+		display: flex
+		li
+			position: relative
+			&:not(:last-child)
+				margin-right: 12px
+				&:after
+					content: "/"
+					margin-left: 10px
+				
 
