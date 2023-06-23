@@ -1,19 +1,26 @@
 import { aside } from "./components/aside";
-import { HeadSlider } from "./components/head-slider";
 import { map } from "./components/map";
-import { partners_slider } from "./components/partners-slider";
-import { product_slider } from "./components/product-slider";
-import { reviews_slider } from "./components/reviews-slider";
 import { sort } from "./components/sort";
 import { Filter } from "./filter";
 
+import { head_slider } from "./components/sliders/head-slider";
+import { partners_slider } from "./components/sliders/partners-slider";
+import { product_slider } from "./components/sliders/product-slider";
+import { reviews_slider } from "./components/sliders/reviews-slider";
+import { subcat_slider } from "./components/sliders/subcat-slider";
+import { default_slider } from "./components/sliders/default-slider";
+
 export function Ui(){
-	HeadSlider()
+
 	Filter()
 	aside()
 	sort()
+	map()
+	
+	head_slider()
 	reviews_slider()
 	partners_slider()
-	map()
 	product_slider()
+	subcat_slider()
+	default_slider()
 }

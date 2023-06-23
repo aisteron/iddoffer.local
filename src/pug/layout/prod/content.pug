@@ -82,7 +82,7 @@ section.tabs.mt2
 		li(data-index="1") Доставка и оплата
 		li(data-index="2") Спецификация
 	.body
-		.chars(data-index="0")
+		.chars.open(data-index="0")
 			ul.table
 				li
 					span Тип
@@ -103,12 +103,10 @@ section.tabs.mt2
 					li Патинирование специальным составом, подчеркивающим цвет и фактуру
 					li Выполненная вручную резьба, фрезировка углов, полочек, дверей и т.д.
 					li Дополнительные пилястры и накладки из натурального дерева согласно стилю
-	
-
-
 		.delivery(data-index="1")
-		.spec(data-delivery="2")
-
+			p Мебель изготавливается из массива дуба высокого качества, достойного апартаментов королевских особ и аристократов. Для декора поверхностей используются: осна выдерживает большие нагрузки при эксплуатации, не теряя своих свойств. Изделия из такого материала приобретают любители экологически чистых, гипоаллергенных товаров.
+		.spec(data-index="2")
+			include ../../ui/components/files
 section.readyuse.mb2.mt2
 	h2.p30 Этот продукт входит в 1 готовых решений
 	ul
@@ -220,3 +218,13 @@ section.similar.mt3
 				span(byn="120") 120
 				span.cur BYN
 				img.cart(src="/assets/img/icons/bag.svg" width="20" heigth="23")
+section.recently-viewed.mt2.mb2
+	h2.p30 Вы недавно смотрели
+	ul
+		li
+			img(src="/assets/img/pages/prod/recently-1.jpg" width="200" height="200" loading="lazy")
+			a(href="#") Кабинет "Ольса"-3
+		li
+			img(src="/assets/img/pages/prod/recently-2.jpg" width="200" height="200" loading="lazy")
+			a(href="#") Комод "Купава" ГМ 8425
+

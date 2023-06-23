@@ -103,12 +103,7 @@ footer
 		font-family: 'Inter'
 		font-weight: normal
 		font-size: 12px
-section.main
-	@include mw
-section.prod
-	display: flex
-	justify-content: space-between
-	gap: 1rem
+
 body.index-page
 	#head-slider
 		margin-top: 1rem
@@ -117,6 +112,94 @@ body.index-page
 		//justify-content: space-between
 		grid-template-columns: 1fr 1fr
 		gap: 230px
+section.main
+	@include mw
+section.prod
+	display: flex
+	justify-content: space-between
+	gap: 1rem
+section.whywe
+	.row
+		background-color: #fff
+		box-shadow: 20px 20px 0 #7E8581
+		border: 1px solid #DBE3DE
+		border-bottom: 0
+		display: flex
+		justify-content: space-between
+		align-items: center
+		ul
+			display: flex
+			justify-content: space-between
+			align-items: center
+			flex-grow: 1
+			margin: 0 112px
+			li
+				text-align: center
+				max-width: 205px
+				img
+					margin: 0 auto
+					margin-bottom: 1rem
+
+				>span
+					font-family: 'Montserrat'
+					font-weight: 600
+					font-size: 1rem
+				p
+					font-family: 'Inter'
+					font-weight: 300
+					font-size: 14px	
+section.about
+	h2
+		position: relative
+	p
+		font-family: 'Vollkorn'
+		font-weight: normal
+		color: #484848
+section.reviews
+	overflow: hidden
+	position: relative
+	.swiper-pagination-bullet-active
+		background-color: #376147
+	p.name
+		font-family: 'Vollkorn'
+		font-weight: 600
+		font-size: 18px
+	p.txt
+		font-family: 'Vollkorn'
+		font-weight: normal
+		font-size: 15px
+		color: #484848	
+section.partners
+	.row
+		display: flex
+		align-items: center
+		.arrows
+			position: relative
+			left: 4rem
+			top: 2px
+			.swiper-button-prev
+				left: 0
+				right: 0
+				margin-left: -2rem
+			.swiper-button-next
+				left: 0
+				right: 0
+			div
+				transform: scale(0.4)
+	.swiper-slide
+		display: flex
+		align-items: center
+		min-height: 100px	
+section.map
+	min-height: 285px
+	iframe
+		height: 258px
+	&.loading
+		display: flex
+		align-items: center
+		justify-content: center
+		background-color: #eee
+
 body.prod-page
 	section.sub
 		@include pw()
@@ -287,6 +370,10 @@ body.prod-page
 					border-bottom: 2px solid #000
 		.body
 			border: 1px solid #C7C7C7
+			.chars, .delivery, .spec
+				display: none
+				&.open
+					display: block
 			.chars
 				ul.table
 					font-family: 'Inter'
@@ -303,6 +390,10 @@ body.prod-page
 							padding-left: 1rem
 						>span
 							min-width: 227px
+						a
+							text-decoration: underline
+							&:hover
+								text-decoration: none	
 				.dsc
 					font-family: 'Inter'			
 					font-weight: normal
@@ -313,7 +404,14 @@ body.prod-page
 						padding-left: 1rem
 						li
 							list-style-type: disc
-
+			.delivery
+				font-family: 'Inter'			
+				font-weight: normal
+				font-size: 14px
+				color: #4D4D4D
+				padding: 1rem
+			.spec
+				padding: 1rem	
 section.readyuse
 	@include pw()
 	ul
@@ -348,6 +446,241 @@ section.similar
 			display: flex
 			flex-direction: column
 			justify-content: space-between
+section.recently-viewed
+	@include pw()
+	ul
+		display: flex
+		gap: 28px
+		li
+			position: relative
+			a
+				display: block
+				margin-top: 14px
+				font-family: 'Montserrat'
+				font-weight: normal
+				font-size: 1rem
+				&:after
+					position: absolute
+					content: ""
+					inset: 0
+section.files
+	ul
+		display: flex
+		gap: 40px
+		align-items: center
+		li
+			display: flex
+			align-items: center
+			.icon
+				position: relative
+				margin-right: 27px
+				.ext
+					position: absolute
+					top: 18px
+					left: 3px
+					font-family: 'Inter'
+					font-weight: 700
+					font-size: 8px
+			.dsc
+				.row
+					display: flex
+					align-items: center
+					gap: 1rem
+					font-family: 'Inter'
+					font-weight: 500		
+					color: #928B8B
+					margin-top: 4px
+					a
+						color: #928B8B
+						text-decoration: underline
+						&:hover
+							text-decoration: none
+
+body.cat-page
+	#head-slider
+		margin-top: 1rem	
+	section.sub
+		@include pw()
+		nav.bread
+			margin: 2rem 0
+		ul.catlinks
+			display: flex
+			gap: 20px
+			font-family: 'Inter'
+			font-weight: normal
+			font-size: 14px
+			li
+				a
+					text-decoration: underline
+					&:hover
+						text-decoration: none
+				&:not(:last-child)
+					position: relative
+					&:after
+						content: "|"
+						color: #D3D3D3
+						font-weight: bold
+						margin-left: 20px
+		.txt
+			font-family: 'Vollkorn'
+			font-weight: normal
+			font-size: 15px
+			color: #484848
+			p
+				line-height: 22px
+section.subtiles
+	@include pw()
+	ul
+		display: flex
+		gap: 100px
+		flex-wrap: wrap
+		li
+			position: relative
+			z-index: 0
+			&:hover img
+				box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25)
+			img
+				pointer-events: none
+				cursor: pointer
+			a
+				text-decoration: underline
+				font-family: 'Montserrat'
+				font-weight: normal
+				font-size: 18px
+				display: block
+				margin-top: 38px
+				text-align: center
+				&:hover
+					text-decoration: none
+				&::after
+					content: ""	
+					position: absolute
+					inset: 0
+					z-index: -1
+
+body.subcat-page
+	section.main
+		.txt
+			font-family: 'Vollkorn'
+			font-weight: normal
+			font-size: 15px
+			color: #484848
+			line-height: 22px
+
+		.subcat-wrapper
+			.arrows
+				position: relative
+				width: 50px
+				height: 22px
+				margin-bottom: 1rem
+				div
+					transform: scale(0.5)
+				.swiper-button-next
+					right: -9px
+				.swiper-button-prev
+					left: -7px
+			.swiper-wrapper
+				.swiper-slide
+					font-family: 'Montserrat'
+					font-weight: normal
+					font-size: 1rem
+					text-align: center
+					a:hover
+						span
+							text-decoration: underline
+					span
+						display: inline-block
+						margin-top: 12px
+	section.prod
+		@include pw()
+section.discount
+	width: 928px
+	margin: 3rem auto
+	ul.prod-list
+		li
+			display: flex
+			flex-direction: column
+			justify-content: space-between
+			position: relative
+			&:after
+				position: absolute
+				content: url(/assets/img/icons/disc.svg)
+				right: 0
+				top: 0
+				display: block
+				width: 44px
+				height: 40px
+			span.size
+				margin: 5px 0
+			.old-price
+				font-family: 'Inter'
+				font-weight: 600
+				color: #8D8D8D
+				margin: 5px 0
+				text-decoration: line-through
+				display: inline-block
+				font-size: 14px
+			.price
+				span
+					color: #F46340
+				img.cart
+					margin-top: -2px
+					filter: brightness(0) saturate(100%)
+					filter: invert(50%) sepia(67%) saturate(2771%) hue-rotate(336deg) brightness(99%) contrast(92%)	
+section#default
+	@include pw()
+	.content
+		font-family: 'Vollkorn'
+		font-weight: normal
+		font-size: 1rem
+		a
+			text-decoration: underline
+			&:hover
+				text-decoration: none
+		.v14
+			font-size: 14px
+		ul.v14
+			padding-left: 2rem
+			li
+				list-style-type: disc
+				line-height: 28px
+		.bold
+			font-weight: 600			
+section#contacts	
+	@include pw()
+	.content
+		display: grid
+		grid-template-columns: 1fr 1fr
+		gap: 1rem
+		.table
+			font-family: 'Montserrat'
+			font-size: 1rem
+			li
+				display: flex
+				justify-content: space-between
+				padding: 1rem
+				&:nth-of-type(2n)
+					background-color: #F0F0F0
+				span
+					&:first-of-type
+						font-weight: 600
+					&:last-of-type
+						font-weight: normal	
+			p
+				font-family: Vollkorn
+				font-size: 15px
+				font-weight: normal
+				color: #484848
+		.map
+			background-color: #eee
+			display: flex
+			align-items: center
+			justify-content: center
+
+//body.cart-page
+section.cart
+	@include pw()	
+
 aside
 	max-width: 236px
 	>ul > li
@@ -634,84 +967,3 @@ ul.prod-list
 				font-weight: 500
 				font-size: 14px
 
-section.whywe
-	.row
-		background-color: #fff
-		box-shadow: 20px 20px 0 #7E8581
-		border: 1px solid #DBE3DE
-		border-bottom: 0
-		display: flex
-		justify-content: space-between
-		align-items: center
-		ul
-			display: flex
-			justify-content: space-between
-			align-items: center
-			flex-grow: 1
-			margin: 0 112px
-			li
-				text-align: center
-				max-width: 205px
-				img
-					margin: 0 auto
-					margin-bottom: 1rem
-
-				>span
-					font-family: 'Montserrat'
-					font-weight: 600
-					font-size: 1rem
-				p
-					font-family: 'Inter'
-					font-weight: 300
-					font-size: 14px	
-section.about
-	h2
-		position: relative
-	p
-		font-family: 'Vollkorn'
-		font-weight: normal
-		color: #484848
-section.reviews
-	overflow: hidden
-	position: relative
-	.swiper-pagination-bullet-active
-		background-color: #376147
-	p.name
-		font-family: 'Vollkorn'
-		font-weight: 600
-		font-size: 18px
-	p.txt
-		font-family: 'Vollkorn'
-		font-weight: normal
-		font-size: 15px
-		color: #484848	
-section.partners
-	.row
-		display: flex
-		align-items: center
-		.arrows
-			position: relative
-			left: 4rem
-			top: 2px
-			.swiper-button-prev
-				left: 0
-				right: 0
-				margin-left: -2rem
-			.swiper-button-next
-				left: 0
-				right: 0
-			div
-				transform: scale(0.4)
-	.swiper-slide
-		display: flex
-		align-items: center
-		min-height: 100px	
-section.map
-	min-height: 285px
-	iframe
-		height: 258px
-	&.loading
-		display: flex
-		align-items: center
-		justify-content: center
-		background-color: #eee

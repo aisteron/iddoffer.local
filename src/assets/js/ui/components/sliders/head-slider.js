@@ -1,7 +1,7 @@
 // слайдер на главной и стр. подкатегории
-import {qs, qsa, sw} from '../../libs';
+import {qs, qsa, sw} from '../../../libs';
 
-export async function HeadSlider(){
+export async function head_slider(){
 	if(!qs('#head-slider'))	return;
 
 	await sw.load()

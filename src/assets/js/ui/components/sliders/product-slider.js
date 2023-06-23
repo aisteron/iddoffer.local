@@ -1,4 +1,4 @@
-import { qs, sw } from "../../libs"
+import { qs, sw } from "../../../libs"
 export async function product_slider(){
 	if(!qs('body.prod-page')) return
 	if(!qs('.swiper.thumbs')) { console.log('%c На странице не найден слайдер!', "color: #666");return}

@@ -1,6 +1,24 @@
 import { qs } from "../../libs";
 
+let addr = "https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7ae8dedd5cb95038381d129ba15b1f89022ffc9059c1e4e0a279019742a69d95&amp;width=100&amp;lang=ru_RU&amp;scroll=true"
+
 export function map(){
+
+	footer_map()
+	contacts_map()
+	
+}
+
+function load_map(){
+	qs("section.map").classList.remove("loading")
+	qs("section.map span").remove()
+	
+	let script = document.createElement("script")
+	script.src = addr
+	qs("section.map").appendChild(script)
+}
+
+function footer_map(){
 	if(!qs("section.map")) return
 
 	let mp = qs("section.map")
@@ -15,11 +33,11 @@ export function map(){
 	observer.observe(mp)
 }
 
-function load_map(){
-	qs("section.map").classList.remove("loading")
-	qs("section.map span").remove()
+function contacts_map(){
+	if(!qs("section#contacts .map")) return
 	
 	let script = document.createElement("script")
-	script.src = "https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7ae8dedd5cb95038381d129ba15b1f89022ffc9059c1e4e0a279019742a69d95&amp;width=100&amp;lang=ru_RU&amp;scroll=true"
-	qs("section.map").appendChild(script)
+	script.src = addr
+	qs("section#contacts .map span").remove()
+	qs("section#contacts .map").appendChild(script)
 }
