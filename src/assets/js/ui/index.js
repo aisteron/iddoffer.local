@@ -9,6 +9,7 @@ import { product_slider } from "./components/sliders/product-slider";
 import { reviews_slider } from "./components/sliders/reviews-slider";
 import { subcat_slider } from "./components/sliders/subcat-slider";
 import { default_slider } from "./components/sliders/default-slider";
+import { mobile_menu } from "./components/mobile.menu";
 
 export function Ui(){
 
@@ -16,6 +17,7 @@ export function Ui(){
 	aside()
 	sort()
 	map()
+	mobile_menu()
 	
 	head_slider()
 	reviews_slider()

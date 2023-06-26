@@ -1,6 +1,8 @@
 header
 	a.logo(href="/")
-		img(src="/assets/img/logo.jpg" srcset="/assets/img/logo-2x.jpg" width="341" height="104")
+		picture
+			source(srcset="/assets/img/icons/lg.svg" media="(max-width: 768px)")
+			img(srcset="/assets/img/logo-2x.jpg" width="341" height="104")
 	.soc
 		a(href="#")
 			img(src="/assets/img/icons/pin.jpg" width="35" height="35")
@@ -12,7 +14,7 @@ header
 			img(src="/assets/img/icons/yt.jpg" width="35" height="35")
 	ul.addr
 		li г. Минск, пр. Победителей, д.141 пом. 3
-		li 9:00 - 18:00 Пн - Пт
+		li.hours 9:00 - 18:00 Пн - Пт
 		li
 			a(href="tel:[[++tel]]") +375 29 3-777-555
 	.cl
@@ -57,3 +59,7 @@ nav.header
 			img(src="/assets/img/icons/cart.svg" width="16" height="18")
 		.user
 			img(src="/assets/img/icons/user.svg" width="16" height="24")
+		#nav-icon1
+			span
+			span
+			span

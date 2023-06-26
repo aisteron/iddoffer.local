@@ -1,0 +1,65 @@
+
+block variables
+
+doctype html
+html(lang='ru')
+	head
+		meta(charset='utf-8')
+		title #{title}
+		meta(name="description", content=description)
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		block head
+
+	body(class=pageClass)
+		include ../../ui/header
+		section#default
+			h1.p30 B2B проекты
+			include ../../ui/bread
+			.content
+				p Группа компаний сегодня — это несколько динамично развивающихся направлений:
+				.v14
+					p <b>IDD Offer Office</b> — Мебель для офисных пространств премиум класса;
+					p <b>IDD Offer Design</b> — Эксклюзивная дизайнерская интерьерная мебель для отелей и других объектов;
+					p <b>IDD Offer-Sport</b> — Изготовление HPL-Мебели для: Спортивных объектов, общественно-производственных объектов, объектов с повышенными требованиями к стерильности;
+					p <b>IDD Offer-Hotel</b> — Разработка, производство и комплексное оснащение мебелью номерного фонда отелей, апарт-комплексов и гостевых домов;
+					p <b>IDD Offer-Restaurant</b> — Изготовление, поставка мебели и технологического оборудования для оснащения ресторанов, кафе, баров;
+					p <b>IDD Offer-Retail store equipment</b> — Торговое оборудование, торговая мебель.
+
+				p Комплексное оснащение предприятий торговли и общественного питания. Предлагаем оснащение торговых предприятий и заведений общепита по заводским ценам под ключ. 
+				p Мы предлагаем комплексные решения для создания эффективного предприятия торговли и общепита.
+				p Мы хотим стать для Вас не просто постоянным и надежным партнером, но и настоящим другом, который действительно хочет помочь развитию Вашего бизнеса по привлечению Ваших клиентов.
+				p Основные направления Группы компаний «Айди Хоум Трейд»:
+				ul.v14
+					li HPL-Мебель для спортивных и общественных объектов, комплексное оснащение
+					li Торговая мебель, торговое оборудование, комплексное оснащение
+					li Комплексное оснащение гостиниц, отелей и домов отдыха
+					li Комплексное оснащение ресторанов, кафе и баров
+					li Мебель из массива ценных пород дерева
+					li Лимитированная коллекционная мебель
+					li Эксклюзивная дизайнерская мебель
+					li Мебель для Дома: <a href="#">Кухня</a>, Спальня, Детская, Гостиная, Мягкая мебель, Прихожая, Ванная, Дача 
+
+				.default-swiper.mb2
+					h2.p30 Слайдер №1
+					.swiper.default
+						.swiper-wrapper
+							.swiper-slide
+								img(src="/assets/img/icons/rect.svg" width="487" height="375" loading="lazy")
+							.swiper-slide
+								img(src="/assets/img/icons/rect99.svg" width="487" height="375" loading="lazy")
+							.swiper-slide
+								img(src="/assets/img/icons/rect.svg" width="487" height="375" loading="lazy")
+							.swiper-slide
+								img(src="/assets/img/icons/rect99.svg" width="487" height="375" loading="lazy")
+						.swiper-button-next
+						.swiper-button-prev
+				
+					include ../../ui/components/files
+		include ../../ui/footer
+
+
+
+
+
+
+

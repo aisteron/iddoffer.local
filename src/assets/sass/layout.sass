@@ -1,17 +1,48 @@
 header
 	@include pw
-	display: flex
-	align-items: flex-end
-	justify-content: space-between
+	//display: flex
+	//align-items: flex-end
+	//justify-content: space-between
+	display: grid
+	grid-template-columns: 341px 320px 1fr 124px
+	align-items: end
+	padding-bottom: 1rem !important
+	@media(max-width:990px)
+		grid-template-columns: 1fr 1fr
+		gap: 1rem
+	@media(max-width:434px)
+		gap: 0
+		padding-top: 0
 	a.logo
+		@media(max-width:990px)
+			grid-column: 1
+			grid-row: 1/4
 		img
 			margin-top: 14px
-			margin-bottom: 9px
+			margin-bottom: -7px
+			//@media(max-width:1880px)
+				//margin-bottom: -7px
+
+		@media(max-width:768px)
+			grid-row: 1
+			img	
+				width: 202px
+				height: 37px
 	.soc
 		width: 195px
 		display: flex
 		gap: 18px
-		margin-bottom: 15px
+		margin-left: 87px
+		@media(max-width:990px)
+			grid-column: 2
+			grid-row: 1
+			margin-left: auto
+		@media(max-width:768px)
+			width: auto
+			gap: 12px
+			img
+				width: 25px
+				height: 25px
 		img:hover
 			opacity: .9
 	ul.addr
@@ -19,23 +50,45 @@ header
 		font-family: "Vollkorn"
 		font-weight: normal
 		font-size: 17px
-		margin-bottom: 22px
+		@media(max-width:1370px)
+			flex-direction: column
+		@media(max-width:990px)
+			grid-column: 2
+			grid-row: 2
+			text-align: right
+			li
+				margin-right: 0 !important
+		@media(max-width:768px)
+			grid-column: 1/3
+			justify-content: space-between
+		@media(max-width:434px)
+			grid-column: 1/3
+			text-align: left
+			margin-top: 1rem
 		li
 			&:not(:last-child)
 				margin-right: 45px
+			@media(max-width:768px)	
+				&.hours
+					display: none
 	.cl
 		text-transform: uppercase
 		display: flex
 		font-family: "Montserrat"
 		font-weight: 600
-		margin-bottom: 22px
+		@media(max-width:990px)
+			grid-column: 2
+			grid-row: 3
+			margin-left: auto
 		.currency
 			margin-right: 2rem
 		.currency, .lang
 			position: relative
 			cursor: pointer
+			min-width: 50px
 			&:after
 				content: url(/assets/img/icons/chevron.svg)
+
 nav.header
 	@include mw
 	display: flex
@@ -43,9 +96,17 @@ nav.header
 	border-bottom: 1px solid #000
 	justify-content: space-between
 	align-items: center
+	@media(max-width:768px)
+		margin: 0
+		padding: 0 1rem
 	>ul
 		display: flex
+			
 		li
+			@media(max-width:1288px)
+				display: none
+				&.dd
+					display: block
 			text-transform: uppercase
 			font-family: 'Rubik'
 			&.active
@@ -77,6 +138,9 @@ footer
 		display: flex
 		align-items: flex-start
 		justify-content: space-between
+		@media(max-width:1030px)
+			flex-wrap: wrap
+			gap: 1rem
 		.column
 			font-family: 'Inter'
 			font-weight: normal
@@ -86,7 +150,7 @@ footer
 					line-height: 30px
 			&.address
 				img
-					margin-top: 2rem		
+					margin-top: 2rem
 			&.soc
 				align-self: flex-end
 				ul
@@ -97,7 +161,7 @@ footer
 						&:hover
 							opacity: 0.6
 	p
-		margin: 0	
+		margin: 0
 		padding-bottom: 2rem
 		padding-top: 70px
 		font-family: 'Inter'
@@ -107,11 +171,23 @@ footer
 body.index-page
 	#head-slider
 		margin-top: 1rem
+		@media(max-width: 1880px)
+			margin: 1rem -1rem
+		@media(max-width: 768px)
+			margin-top: 0 !important
+		figure
+			img
+				width: 100%
+				height: 326px
+				object-fit: cover	
 	section.block
 		display: grid
 		//justify-content: space-between
 		grid-template-columns: 1fr 1fr
 		gap: 230px
+	nav.header
+		@media(max-width:768px)
+			border-bottom: 0
 section.main
 	@include mw
 section.prod
@@ -147,7 +223,7 @@ section.whywe
 				p
 					font-family: 'Inter'
 					font-weight: 300
-					font-size: 14px	
+					font-size: 14px
 section.about
 	h2
 		position: relative
@@ -168,7 +244,7 @@ section.reviews
 		font-family: 'Vollkorn'
 		font-weight: normal
 		font-size: 15px
-		color: #484848	
+		color: #484848
 section.partners
 	.row
 		display: flex
@@ -189,7 +265,7 @@ section.partners
 	.swiper-slide
 		display: flex
 		align-items: center
-		min-height: 100px	
+		min-height: 100px
 section.map
 	min-height: 285px
 	iframe
@@ -215,8 +291,8 @@ body.prod-page
 				color: #5C635F
 				.colors
 					>span:before
-							content: url(/assets/img/icons/picker.svg)
-							margin-right: 1rem
+						content: url(/assets/img/icons/picker.svg)
+						margin-right: 1rem
 					ul
 						margin-top: 20px
 						margin-bottom: 20px
@@ -236,22 +312,22 @@ body.prod-page
 								border-radius: 50%
 								margin-right: 10px
 							&.active span.color
-									border: 1px solid #8B8B8B
+								border: 1px solid #8B8B8B
 				.click
 					margin-bottom: 1em
 					>span:before
-							content: url(/assets/img/icons/hand.svg)
-							margin-right: 1rem
-							position: relative
-							top: 2px
+						content: url(/assets/img/icons/hand.svg)
+						margin-right: 1rem
+						position: relative
+						top: 2px
 				.q
 					margin-bottom: 30px
 					>span:before
-							content: url(/assets/img/icons/mark.svg)
-							margin-right: 1rem
-							display: inline-block
-							transform: translateY(3px)
-			
+						content: url(/assets/img/icons/mark.svg)
+						margin-right: 1rem
+						display: inline-block
+						transform: translateY(3px)
+
 			ul.stats
 				font-family: 'Inter'
 				font-weight: 500
@@ -266,15 +342,15 @@ body.prod-page
 					display: inline-block
 					margin: 0 10px
 				.from
-						span
-							font-size: 22px
+					span
+						font-size: 22px
 						span[byn], span.cur
-								font-size: 35px		
+							font-size: 35px
 				.to
-						span
-							font-size: 22px
+					span
+						font-size: 22px
 						span[byn], span.cur
-								font-size: 35px		
+							font-size: 35px
 			.cart-compare
 				display: flex
 				align-items: center
@@ -316,23 +392,23 @@ body.prod-page
 					cursor: pointer
 					img
 						&:hover
-							filter: invert(53%) sepia(6%) saturate(268%) hue-rotate(93deg) brightness(97%) contrast(89%)	
+							filter: invert(53%) sepia(6%) saturate(268%) hue-rotate(93deg) brightness(97%) contrast(89%)
 	.wrap.thumbs
+		position: relative
+		min-width: 238px
+		.swiper-thumbs
+			height: 513px
 			position: relative
-			min-width: 238px
-			.swiper-thumbs
-				height: 513px
-				position: relative
-				margin-top: 1rem
-				.swiper-slide
-					border: 1px solid #c7c7c7
-					width: 236px
-					height: 107px !important
-					display: flex
-					justify-content: center
-					align-items: center
-					&.swiper-slide-thumb-active
-						border-color: #8d8d8d
+			margin-top: 1rem
+			.swiper-slide
+				border: 1px solid #c7c7c7
+				width: 236px
+				height: 107px !important
+				display: flex
+				justify-content: center
+				align-items: center
+				&.swiper-slide-thumb-active
+					border-color: #8d8d8d
 			.arrows
 				position: absolute
 				width: 100%
@@ -393,9 +469,9 @@ body.prod-page
 						a
 							text-decoration: underline
 							&:hover
-								text-decoration: none	
+								text-decoration: none
 				.dsc
-					font-family: 'Inter'			
+					font-family: 'Inter'
 					font-weight: normal
 					font-size: 14px
 					color: #4D4D4D
@@ -405,13 +481,13 @@ body.prod-page
 						li
 							list-style-type: disc
 			.delivery
-				font-family: 'Inter'			
+				font-family: 'Inter'
 				font-weight: normal
 				font-size: 14px
 				color: #4D4D4D
 				padding: 1rem
 			.spec
-				padding: 1rem	
+				padding: 1rem
 section.readyuse
 	@include pw()
 	ul
@@ -436,7 +512,7 @@ section.readyuse
 					font-weight: normal
 				span[byn]
 					display: inline-block
-					margin: 0 5px	
+					margin: 0 5px
 section.similar
 	@include pw()
 	ul.prod-list
@@ -487,7 +563,7 @@ section.files
 					align-items: center
 					gap: 1rem
 					font-family: 'Inter'
-					font-weight: 500		
+					font-weight: 500
 					color: #928B8B
 					margin-top: 4px
 					a
@@ -498,7 +574,7 @@ section.files
 
 body.cat-page
 	#head-slider
-		margin-top: 1rem	
+		margin-top: 1rem
 	section.sub
 		@include pw()
 		nav.bread
@@ -553,7 +629,7 @@ section.subtiles
 				&:hover
 					text-decoration: none
 				&::after
-					content: ""	
+					content: ""
 					position: absolute
 					inset: 0
 					z-index: -1
@@ -626,7 +702,7 @@ section.discount
 				img.cart
 					margin-top: -2px
 					filter: brightness(0) saturate(100%)
-					filter: invert(50%) sepia(67%) saturate(2771%) hue-rotate(336deg) brightness(99%) contrast(92%)	
+					filter: invert(50%) sepia(67%) saturate(2771%) hue-rotate(336deg) brightness(99%) contrast(92%)
 section#default
 	@include pw()
 	.content
@@ -645,8 +721,8 @@ section#default
 				list-style-type: disc
 				line-height: 28px
 		.bold
-			font-weight: 600			
-section#contacts	
+			font-weight: 600
+section#contacts
 	@include pw()
 	.content
 		display: grid
@@ -665,7 +741,7 @@ section#contacts
 					&:first-of-type
 						font-weight: 600
 					&:last-of-type
-						font-weight: normal	
+						font-weight: normal
 			p
 				font-family: Vollkorn
 				font-size: 15px
@@ -677,10 +753,172 @@ section#contacts
 			align-items: center
 			justify-content: center
 
-//body.cart-page
 section.cart
-	@include pw()	
+	@include pw()
+	.root
+		min-height: 50vh
+		display: flex
+		//justify-content: space-between
+		&.loading
+			padding: 1rem
+			background-color: #eee
+			margin: 1rem 0
+			position: relative
+			&:after
+				position: absolute
+				content: "Загрузка товаров..."
+				top: 8px
+				left: 1rem
+		.fields
+			max-width: 237px
+			margin-left: 70px
+			.p30
+				margin-top: 0
+			form
+				display: flex
+				flex-direction: column
+				gap: 1rem
+				input, textarea
+					border: 1px solid #C7C7C7
+					font-family: 'Inter'
+					color: #989898
+					font-size: 14px
+					padding: 8px
+				button
+					width: 136px
+					background-color: #E7E7E7
+					border: none
+					cursor: pointer
+					padding: 11px 25px
+					font-family: 'Inter'
+					font-size: 14px
+					&:hover
+						background-color: #eee
+		.table
+			min-width: 815px
+			table
+				border-collapse: collapse
+				width: 100%
+				font-family: 'Montserrat'
+				font-size: 1rem
+				thead
+					background-color: #F0F0F0
+					font-weight: 600
+					tr td 
+						padding: 10px
+				tbody
+					font-weight: 400
+					tr td
+						padding: 10px
+						vertical-align: top
+					td.name, td.price, td.disc, td.itog
+						padding-top: 1rem	
+					td.remove
+						img
+							cursor: pointer
+							&:hover
+								opacity: 0.6	
+					td.name
+						ul.stats
+							//display: none
+							margin-top: 2rem
+							>li
+								&:not(:last-child)
+									margin-bottom: 1rem
+								span.name
+									font-weight: 600
+									font-size: 14px
+								&.colors
+									display: flex
+									align-items: center
+									.list
+										margin-left: 1rem
+										span
+											display: inline-block
+											height: 15px
+											width: 15px
+											border-radius: 50%
+											border: 1px solid transparent
+											cursor: pointer
+											&:hover
+												opacity: 0.8
+											&.active
+												border-color: #A3A3A3
+											&:not(last-child)
+												margin-right: 10px
+								&.material
+									span.name
+										display: inline-block
+										margin-right: 10px
+									span.selected
+										position: relative
+										&:after
+											content: url(/assets/img/icons/c612.svg)
+											position: absolute
+											transform: rotate(90deg)
+											margin-left: 10px
+									ul
+										display: none		
+								&.comment
+									span.name
+										display: inline-block
+										margin-right: 10px
+									.st
+										display: inline-flex
+										align-items: center
+										color: #7B7B7B
+										font-size: 14px
+										img
+											margin-right: 10px
+									textarea
+										display: none		
+					td.count
+						display: flex
+						align-items: center
 
+						input
+							width: 52px
+							height: 33px
+							background-color: #E7E7E7
+							border: none
+							text-align: center
+							&:focus
+								border: none
+								outline: none
+								background-color: darken(#E7E7E7, 5%)
+							&::-webkit-outer-spin-button,
+							&::-webkit-inner-spin-button
+								-webkit-appearance: none
+								margin: 0
+								-moz-appearance: textfield !important
+						.arrows
+							display: flex
+							flex-direction: column
+							height: 33px
+							justify-content: space-around
+							margin-left: 10px
+							img
+								cursor: pointer
+								&:hover
+									opacity: 0.7
+							.down
+								transform: rotate(180deg)
+			.itogo
+				margin-top: 30px
+				margin-bottom: 20px
+				span[byn]
+					display: inline-block
+					margin: 0 10px
+			button.continue
+				background-color: #E7E7E7		
+				font-family: 'Inter'
+				font-weight: normal
+				font-size: 14px
+				padding: 11px 25px
+				border: none
+				cursor: pointer
+				&:hover
+					background-color: darken(#E7E7E7, 5%)
 aside
 	max-width: 236px
 	>ul > li
@@ -705,7 +943,7 @@ aside
 			opacity: 0.6
 		&:not(:last-of-type)
 			margin-bottom: 18px
-		
+
 	ul li ul
 		display: none
 		margin: 1rem
@@ -737,7 +975,7 @@ aside
 			&.active
 				background-color: #C0BFBB
 			&:hover
-				background-color: #C0BFBB	
+				background-color: #C0BFBB
 			a
 				padding: 16px 20px
 				display: block
@@ -792,7 +1030,7 @@ ul#chips
 ul.prod-list
 	display: flex
 	gap: 1rem
-	flex-wrap: wrap 
+	flex-wrap: wrap
 	li
 		position: relative
 		z-index: 0
@@ -829,7 +1067,7 @@ ul.prod-list
 			align-items: center
 			span
 				font-family: 'Inter'
-				font-weight: bold	
+				font-weight: bold
 				color: $green
 				display: block
 				&.cur
@@ -840,7 +1078,7 @@ ul.prod-list
 				z-index: 3
 				cursor: pointer
 				&:hover
-					opacity: 0.5		
+					opacity: 0.5
 #filter
 	min-width: 238px
 	border: 1px solid #C7C7C7
@@ -966,4 +1204,3 @@ ul.prod-list
 				font-family: 'Montserrat'
 				font-weight: 500
 				font-size: 14px
-
