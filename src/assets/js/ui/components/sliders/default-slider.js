@@ -9,7 +9,7 @@ export async function default_slider(){
 	qsa(".swiper.default").forEach(el =>{
 		
 		let default_slider_options = {
-			slidesPerView: 3,
+			slidesPerView: get_slide_count(),
 			spaceBetween: 18,
 			navigation: {
 				nextEl: qs(".swiper-button-next", el),
@@ -22,4 +22,11 @@ export async function default_slider(){
 
 	
 
+}
+
+function get_slide_count(){
+	let w = screen.width
+	if(w > 886) return 3
+	if(w <= 886 & w >= 530) return 2
+	if(w < 530) return 1
 }

@@ -5,7 +5,7 @@ export async function subcat_slider(){
 	await sw.load()
 
 	let subcat_slider_options = {
-		slidesPerView: 7,
+		slidesPerView: get_slides_count(),
 		spaceBetween: 10,
 		navigation: {
 			nextEl: '.swiper-button-next',
@@ -14,4 +14,14 @@ export async function subcat_slider(){
 	}
 
 	sw.init(qs('.swiper.subcat'), subcat_slider_options)
+}
+
+function get_slides_count(){
+	let w = window.innerWidth
+	if(w > 1530) return 7
+	if(w > 1090 && w <= 1530) return 5
+	if(w > 768 && w <= 1090) return 3
+	if(w > 500 && w <= 768) return 2
+	if(w <= 460 ) return 2
+	
 }

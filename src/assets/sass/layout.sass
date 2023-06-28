@@ -20,11 +20,9 @@ header
 		img
 			margin-top: 14px
 			margin-bottom: -7px
-			//@media(max-width:1880px)
-				//margin-bottom: -7px
 
 		@media(max-width:768px)
-			grid-row: 1
+			grid-row: 1 !important
 			img	
 				width: 202px
 				height: 37px
@@ -171,15 +169,6 @@ footer
 body.index-page
 	#head-slider
 		margin-top: 1rem
-		@media(max-width: 1880px)
-			margin: 1rem -1rem
-		@media(max-width: 768px)
-			margin-top: 0 !important
-		figure
-			img
-				width: 100%
-				height: 326px
-				object-fit: cover	
 	section.block
 		display: grid
 		grid-template-columns: 1fr 1fr
@@ -328,9 +317,44 @@ section.map
 body.prod-page
 	section.sub
 		@include pw()
+		h1.p40
+			@media(max-width:500px)
+				margin-top: 0
 	section.gallery
 		@include pw()
 		display: flex
+		@media(max-width:1160px)
+			display: grid
+			grid-template-columns: 1fr 237px
+			margin-top: 0
+			column-gap: 1rem
+			.wrap.thumbs
+				grid-column: 1
+				grid-row: 2
+				width: 90%
+				margin: 0 auto
+			.swiper.main
+				grid-column: 1
+				grid-row: 1
+				margin-left: 0 !important
+			.dsc
+				grid-column: 2
+				grid-row: 1/3
+				padding-right: 1rem	
+		@media(max-width:500px)
+			grid-template-columns: 1fr
+			
+			.swiper.main
+				grid-column: 1
+				grid-row: 1
+			.wrap.thumbs
+				grid-column: 1
+				grid-row: 2
+			.dsc
+				grid-column: 1
+				grid-row: 3
+				margin-top: 2rem
+
 		.dsc
 			min-width: 237px
 			.colors-click-q
@@ -393,18 +417,21 @@ body.prod-page
 				.from
 					span
 						font-size: 22px
-						span[byn], span.cur
-							font-size: 35px
+					span[byn], span.cur
+						font-size: 35px
 				.to
 					span
 						font-size: 22px
-						span[byn], span.cur
-							font-size: 35px
+					span[byn], span.cur
+						font-size: 35px
 			.cart-compare
 				display: flex
 				align-items: center
 				justify-content: space-between
 				margin: 1rem 0
+				@media(max-width:500px)
+					justify-content: start
+					gap: 1rem
 				button.cart
 					background-color: #7E8581
 					font-family: 'Montserrat'
@@ -442,22 +469,9 @@ body.prod-page
 					img
 						&:hover
 							filter: invert(53%) sepia(6%) saturate(268%) hue-rotate(93deg) brightness(97%) contrast(89%)
-	.wrap.thumbs
-		position: relative
-		min-width: 238px
-		.swiper-thumbs
-			height: 513px
+		.wrap.thumbs
 			position: relative
-			margin-top: 1rem
-			.swiper-slide
-				border: 1px solid #c7c7c7
-				width: 236px
-				height: 107px !important
-				display: flex
-				justify-content: center
-				align-items: center
-				&.swiper-slide-thumb-active
-					border-color: #8d8d8d
+			min-width: 238px
 			.arrows
 				position: absolute
 				width: 100%
@@ -468,24 +482,70 @@ body.prod-page
 					bottom: -1rem
 					left: calc(50% - 11px)
 					top: auto
+					@media(max-width:1160px)
+						transform: rotate(0deg) scale(0.5)
+						left: auto
+						right: -2rem
+						top: 70px
+					@media(max-width:500px)	
+						top: calc(50% + 11px)
 				.swiper-button-prev
 					transform: rotate(90deg) scale(0.5)
 					top: 0
 					left: calc(50% - 11px)
-	.swiper.main
-		width: 995px
-		height: 553px
-		border: 1px solid #C7C7C7
-		img
-			margin: 0 auto
+					@media(max-width:1160px)
+						transform: rotate(0deg) scale(0.5)
+						left: -2rem
+						top: 70px
+					@media(max-width:500px)	
+						top: calc(50% + 11px)
+			.swiper-thumbs
+				height: 513px
+				position: relative
+				margin-top: 1rem
+				@media(max-width:1160px)
+					height: auto
+				.swiper-slide
+					border: 1px solid #c7c7c7
+					width: 236px
+					height: 107px !important
+					display: flex
+					justify-content: center
+					align-items: center
+					@media(max-width:1160px)
+						width: auto
+						box-sizing: border-box
+					@media(max-width:500px)	
+						height: auto !important
+					&.swiper-slide-thumb-active
+						border-color: #8d8d8d
+		.swiper.main
+			width: 995px
+			height: 553px
+			border: 1px solid #C7C7C7
+			@media(max-width:1534px)
+				margin: 0 1rem
+			@media(max-width:1160px)
+				width: 100%
+				height: auto
+			img
+				margin: 0 auto
+		
 	section.tabs
 		@include pw()
+		@media(max-width:400px)
+			margin: 1rem -1rem
 		ul.head
 			display: flex
 			gap: 20px
 			font-family: 'Inter'
 			font-weight: normal
 			font-size: 14px
+			@media(max-width:500px)
+				gap: 0
+				li
+					span
+						display: none
 			li
 				padding: 5px 15px
 				cursor: pointer
@@ -515,6 +575,8 @@ body.prod-page
 							padding-left: 1rem
 						>span
 							min-width: 227px
+							@media(max-width:500px)
+								min-width: 110px
 						a
 							text-decoration: underline
 							&:hover
@@ -539,11 +601,32 @@ body.prod-page
 				padding: 1rem
 section.readyuse
 	@include pw()
+	@media(max-width:400px)
+		h2.p30
+			margin-top: -2rem
 	ul
 		display: flex
 		gap: 1rem
+		flex-wrap: wrap
 		li
 			position: relative
+			@media(max-width:400px)
+				display: grid
+				grid-template-columns: 115px 1fr
+				column-gap: 1rem
+				img
+					grid-column: 1
+					grid-row: 1/3
+					width: 115px
+					height: 110px
+				a
+					grid-column: 2
+					grid-row: 1
+					margin: 0
+				.price
+					grid-column: 2
+					grid-row: 2
+					margin-top: -2rem
 			a
 				font-family: 'Montserrat'
 				font-weight: normal
@@ -565,6 +648,10 @@ section.readyuse
 section.similar
 	@include pw()
 	ul.prod-list
+		@media(max-width:1000px)
+			li
+				max-width: inherit
+				display: grid
 		li
 			max-width: 287px
 			transform: scale(0.95)
@@ -576,6 +663,7 @@ section.recently-viewed
 	ul
 		display: flex
 		gap: 28px
+		flex-wrap: wrap
 		li
 			position: relative
 			a
@@ -593,6 +681,7 @@ section.files
 		display: flex
 		gap: 40px
 		align-items: center
+		flex-wrap: wrap
 		li
 			display: flex
 			align-items: center
@@ -634,6 +723,7 @@ body.cat-page
 			font-family: 'Inter'
 			font-weight: normal
 			font-size: 14px
+			flex-wrap: wrap
 			li
 				a
 					text-decoration: underline
@@ -656,9 +746,15 @@ body.cat-page
 section.subtiles
 	@include pw()
 	ul
-		display: flex
 		gap: 100px
-		flex-wrap: wrap
+		display: grid
+		grid-template-columns: 1fr 1fr
+		@media(max-width:1144px)
+			gap: 50px
+		@media(max-width:732px)
+			gap: 20px
+		@media(max-width:590px)	
+			grid-template-columns: 1fr
 		li
 			position: relative
 			z-index: 0
@@ -667,6 +763,7 @@ section.subtiles
 			img
 				pointer-events: none
 				cursor: pointer
+				height: auto
 			a
 				text-decoration: underline
 				font-family: 'Montserrat'
@@ -710,9 +807,16 @@ body.subcat-page
 					font-weight: normal
 					font-size: 1rem
 					text-align: center
-					a:hover
-						span
-							text-decoration: underline
+					img, a
+						@media(max-width:400px)
+							width: 150px
+							height: 150px
+					a
+						width: 200px
+						display: inline-block
+						&:hover
+							span
+								text-decoration: underline
 					span
 						display: inline-block
 						margin-top: 12px
@@ -721,12 +825,20 @@ body.subcat-page
 section.discount
 	width: 928px
 	margin: 3rem auto
+	@media(max-width:980px)
+		width: 100%
+		margin: 1rem
 	ul.prod-list
 		li
 			display: flex
 			flex-direction: column
 			justify-content: space-between
 			position: relative
+			@media(max-width:1000px)
+				display: grid
+				&:after
+					right: auto
+					left: 0
 			&:after
 				position: absolute
 				content: url(/assets/img/icons/disc.svg)
@@ -745,6 +857,9 @@ section.discount
 				text-decoration: line-through
 				display: inline-block
 				font-size: 14px
+				@media(max-width:1000px)
+					grid-column: 2
+					grid-row: 3
 			.price
 				span
 					color: #F46340
@@ -754,6 +869,10 @@ section.discount
 					filter: invert(50%) sepia(67%) saturate(2771%) hue-rotate(336deg) brightness(99%) contrast(92%)
 section#default
 	@include pw()
+	.default-swiper
+		@media(max-width:400px)
+			h2.p30
+				margin-bottom: -1rem
 	.content
 		font-family: 'Vollkorn'
 		font-weight: normal
@@ -777,13 +896,22 @@ section#contacts
 		display: grid
 		grid-template-columns: 1fr 1fr
 		gap: 1rem
+		@media(max-width:870px)
+			grid-template-columns: 1fr
 		.table
 			font-family: 'Montserrat'
 			font-size: 1rem
+			@media(max-width:500px)
+				margin: 1rem -1rem
+				p
+					margin: 1rem
 			li
 				display: flex
 				justify-content: space-between
 				padding: 1rem
+				@media(max-width:500px)
+					flex-direction: column
+					gap: 1rem
 				&:nth-of-type(2n)
 					background-color: #F0F0F0
 				span
@@ -801,13 +929,16 @@ section#contacts
 			display: flex
 			align-items: center
 			justify-content: center
-
+			@media(max-width:500px)
+				height: 380px
 section.cart
 	@include pw()
 	.root
 		min-height: 50vh
 		display: flex
 		//justify-content: space-between
+		@media(max-width:550px)
+			flex-direction: column
 		&.loading
 			padding: 1rem
 			background-color: #eee
@@ -821,6 +952,9 @@ section.cart
 		.fields
 			max-width: 237px
 			margin-left: 70px
+			@media(max-width:550px)
+				margin-left: 0
+				margin-top: 1rem
 			.p30
 				margin-top: 0
 			form
@@ -845,7 +979,10 @@ section.cart
 						background-color: #eee
 		.table
 			min-width: 815px
-			table
+			@media(max-width:1146px)
+				min-width: inherit
+				//width: 100%
+			table.desktop
 				border-collapse: collapse
 				width: 100%
 				font-family: 'Montserrat'
@@ -1028,8 +1165,8 @@ aside
 				img
 					display: inline
 					transform: translateY(1px)
-				@media(max-width:400px)
-					display: none
+				//@media(max-width:400px)
+					//display: none
 			&.active
 				background-color: #C0BFBB
 			&:hover
@@ -1039,6 +1176,8 @@ aside
 				display: block
 				border-right: 1px solid #C0BFBB
 				height: 100%
+				@media(max-width:400px)
+					padding: 12px 14px
 	.sort
 		font-family: "Montserrat"
 		font-size: 14px
@@ -1099,10 +1238,37 @@ ul.prod-list
 	display: flex
 	gap: 1rem
 	flex-wrap: wrap
+	@media(max-width:1000px)
+		flex-direction: column
 	li
 		position: relative
 		z-index: 0
 		max-width: 298px
+		@media(max-width:1000px)
+			display: grid
+			grid-template-columns: 115px 1fr
+			column-gap: 26px
+			max-width: inherit
+			>img
+				width: 115px
+				height: 110px
+				grid-column: 1
+				grid-row: 1/3
+			.color
+				grid-column: 1
+				grid-row: 2
+			a
+				grid-column: 2
+				grid-row: 1
+			span.size
+				grid-column: 2
+				grid-row: 2
+				margin: 0
+				//margin-top: 30px
+			.price
+				grid-column: 2
+				grid-row: 3
+				margin-top: -52px
 		a
 			font-family: 'Inter'
 			font-weight: normal
@@ -1119,10 +1285,16 @@ ul.prod-list
 			margin-bottom: 1rem
 			display: flex
 			gap: 10px
+			@media(max-width:1000px)
+				justify-content: center
+				margin-top: 7px
 			.item
 				width: 25px
 				height: 25px
 				border-radius: 50%
+				@media(max-width:1000px)
+					width: 13px
+					height: 13px
 		span.size
 			display: block
 			font-family: 'Inter'
@@ -1157,8 +1329,12 @@ ul.prod-list
 	.item
 		&:not(:last-child)
 			margin-bottom: 35px
-			&.open >span::after
-				transform: scaleY(-1)
+			&.open
+				>span::after
+					transform: scaleY(-1)
+				>.size
+					display: block	
+
 		ul
 			position: relative
 			margin: 35px 0
@@ -1217,6 +1393,7 @@ ul.prod-list
 				top: calc(50% - 9px)
 		.size
 			margin-top: 1rem
+			display: none
 			.row
 				display: flex
 				gap: 1rem
