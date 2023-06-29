@@ -1075,8 +1075,8 @@ section.cart
 							&::-webkit-outer-spin-button,
 							&::-webkit-inner-spin-button
 								-webkit-appearance: none
-								margin: 0
 								-moz-appearance: textfield !important
+								margin: 0
 						.arrows
 							display: flex
 							flex-direction: column
@@ -1089,6 +1089,106 @@ section.cart
 									opacity: 0.7
 							.down
 								transform: rotate(180deg)
+			.mobile
+				margin-top: -1rem
+				margin-left: -1rem
+				margin-right: -1rem
+				.item
+					display: flex
+					border: 1px solid #D9D9D9
+					font-family: 'Montserrat'
+					ul.left
+						background-color: #D9D9D9
+						font-weight: 600
+						font-size: 1rem
+						padding: 1rem
+						>li
+							&:not(:last-child)
+								margin-bottom: 1rem
+							&.count
+								margin: 24px 0	
+					ul.right
+						padding: 1rem
+						font-weight: normal
+						li.count
+							display: flex
+							align-items: center
+							
+							.wrap
+								display: flex
+								align-items: center
+								gap: 1rem
+								margin-right: 2rem
+								input
+									border: none
+									background-color: #E7E7E7
+									width: 52px
+									height: 38px
+									text-align: center
+									&:focus
+										border: none
+										outline: none
+										background-color: darken(#E7E7E7, 5%)
+									&::-webkit-outer-spin-button,
+									&::-webkit-inner-spin-button
+										-webkit-appearance: none
+										-moz-appearance: textfield !important
+										margin: 0
+							
+						>li
+							&:not(:last-child)
+								margin-bottom: 1rem			
+							ul.stats
+								font-family: 'Inter'
+								font-size: 14px
+								>li
+									&:not(:last-child)
+										margin-bottom: 1rem								
+									&.colors
+										ul
+											display: inline-flex
+											gap: 10px
+											align-items: center
+											margin-left: 1rem
+											li
+												width: 15px
+												height: 15px
+												border: 1px solid transparent
+												border-radius: 50%
+												&.active
+													border-color: #606060
+									&.material
+										ul
+										display: none
+										&.open
+											display: block
+										span.name
+											display: inline-block
+											margin-right: 10px
+										span.selected
+											position: relative
+											&:after
+												position: absolute
+												content: url(/assets/img/icons/c612.svg)
+												transform: rotate(90deg)
+												//display: block
+												margin-left: 10px
+									&.comment
+										button
+											background-color: transparent
+											border: none
+											display: flex
+											align-items: center
+											color: #7B7B7B
+											padding: 0
+											margin-top: 10px
+											img
+												margin-right: 10px
+										textarea
+											display: none
+										&.open
+											display: block
+
 			.itogo
 				margin-top: 30px
 				margin-bottom: 20px
