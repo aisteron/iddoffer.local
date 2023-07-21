@@ -2,6 +2,7 @@ import {qs, qsa} from '../../libs';
 
 export function Filter(){
 	accordeon()
+	get_filter_config()
 }
 
 function accordeon(){
@@ -15,3 +16,8 @@ function accordeon(){
 		})
 	})
 }
+
+function get_filter_config(){}
+
+// redux разобраться
+// стейт для фильтра и продуктов
