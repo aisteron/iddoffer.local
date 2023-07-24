@@ -1,5 +1,10 @@
 import "regenerator-runtime/runtime.js";
 
+const cfg = {
+	prefix: process.env.NODE_ENV == 'development' ? "dev." : "",
+}
+cfg.host = "https://"+cfg.prefix+"iddoffer.by"
+
 export let doc=document,
     qsa=(s,o=doc)=>o?.querySelectorAll(s),
     qs=(s,o=doc)=>o?.querySelector(s);
@@ -41,11 +46,8 @@ export async function xml(action, data, path){
 		let xhr = new XMLHttpRequest();
 		let body = `action=${action}${data ? `&data=`+data : ""}`
 
-		//process.env.NODE_ENV == 'production' && (cfg.host = '')
-    
 
-
-		xhr.open("POST", path, true);
+		xhr.open("POST", cfg.host+path, true);
 		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
 		xhr.onreadystatechange = function () {
