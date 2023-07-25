@@ -1,5 +1,6 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 
+
 const counterSlice = createSlice({
   name: 'counter',
   initialState: {
@@ -22,9 +23,14 @@ export const store = configureStore({
 })
 
 export const ls = {
-	get(){
-		let h = localStorage.getItem('hash')
-		if(!h) return false
-		return h ? JSON.parse(h) : h
+	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
+	valid(){
+		let ed_saved = localStorage.getItem('editedon')
+		if(!ed_saved) return false
+		if(ed_saved !== this.ed) return false
+		return true
+	},
+	update(){
+		localStorage.setItem("editedon", this.ed)
 	}
 }

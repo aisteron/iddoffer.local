@@ -1,4 +1,5 @@
-import { qs } from "../../libs";
+import { qs,xml } from "../../libs";
+import { ls } from "./store";
 
 export const dx = {
 	
@@ -18,25 +19,32 @@ export const dx = {
 	
 	init(){
 
+		// https://dexie.org/docs/MultiEntry-Index
+
 		const db = new Dexie("common");
 		
 		db.version(1).stores({
       cat: `
         ++id,
         catid,
-        hash,
+        editedon,
 				filter
 				`,
 			prod:`
 				++id,
+				resid,
 				catid,
+				article,
 				name,
 				url,
+				brand,
 				color,
 
-				material_facade,
-				material_body,
-				material_upholstery,
+				editedon,
+
+				*material_facade,
+				*material_body,
+				*material_upholstery,
 
 				width,
 				height,
@@ -46,9 +54,39 @@ export const dx = {
 
 				is_designed,
 
-				price
+				price,
+				old_price
 			`	
     });
+
+		return db;
+
+	},
+	async update(){
+
+		let resid = +qs("body").getAttribute("resid")
+		let editedon = document.head.querySelector('[name="editedon"]').getAttribute("content")
+		let obj = await xml('get_filters_and_products',{id: resid},'/api/').then(r => JSON.parse(r))
+
+		let db = this.init()
+		db.open();
+
+		// update filters in cat.table
+
+		let recordid = await db.cat.get({catid: resid})
+
+		!recordid
+			? await db.cat.put({catid: resid, editedon: editedon, filter: obj.filters})
+			: await db.cat.update(recordid, {catid: resid, editedon: editedon, filter: obj.filters})
+
+		// fill products table 
+
+		await db.prod
+			.where({catid: resid})
+			.delete()
+		await db.prod.bulkPut(obj.products);
+		
+		ls.update()
 
 	}
 
