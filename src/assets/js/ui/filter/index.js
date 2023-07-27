@@ -10,9 +10,12 @@ export async function Filter() {
 	!ed && await dx.update_editedon()
 
 
-	//let ch = qs('script[children]')
-	//ch && await dx.validate_children().then(resp => !resp && dx.update_children)
+	let ch = qs('script[children]')
+	ch && await dx.validate_children()
+					.then(resp => resp.size && dx.update_children(resp))
+					//.then(resp => console.log(resp))
 
+	// await dx.construct_filters()
 	//draw()
 
 
