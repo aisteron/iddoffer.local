@@ -1,8 +1,8 @@
 import { qs,xml } from "../../libs";
-import { ls } from "./store";
+//import { ls } from "./store";
 
 export const dx = {
-	
+	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
 	async load(){
 		
 		return new Promise(resolve =>{
@@ -62,32 +62,77 @@ export const dx = {
 		return db;
 
 	},
-	async update(){
+	async update_editedon(){
 
 		let resid = +qs("body").getAttribute("resid")
-		let editedon = document.head.querySelector('[name="editedon"]').getAttribute("content")
-		let obj = await xml('get_filters_and_products',{id: resid},'/api/').then(r => JSON.parse(r))
+		
+		// this.ed - текущий хэш страницы
+		// resid - текущий id страницы
+		// получить свежие товары по id
 
+			// запрос к серверу POST → [{resid : editedon }]
+			// особого смысла отправлять editedon нет, но для children мы будет отправлять невалидные хэши
+
+			// ответ сервера
+
+		  // products:[...]
+			// categories: [{ resid: ['конфиг фильтра', editedon] }]
+
+		// обновить товары в таблице prod
+		// обновить запись в таблице cat текущим хэшом из метатега поле editedon и конфигурацией фильтра поле cfg
+		// распарсить товары и сконфигурировать js объект фильтра и обновить в таблице cat поле filter
+
+		
+
+		let obj = [{
+			id: resid,
+			editedon: this.ed
+		}]
+
+		await xml('get_products',obj,'/api/').then(r => JSON.parse(r))
+		
+		
+		
 		let db = this.init()
 		db.open();
 
+		// асинхронно в цикле удалить товары из таблицы
+		// потом добавить
+		
+
 		// update filters in cat.table
 
-		let recordid = await db.cat.get({catid: resid})
+		// let recordid = await db.cat.get({catid: resid})
 
-		!recordid
-			? await db.cat.put({catid: resid, editedon: editedon, filter: obj.filters})
-			: await db.cat.update(recordid, {catid: resid, editedon: editedon, filter: obj.filters})
+		// !recordid
+		// 	? await db.cat.put({catid: resid, editedon: editedon, filter: obj.filters})
+		// 	: await db.cat.update(recordid, {catid: resid, editedon: editedon, filter: obj.filters})
 
-		// fill products table 
+		// // fill products table 
 
-		await db.prod
-			.where({catid: resid})
-			.delete()
-		await db.prod.bulkPut(obj.products);
+		// await db.prod
+		// 	.where({catid: resid})
+		// 	.delete()
+		// await db.prod.bulkPut(obj.products);
 		
-		ls.update()
+		// ls.update()
 
+	},
+	async validate_editedon(){
+		let db = this.init()
+		db.open()
+		let res = await db.cat.where({editedon:this.ed}).toArray()
+		
+		return !res.length ? false : true
+
+	},
+
+	async validate_children(){
+		return false
+	},
+	async update_children(){
+		return false
 	}
+
 
 }

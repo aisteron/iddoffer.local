@@ -1,12 +1,19 @@
 import { load_toast, qs, qsa, xml } from '../../libs';
 import { dx } from './dexie';
-import { store, incremented, decremented, ls } from './store';
+import { store, incremented, decremented } from './store';
 
 export async function Filter() {
-	//accordeon()
 
 	await dx.load()
-	ls.valid() ? draw() : dx.update()
+	
+	let ed = await dx.validate_editedon()
+	!ed && await dx.update_editedon()
+
+
+	//let ch = qs('script[children]')
+	//ch && await dx.validate_children().then(resp => !resp && dx.update_children)
+
+	//draw()
 
 
 

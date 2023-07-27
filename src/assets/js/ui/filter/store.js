@@ -22,15 +22,15 @@ export const store = configureStore({
   reducer: counterSlice.reducer
 })
 
-export const ls = {
-	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
-	valid(){
-		let ed_saved = localStorage.getItem('editedon')
-		if(!ed_saved) return false
-		if(ed_saved !== this.ed) return false
-		return true
-	},
-	update(){
-		localStorage.setItem("editedon", this.ed)
-	}
-}
+// export const ls = {
+// 	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
+// 	valid(){
+// 		let ed_saved = localStorage.getItem('editedon')
+// 		if(!ed_saved) return false
+// 		if(ed_saved !== this.ed) return false
+// 		return true
+// 	},
+// 	update(){
+// 		localStorage.setItem("editedon", this.ed)
+// 	}
+// }
