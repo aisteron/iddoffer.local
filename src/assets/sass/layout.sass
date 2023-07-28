@@ -1442,13 +1442,15 @@ ul.prod-list
 				to
 					transform: rotate(360deg)
 	.item
+		&.open
+			>span::after
+					transform: scaleY(-1)
+			.size
+				display: block
 		&:not(:last-child)
 			margin-bottom: 35px
-			&.open
-				>span::after
-					transform: scaleY(-1)
-				>.size
-					display: block	
+
+						
 
 		ul
 			position: relative
@@ -1494,7 +1496,7 @@ ul.prod-list
 		>span
 			font-family: 'Montserrat'
 			font-weight: 600
-			font-size: 1rem
+			font-size: 14px
 			text-transform: uppercase
 			position: relative
 			display: inline-block
@@ -1505,9 +1507,6 @@ ul.prod-list
 				transform: rotate(90deg)
 				position: absolute
 				right: 0
-				//width: 19px
-				//height: 9px
-				//display: inline-block
 				top: calc(50% - 9px)
 		.size
 			margin-top: 1rem
@@ -1531,6 +1530,7 @@ ul.prod-list
 				max-width: 60px
 				height: 32px
 				border: 1px solid #c7c7c7
+				padding-left: 7px
 				&:focus
 					outline: none
 					background-color: #d9d9d930
