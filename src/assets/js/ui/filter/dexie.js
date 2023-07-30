@@ -1,7 +1,9 @@
 import { qs,xml } from "../../libs";
 
+
+
 export const dx = {
-	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
+	ed: document.head.querySelector('[name="editedon"]')?.getAttribute("content"),
 	async load(){
 		
 		return new Promise(resolve =>{
@@ -104,17 +106,12 @@ export const dx = {
 	
 		if(res.products.length){
 
-			Object.keys(res.categories).forEach(async i => {
-				
-				// i = catid
-				
+			for( const item of res.categories){
 				await db.prod
-					.where({catid: +i})
+					.where({catid: item.id})
 					.delete()
-					
-			})
-			
-			await db.prod.bulkPut(res['products'])	
+			}	
+			await db.prod.bulkPut(res.products)	
 		}	
 
 
@@ -210,7 +207,7 @@ export const dx = {
 				? await db.cat.put(obj)
 				: await db.cat.update(recordid, obj)
 			
-				// удалить товары категории
+				// удалить товары категорий children
 			
 				await db.prod.where({catid: item.id}).delete()
 		}

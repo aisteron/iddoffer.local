@@ -1,6 +1,6 @@
-import { load_toast, qs, qsa, xml } from '../../libs';
+import { qs, qsa, debounce} from '../../libs';
 import { dx } from './dexie';
-import { store, incremented, decremented } from './store';
+import { store, checkbox,design,size } from './store';
 
 /*
 	
@@ -32,6 +32,36 @@ import { store, incremented, decremented } from './store';
 	* по которому будем выполнять фильтрацию dexie таблицы prod
 
 */
+
+/*
+	- get_modifications
+	[1,2,3] | 
+	
+	1: [
+		id
+		url
+		name
+		color
+		material_facade
+		price[]
+		gallery[]
+
+	]
+*/
+
+/*
+	script
+	const colors = {
+		"Белый":"#fff",
+		"Орех": "/assets/img/colors/nut.jpg"
+	}
+
+*/
+
+/*
+	meta products per page
+
+*/
 export async function Filter() {
 
 	await dx.load()
@@ -46,14 +76,19 @@ export async function Filter() {
 	}
 
 	await dx.construct_filters()
-	draw()
+	
+	await draw()
 
+	listeners()
 
+	store.subscribe(() => {
+		let state = store.getState()
+		console.log(state)
+		draw_products(state)
 
-	store.subscribe(() => console.log(store.getState()))
-	store.dispatch(incremented())
-	store.dispatch(incremented())
-	store.dispatch(decremented())
+	})
+	
+
 
 
 }
@@ -136,7 +171,7 @@ function template_size(f){
 				<span>${dict['size']}</span>
 				<div class="size">
 					<span>Ширина, мм</span>
-					<div class="row">
+					<div class="row" data-name="width">
 						<input type="number" min="${f.width[0]}" placeholder="${f.width[0]}" />
 						<input type="number" max="${f.width[1]}" placeholder="${f.width[1]}" />
 					</div>
@@ -144,7 +179,7 @@ function template_size(f){
 				
 				<div class="size">	
 					<span>Длина, мм</span>
-					<div class="row">
+					<div class="row" data-name="length">
 						<input type="number" min="${f.length[0]}" placeholder="${f.length[0]}" />
 						<input type="number" max="${f.length[1]}" placeholder="${f.length[1]}" />
 					</div>
@@ -152,7 +187,7 @@ function template_size(f){
 				
 				<div class="size">	
 					<span>Высота, мм</span>
-					<div class="row">
+					<div class="row" data-name="height">
 						<input type="number" min="${f.height[0]}" placeholder="${f.height[0]}" />
 						<input type="number" max="${f.height[1]}" placeholder="${f.height[1]}" />
 					</div>
@@ -176,7 +211,100 @@ function template_design(f){
 
 }
 
+function listeners() {
+
+	
+	// checkboxes
+	
+	Array.from(qsa('#filter .item.dd')).forEach(el => {
 
 
-// redux разобраться
-// стейт для фильтра и продуктов
+		qsa('input[type="checkbox"]',el).forEach(input => {
+			
+			input.addEventListener("change", event =>{
+				let res = Array.from(qsa('input',el)).filter(el => el.checked)
+				let obj = {
+					name: event.target.closest('[data-name]').dataset.name,
+					data: res.map(el => qs('.name', el.closest('label')).innerText )
+				}
+
+				store.dispatch(checkbox(obj))
+			})
+		})
+
+	})
+	
+
+	// is designed
+	if(qs('.item.design input')){
+		qs('.item.design input').addEventListener("change", event => store.dispatch(design(event.target.checked)))
+	}
+	
+
+	// size
+	if(qs('[data-name="size"]')){
+		
+		function collect(event){
+
+			let row = event.target.closest('.row')
+			let res = Array.from(qsa('input',row)).map(el => +el.value == 0 ? null : +el.value)
+			
+			let obj = {
+				name: row.dataset.name,
+				data: res
+			}
+			store.dispatch(size(obj))
+		}
+
+		let deb = debounce(collect, 500)
+		qsa('[data-name="size"] input').forEach(el =>{
+			["keyup", "blur"].forEach(e => {
+				el.addEventListener(e, event => event.type == 'keyup' ? deb(event) : collect(event))
+			})
+		})
+	}
+
+}
+
+async function draw_products(state){
+	
+	// точно ли нужен тут return??
+	// пагинация ??
+
+	// if(!state.filters.length) return
+
+	let db = dx.init()
+	let resp;
+	let prods = [];
+	let ids = [];
+	
+	qs('[children]')
+		? (ids = children.map(el => el.id))
+		: ids = [+qs('[resid]').getAttribute('resid')]
+
+
+	prods = await db.prod.where('catid').anyOf(ids).toArray()
+	console.log('all prods: ',prods)
+
+	if(!prods.length){console.log('%c продукты не найдены','color: red'); return}
+
+
+
+	for(const f of state.filters){
+		
+
+		switch(f.name){
+			case 'color':
+			case 'brand': 
+				prods = prods.filter(el => f.data.includes(el[f.name]));
+				break;
+			case 'design':
+				prods = prods.filter(el => el.is_designed == f.data)
+				break;
+		}
+
+	}
+	
+	console.log('filtered prods:',prods)
+	
+}

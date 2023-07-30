@@ -1,36 +1,62 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
 
 
-const counterSlice = createSlice({
-  name: 'counter',
+const filterSlice = createSlice({
+  name: 'filter',
   initialState: {
-    value: 0
+    filters: [],
+    page: 1,
+    perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content")
   },
   reducers: {
-    incremented: state => {
-      state.value += 1
+
+    checkbox: (state,action) => {
+
+
+      if(!action.payload.data.length) {
+        state.filters = state.filters.filter(f => f.name !== action.payload.name)
+        return;
+      }
+      if(!state.filters.length){
+        state.filters.push(action.payload)
+        return;
+      }
+
+      //let res = state.filters.map(f => f.name == action.payload.name && (f.data = action.payload.data));
+      
+      //res.length == 0 && state.filters.push(action.payload)
+
+      state.filters.forEach(f => {
+
+        f.name == action.payload.name
+        ? f.data = action.payload.data
+        : state.filters.push(action.payload)
+          
+      })
+      
+
+    
+
+
+
     },
-    decremented: state => {
-      state.value -= 1
+    design:(state, action) =>{
+      let obj = {name: "design", data: action.payload}
+
+      let res = state.filters.filter(el => el.name == 'design');
+      !res.length && state.filters.push(obj)
+      !action.payload
+      && (state.filters = state.filters.filter(f => f.name !== "design") )
+    },
+    size:(state,action) =>{
+      console.log(action.payload)
     }
   }
 })
 
-export const { incremented, decremented } = counterSlice.actions
+export const { checkbox,design,size } = filterSlice.actions
 
 export const store = configureStore({
-  reducer: counterSlice.reducer
+  reducer: filterSlice.reducer
 })
 
-// export const ls = {
-// 	ed: document.head.querySelector('[name="editedon"]').getAttribute("content"),
-// 	valid(){
-// 		let ed_saved = localStorage.getItem('editedon')
-// 		if(!ed_saved) return false
-// 		if(ed_saved !== this.ed) return false
-// 		return true
-// 	},
-// 	update(){
-// 		localStorage.setItem("editedon", this.ed)
-// 	}
-// }

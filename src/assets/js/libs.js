@@ -6,8 +6,8 @@ const cfg = {
 cfg.host = "https://"+cfg.prefix+"iddoffer.by"
 
 export let doc=document,
-    qsa=(s,o=doc)=>o?.querySelectorAll(s),
-    qs=(s,o=doc)=>o?.querySelector(s);
+qsa=(s,o=doc)=>o?.querySelectorAll(s),
+qs=(s,o=doc)=>o?.querySelector(s);
 
 export function loadCSS(n,e,o,d){"use strict";var t=window.document.createElement("link"),i=e||window.document.getElementsByTagName("script")[0],l=window.document.styleSheets;return t.rel="stylesheet",t.href=n,t.media="only x",d&&(t.onload=d),i.parentNode.insertBefore(t,i),t.onloadcssdefined=function(n){for(var e,o=0;o<l.length;o++)l[o].href&&l[o].href===t.href&&(e=!0);e?n():setTimeout(function(){t.onloadcssdefined(n)})},t.onloadcssdefined(function(){t.media=o||"all"}),t}
 
@@ -87,3 +87,26 @@ export const sw = {
   
 	}
 }
+
+// https://gist.github.com/ionurboz/51b505ee3281cd713747b4a84d69f434
+
+export function debounce(func, wait, immediate) {
+	var timeout;
+  
+	return function() {
+
+	  var context = this, args = arguments;
+	  var callNow = immediate && !timeout;
+	  clearTimeout(timeout);
+	  timeout = setTimeout(function() {
+
+		timeout = null;
+  
+		if (!immediate) {
+			func.apply(context, args);
+		}
+	  }, wait);
+
+	  if (callNow) func.apply(context, args);
+	}
+  }
