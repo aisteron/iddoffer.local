@@ -249,9 +249,10 @@ function listeners() {
 			let row = event.target.closest('.row')
 			let res = Array.from(qsa('input',row)).map(el => +el.value == 0 ? null : +el.value)
 			
+			
 			let obj = {
 				name: row.dataset.name,
-				data: res
+				data: (res[0] == null && res[1] == null) ? [] : res
 			}
 			store.dispatch(size(obj))
 		}
@@ -296,11 +297,30 @@ async function draw_products(state){
 		switch(f.name){
 			case 'color':
 			case 'brand': 
+			case 'material_facade': 
+			case 'material_body': 
+			case 'material_upholstery': 
 				prods = prods.filter(el => f.data.includes(el[f.name]));
 				break;
 			case 'design':
 				prods = prods.filter(el => el.is_designed == f.data)
 				break;
+			case 'size':
+				f.data.forEach(el => {
+					//el.name = 'width'
+					prods = prods.filter(e => {
+						
+						if(el.data[0] == null){
+							return e[el.name] <= el.data[1]
+						}
+
+						if(el.data[1] == null){
+							return e[el.name] >= el.data[0]
+						}
+
+						return e[el.name] >= el.data[0] && e[el.name] <= el.data[1] ? true : false
+					})
+				})	
 		}
 
 	}
