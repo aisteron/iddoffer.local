@@ -1,6 +1,7 @@
-import { qs, qsa, debounce} from '../../libs';
+import { qs, qsa, debounce, cfg} from '../../libs';
 import { dx } from './dexie';
 import { store, checkbox,design,size } from './store';
+import { Chips } from './chips';
 
 /*
 	
@@ -64,6 +65,7 @@ import { store, checkbox,design,size } from './store';
 */
 export async function Filter() {
 
+
 	await dx.load()
 	
 	let ed = await dx.validate_editedon()
@@ -82,11 +84,16 @@ export async function Filter() {
 	listeners()
 
 	store.subscribe(() => {
+
 		let state = store.getState()
 		console.log(state)
-		draw_products(state)
+		
+		prepare_products(state).then(pr => draw_products(state,pr))
+		
 
 	})
+
+	Chips()
 	
 
 
@@ -259,7 +266,8 @@ function listeners() {
 
 		let deb = debounce(collect, 500)
 		qsa('[data-name="size"] input').forEach(el =>{
-			["keyup", "blur"].forEach(e => {
+			//["keyup", "blur"].forEach(e => {
+			["keyup"].forEach(e => {
 				el.addEventListener(e, event => event.type == 'keyup' ? deb(event) : collect(event))
 			})
 		})
@@ -267,7 +275,7 @@ function listeners() {
 
 }
 
-async function draw_products(state){
+async function prepare_products(state){
 	
 	// точно ли нужен тут return??
 	// пагинация ??
@@ -275,7 +283,6 @@ async function draw_products(state){
 	// if(!state.filters.length) return
 
 	let db = dx.init()
-	let resp;
 	let prods = [];
 	let ids = [];
 	
@@ -296,18 +303,20 @@ async function draw_products(state){
 
 		switch(f.name){
 			case 'color':
-			case 'brand': 
+			case 'brand':
+				prods = prods.filter(el => f.data.includes(el[f.name]));
+				break;
 			case 'material_facade': 
 			case 'material_body': 
 			case 'material_upholstery': 
-				prods = prods.filter(el => f.data.includes(el[f.name]));
+				prods = prods.filter(prod => prod[f.name].filter(p => f.data.includes(p)).length ? true : false)
 				break;
 			case 'design':
 				prods = prods.filter(el => el.is_designed == f.data)
 				break;
 			case 'size':
 				f.data.forEach(el => {
-					//el.name = 'width'
+					
 					prods = prods.filter(e => {
 						
 						if(el.data[0] == null){
@@ -320,11 +329,93 @@ async function draw_products(state){
 
 						return e[el.name] >= el.data[0] && e[el.name] <= el.data[1] ? true : false
 					})
-				})	
+				})
+				break;	
 		}
 
 	}
+
+	prods = prods.reduce((res, current) => {
+
+		let once = false
+		
+		res.forEach(r => {
+
+			if(r.article.slice(0,-2) == current.article.slice(0,-2)){
+
+				once = true
+
+				if(r.colors){
+					r.colors.add(current.color)
+				} else {
+					r.colors = new Set([current.color])
+				}
+
+			}
+		})
+
+		!once && res.push(current)
+		return res
+		
+		
+	},[prods[0]])
 	
 	console.log('filtered prods:',prods)
+	return prods
 	
+}
+
+function draw_products(state,prods){
+	// pagination
+	// limit = 10
+
+	if(prods[0] == undefined){
+		qs('ul.prod-list').innerHTML = '<span>Продуктов не найдено</span>'
+		return
+	}
+	
+	let str = ``
+	prods.forEach(prod => {
+		str += `
+		<li data-prodid="${prod.resid}">
+		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0]}.jpg" width="302" heigth="288">
+		<div class="colors">
+			${prod.colors ? draw_color(prod.colors) : draw_color([prod.color])}
+		</div>
+		<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
+
+			<span class="size">${prod.width + " x " + prod.height + " x "+ prod.length}</span>
+      <div class="price">
+				<span byn="${prod.price}">${prod.price}</span>
+				<span class="cur">BYN</span>
+				<img class="cart" src="/assets/img/icons/bag.svg" width="20" heigth="23">
+			</div>
+    </li>
+		`
+	})
+	qs('ul.prod-list').innerHTML = str
+
+}
+
+function draw_color(prod_colors){
+
+	// при отрисовке карточки товара выводит цвета модификаций или собственный цвет
+	// COLORS - переменная в head
+
+	let str = ``
+	prod_colors.forEach(c => {
+
+		let COLOR = COLORS.filter(color => color.name == c)
+
+		if(COLOR.length){
+			COLOR[0].code
+			? str += `<div class="item" style="background-color:${
+				COLOR[0].code == '#fff' ? COLOR[0].code + '; border-color: #ccc' : COLOR[0].code}"></div>`
+			: str += `<div class="item" style="background-image: url(${cfg.host + "/" + COLOR[0].image})"></div>`
+		} else {
+			console.log('%c не нашел цвет в переменной COLORS в head', 'color: red')
+		}
+	})
+
+	return str;
 }

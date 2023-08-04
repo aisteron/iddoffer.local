@@ -94,11 +94,41 @@ const filterSlice = createSlice({
       }
       
       
+    },
+    chips:(state, action)=>{
+      // click on close for reset filter
+      switch(action.payload.name){
+        case 'color':
+        case 'brand':
+        case 'material_body':
+        case 'material_facade':
+        case 'material_upholstery':
+          state.filters = state.filters.filter(f => {
+            f.data = f.data.filter(d => d !== action.payload.value)
+            return !f.data.length ? false : true
+          })
+          break;
+        case 'design':
+          state.filters = state.filters.filter(f => f.name !== 'design')
+          break;
+        case 'width':
+        case 'length':
+        case 'height':
+          state.filters = state.filters.filter(f => {
+            if(f.name == 'size'){
+              f.data = f.data.filter(d => d.name !== action.payload.name)
+              
+            }
+            return !f.data.length ? false : true
+          })
+          return state  
+
+      }
     }
   }
 })
 
-export const { checkbox,design,size } = filterSlice.actions
+export const { checkbox,design,size,chips } = filterSlice.actions
 
 export const store = configureStore({
   reducer: filterSlice.reducer
