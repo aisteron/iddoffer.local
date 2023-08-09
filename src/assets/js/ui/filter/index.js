@@ -2,6 +2,7 @@ import { qs, qsa, debounce, cfg} from '../../libs';
 import { dx } from './dexie';
 import { store, checkbox,design,size } from './store';
 import { Chips } from './chips';
+import { Pagination } from './pagination';
 
 /*
 	
@@ -93,7 +94,9 @@ export async function Filter() {
 
 	})
 
+
 	Chips()
+	Pagination()
 	
 
 

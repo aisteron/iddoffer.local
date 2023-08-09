@@ -1,12 +1,10 @@
-import { createSlice, configureStore,current } from '@reduxjs/toolkit'
+import { createSlice, configureStore, current } from '@reduxjs/toolkit'
 
 
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    filters: [],
-    page: 1,
-    perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content")
+    filters: []
   },
   reducers: {
 
@@ -124,7 +122,8 @@ const filterSlice = createSlice({
           return state  
 
       }
-    }
+    },
+		
   }
 })
 
@@ -132,5 +131,29 @@ export const { checkbox,design,size,chips } = filterSlice.actions
 
 export const store = configureStore({
   reducer: filterSlice.reducer
+})
+
+window.store = store;
+window.checkbox = checkbox
+
+const paginationSlice = createSlice({
+	name: 'pagination',
+	initialState: {
+		page: 1,
+		//perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content"),
+		perpage: 2,
+		count: null
+	},
+	reducers:{
+		count:(state, action)=>{
+			state.count = action.payload
+		}
+	}
+})
+
+export const { count } = paginationSlice.actions
+
+export const paginationStore = configureStore({
+  reducer: paginationSlice.reducer
 })
 
