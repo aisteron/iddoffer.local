@@ -278,7 +278,7 @@ function listeners() {
 
 }
 
-async function prepare_products(state){
+export async function prepare_products(state){
 	
 	// точно ли нужен тут return??
 	// пагинация ??

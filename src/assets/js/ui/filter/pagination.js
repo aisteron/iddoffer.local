@@ -1,28 +1,33 @@
+import { prepare_products } from "."
 import { qs } from "../../libs"
-import { dx } from "./dexie"
-import { paginationStore, store, count } from "./store"
+
+import { store } from "./store"
 
 export async function Pagination(){
 
-	paginationStore.subscribe(() =>{
-		let state = paginationStore.getState()
-		console.log(state)
-	})
+	// пагинация - всегда следствие кол-ва продуктов
+	// не нужно хранить кол-во продуктов в стейте
+	// нужно в draw() пагинации это кол-во передавать
 
-	await get_prods_count()
-	draw()
+	let res = await prepare_products(store.getState())
+	draw(res.length)
+	//draw()
 }
 
-async function get_prods_count(){
-	let db = dx.init()
 
-	let catids = [+qs('[resid]').getAttribute("resid")]
-	if(qs('[children]')) catids = children.map(el => el.id)
 
-	let c = await db.prod.where('catid').anyOf(catids).count()
-	paginationStore.dispatch(count(c))
-}
+function draw(len){
+	// получает кол-во товаров
+	let perpage = store.getState().pagination.perpage
+	let curpage = store.getState().pagination.page
+	let str = ``
+	let c = Math.ceil(len/perpage)
+	if(c == 1){
+		str = ''
+		return
+	}
 
-function draw(){
-	console.log(9)	
+	//if(c >= 3) // добавить кнопку вправо
+
+
 }

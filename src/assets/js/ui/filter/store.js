@@ -4,7 +4,13 @@ import { createSlice, configureStore, current } from '@reduxjs/toolkit'
 const filterSlice = createSlice({
   name: 'filter',
   initialState: {
-    filters: []
+    filters: [],
+		pagination:{
+			page: 1,
+			//perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content"),
+			perpage: 2,
+			//count: null
+		}
   },
   reducers: {
 
@@ -19,10 +25,6 @@ const filterSlice = createSlice({
         state.filters.push(action.payload)
         return;
       }
-
-      //let res = state.filters.map(f => f.name == action.payload.name && (f.data = action.payload.data));
-      
-      //res.length == 0 && state.filters.push(action.payload)
 
       state.filters.forEach(f => {
 
@@ -136,24 +138,4 @@ export const store = configureStore({
 window.store = store;
 window.checkbox = checkbox
 
-const paginationSlice = createSlice({
-	name: 'pagination',
-	initialState: {
-		page: 1,
-		//perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content"),
-		perpage: 2,
-		count: null
-	},
-	reducers:{
-		count:(state, action)=>{
-			state.count = action.payload
-		}
-	}
-})
-
-export const { count } = paginationSlice.actions
-
-export const paginationStore = configureStore({
-  reducer: paginationSlice.reducer
-})
 
