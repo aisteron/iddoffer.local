@@ -2,7 +2,7 @@ import { qs, qsa, debounce, cfg} from '../../libs';
 import { dx } from './dexie';
 import { store, checkbox,design,size } from './store';
 import { Chips } from './chips';
-import { Pagination } from './pagination';
+import { Pagination, draw_pagination, prepare_pagination, listeners as lis } from './pagination';
 
 /*
 	
@@ -372,6 +372,15 @@ function draw_products(state,prods){
 	// pagination
 	// limit = 10
 
+	// draw pagination
+
+	let res = prepare_pagination(prods.length)
+	draw_pagination(res)
+	lis()
+
+	//prods = prods.slice(state.pagination.perpage * state.pagination.page,state.pagination.perpage)
+	console.log(prods.slice(0,1))
+
 	if(prods[0] == undefined){
 		qs('ul.prod-list').innerHTML = '<span>Продуктов не найдено</span>'
 		return
@@ -397,6 +406,8 @@ function draw_products(state,prods){
 		`
 	})
 	qs('ul.prod-list').innerHTML = str
+
+	
 
 }
 
