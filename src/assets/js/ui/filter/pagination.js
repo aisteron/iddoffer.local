@@ -113,7 +113,9 @@ export function draw_pagination({curpage,arr}){
 }
 
 export function listeners(){
+
 	if(!qs('#pagination ul.pages li')) return
+
 	qsa('#pagination ul.pages li a').forEach(el => {
 		el.addEventListener("click", event => {
 			event.preventDefault()
@@ -127,6 +129,8 @@ export function listeners(){
 
 			let p = event.target.innerHTML
 			p = +p.replace(/[\r\n\t]/gm, '')
+
+			if(p == current) return
 			store.dispatch(paginate(p))
 		})
 	})

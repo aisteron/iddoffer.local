@@ -1,6 +1,5 @@
 import { aside } from "./components/aside";
 import { map } from "./components/map";
-import { sort } from "./components/sort";
 import { Filter } from "./filter";
 
 import { head_slider } from "./components/sliders/head-slider";
@@ -15,7 +14,7 @@ export function Ui(){
 
 	Filter()
 	aside()
-	sort()
+
 	map()
 	mobile_menu()
 	

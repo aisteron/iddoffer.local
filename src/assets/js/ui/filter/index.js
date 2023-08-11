@@ -3,6 +3,7 @@ import { dx } from './dexie';
 import { store, checkbox,design,size } from './store';
 import { Chips } from './chips';
 import { Pagination, draw_pagination, prepare_pagination, listeners as lis } from './pagination';
+import { Sort } from './sort';
 
 /*
 	
@@ -45,8 +46,9 @@ import { Pagination, draw_pagination, prepare_pagination, listeners as lis } fro
 		name
 		color
 		material_facade
-		price[]
-		gallery[]
+		price
+		price_old
+		image[]
 
 	]
 */
@@ -97,7 +99,9 @@ export async function Filter() {
 
 	Chips()
 	Pagination()
+	Sort()
 	
+	dx.construct_mods()
 
 
 
@@ -280,10 +284,6 @@ function listeners() {
 
 export async function prepare_products(state){
 	
-	// точно ли нужен тут return??
-	// пагинация ??
-
-	// if(!state.filters.length) return
 
 	let db = dx.init()
 	let prods = [];
@@ -344,17 +344,9 @@ export async function prepare_products(state){
 		
 		res.forEach(r => {
 
-			if(r.article.slice(0,-2) == current.article.slice(0,-2)){
+			r.article.slice(0,-2) == current.article.slice(0,-2)
+			&& (once = true)
 
-				once = true
-
-				if(r.colors){
-					r.colors.add(current.color)
-				} else {
-					r.colors = new Set([current.color])
-				}
-
-			}
 		})
 
 		!once && res.push(current)
@@ -369,8 +361,6 @@ export async function prepare_products(state){
 }
 
 function draw_products(state,prods){
-	// pagination
-	// limit = 10
 
 	// draw pagination
 
@@ -378,8 +368,20 @@ function draw_products(state,prods){
 	draw_pagination(res)
 	lis()
 
-	//prods = prods.slice(state.pagination.perpage * state.pagination.page,state.pagination.perpage)
-	console.log(prods.slice(0,1))
+	// pagination ?
+	if(state.pagination.page > 1){
+		prods = 
+		prods.slice(
+			(state.pagination.perpage * state.pagination.page -1)
+			,(state.pagination.perpage * state.pagination.page + state.pagination.perpage - 1))
+	}
+
+	// sort
+	if(state.sort){
+		state.sort == 'desc'
+		? prods = prods.sort((a,b) => a.price - b.price)
+		: prods = prods.sort((a,b) => b.price - a.price)
+	}
 
 	if(prods[0] == undefined){
 		qs('ul.prod-list').innerHTML = '<span>Продуктов не найдено</span>'
@@ -391,8 +393,11 @@ function draw_products(state,prods){
 		str += `
 		<li data-prodid="${prod.resid}">
 		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0]}.jpg" width="302" heigth="288">
-		<div class="colors">
-			${prod.colors ? draw_color(prod.colors) : draw_color([prod.color])}
+		<div class="colors loading">
+			${
+				//prod.colors ? draw_color(prod.colors) : draw_color([prod.color])
+				""
+			}
 		</div>
 		<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
 
@@ -407,12 +412,20 @@ function draw_products(state,prods){
 	})
 	qs('ul.prod-list').innerHTML = str
 
+	// prods передать в условный draw_colors()
+	// обнаружить модификации
+	// и врисовать в уже готовую разметку
+	// это облегчит и вывод продуктов на сервере
+	// т.к. можно будет дернуть эту ф-цию и передать ей размтку/массив продуктов
+
+	// выпилить 
+
 	
 
 }
 
 function draw_color(prod_colors){
-
+	// возвращает html-разметку
 	// при отрисовке карточки товара выводит цвета модификаций или собственный цвет
 	// COLORS - переменная в head
 

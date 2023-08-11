@@ -1312,7 +1312,7 @@ aside
 		span
 			position: relative
 			cursor: pointer
-			pointer-events: none
+			//pointer-events: none
 			&:after
 				content: url(/assets/img/icons/c612.svg)
 				position: absolute
@@ -1324,6 +1324,7 @@ aside
 			box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
 			font-weight: normal
 			padding: 1rem
+			z-index: 2
 			@media(max-width:1000px)
 				right: 45px
 			li
@@ -1363,6 +1364,10 @@ ul.prod-list
 		position: relative
 		z-index: 0
 		max-width: 298px
+		>img
+			min-height: 288px
+			min-width: 302px
+			background-color: #eee
 		@media(max-width:1000px)
 			display: grid
 			grid-template-columns: 115px 1fr
@@ -1405,6 +1410,22 @@ ul.prod-list
 			display: flex
 			gap: 10px
 			min-height: 25px
+			&.loading
+				position: relative
+				opacity: 0.5
+				&:after
+					content: url(/assets/img/icons/loader.svg)
+					display: block
+					width: 20px
+					height: 20px
+					animation: spin 2s linear infinite
+					//position: absolute
+					left: calc(56% - 40px)
+					top: 40%
+					@keyframes spin
+						to
+							transform: rotate(360deg)
+
 			@media(max-width:1000px)
 				justify-content: center
 				margin-top: 7px

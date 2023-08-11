@@ -59,7 +59,13 @@ export const dx = {
 
 				price,
 				old_price
-			`	
+			`,
+			mod: `
+				++id,
+				*ids,
+				prods,
+				parent_editedon
+				`	
     });
 
 		return db;
@@ -269,6 +275,50 @@ export const dx = {
 		let recordid = await db.cat.where({catid: resid}).toArray()
 		let response = await db.cat.update(recordid[0].id, {filter: resp})
 		if(response !== 1) console.log('%c ошибка обновления фильтра в категории', 'color: red')
+
+	},
+	async construct_mods(){
+		let db = this.init()
+		let ids = []
+		qs('script[children]')
+			? ids = children.map(el => el.id)
+			: ids.push(+qs("[resid]").getAttribute("resid"))
+		
+		let prods = await db.prod.where('catid').anyOf(ids).toArray()	
+		
+
+		let arr = []
+
+	
+
+		prods.forEach(p => {
+
+
+
+			let res = arr.filter(a => a.article == p.article.slice(0,-2));
+
+			
+			if(res.length){
+				arr.map(a => {
+					if(a.article == p.article.slice(0,-2)){
+						a.ids.push(p.resid)
+					}
+			})
+			} else {
+				arr.push({article: p.article.slice(0,-2), ids: [p.resid]})
+				
+			}
+			//arr = arr.push({article: p.article.slice(0,-2), ids:[p.resid]})
+
+
+		})
+
+		arr = arr.filter(a => a.ids.length !== 1)
+
+
+
+		console.log(arr)
+
 
 	}
 

@@ -7,10 +7,10 @@ const filterSlice = createSlice({
     filters: [],
 		pagination:{
 			page: 1,
-			//perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content"),
-			perpage: 1,
-			//count: null // возможно не надо хранить
-		}
+			perpage: +document.head.querySelector('[name="perpage"]')?.getAttribute("content"),
+			//perpage: 1,
+		},
+		sort: null
   },
   reducers: {
 
@@ -125,12 +125,15 @@ const filterSlice = createSlice({
     },
 		paginate:(state,action)=>{
 			state.pagination.page = action.payload
+		},
+		sort:(state,action)=>{
+			state.sort = action.payload
 		}
 		
   }
 })
 
-export const { checkbox,design,size,chips,paginate } = filterSlice.actions
+export const { checkbox,design,size,chips,paginate,sort } = filterSlice.actions
 
 export const store = configureStore({
   reducer: filterSlice.reducer
