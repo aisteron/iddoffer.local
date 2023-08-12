@@ -62,9 +62,10 @@ export const dx = {
 			`,
 			mod: `
 				++id,
+				article,
+				editedon,
 				*ids,
-				prods,
-				parent_editedon
+				prods
 				`	
     });
 
@@ -285,41 +286,82 @@ export const dx = {
 			: ids.push(+qs("[resid]").getAttribute("resid"))
 		
 		let prods = await db.prod.where('catid').anyOf(ids).toArray()	
+		let cats = await db.cat.toArray()	
 		
 
-		let arr = []
-
-	
-
-		prods.forEach(p => {
-
-
-
-			let res = arr.filter(a => a.article == p.article.slice(0,-2));
-
+		let arr = prods.reduce((acc, cur) =>{
 			
-			if(res.length){
-				arr.map(a => {
-					if(a.article == p.article.slice(0,-2)){
-						a.ids.push(p.resid)
-					}
-			})
-			} else {
-				arr.push({article: p.article.slice(0,-2), ids: [p.resid]})
-				
+		
+			let obj = {
+				article: null,
+				ids: [],
+				prods: [],
+				editedon: null
 			}
-			//arr = arr.push({article: p.article.slice(0,-2), ids:[p.resid]})
+
+			if(!acc.length){
+				let cat = cats.filter(c => c.catid == cur.catid )
+				obj.editedon = cat[0].editedon
+				obj.article = cur.article.slice(0,-2)
+				obj.ids.push(cur.resid)
+				obj.prods.push({
+					id: cur.resid,
+					article: cur.article,
+					color: cur.color,
+					uri: cur.uri,
+					name: cur.name,
+					material_facade: cur.material_facade,
+					price: cur.price,
+					old_price: cur.old_price,
+					image: cur.image
+				})
+				acc.push(obj)
+			} else {
+				acc.map(el => {
+					if(el.article == cur.article.slice(0,-2)){
+
+						el.ids.push(cur.resid)
+						el.prods.push({
+							id: cur.resid,
+							article: cur.article,
+							color: cur.color,
+							uri: cur.uri,
+							name: cur.name,
+							material_facade: cur.material_facade,
+							price: cur.price,
+							old_price: cur.old_price,
+							image: cur.image
+						})
+					} else {
+						console.log('Написать логику сюда')
+					}
+
+				})
+			}
+			return acc
+		},[])
 
 
-		})
 
-		arr = arr.filter(a => a.ids.length !== 1)
+		if(arr.length){
+			for(const a of arr){
+				await db.mod.where({article: a.article}).delete()
+				await db.mod.put(a)
+			}
+
+		} else {
+			console.log('Не нашел модификаций для вставки в db.mod')
+		}
 
 
+	},
+	async colors_prod_list(prods){
+		let db = this.init()
 
-		console.log(arr)
-
-
+		for(const prod of prods){
+				let res = await db.mod.where('ids').anyOf(prod.resid).toArray()
+				//console.log(res) 
+		}
 	}
 
 
