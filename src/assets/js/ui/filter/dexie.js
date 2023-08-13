@@ -1,4 +1,4 @@
-import { qs,xml } from "../../libs";
+import { qs,xml,cfg } from "../../libs";
 
 
 
@@ -286,11 +286,10 @@ export const dx = {
 			: ids.push(+qs("[resid]").getAttribute("resid"))
 		
 		let prods = await db.prod.where('catid').anyOf(ids).toArray()	
-		let cats = await db.cat.toArray()	
+		let cats = await db.cat.toArray()
 		
 
 		let arr = prods.reduce((acc, cur) =>{
-			
 		
 			let obj = {
 				article: null,
@@ -300,50 +299,30 @@ export const dx = {
 			}
 
 			if(!acc.length){
-				let cat = cats.filter(c => c.catid == cur.catid )
-				obj.editedon = cat[0].editedon
-				obj.article = cur.article.slice(0,-2)
-				obj.ids.push(cur.resid)
-				obj.prods.push({
-					id: cur.resid,
-					article: cur.article,
-					color: cur.color,
-					uri: cur.uri,
-					name: cur.name,
-					material_facade: cur.material_facade,
-					price: cur.price,
-					old_price: cur.old_price,
-					image: cur.image
-				})
-				acc.push(obj)
-			} else {
-				acc.map(el => {
-					if(el.article == cur.article.slice(0,-2)){
-
-						el.ids.push(cur.resid)
-						el.prods.push({
-							id: cur.resid,
-							article: cur.article,
-							color: cur.color,
-							uri: cur.uri,
-							name: cur.name,
-							material_facade: cur.material_facade,
-							price: cur.price,
-							old_price: cur.old_price,
-							image: cur.image
-						})
-					} else {
-						console.log('Написать логику сюда')
-					}
-
-				})
+				create_new(cats,obj,cur,acc)
+				return acc
 			}
+
+			let once = false
+
+			acc.forEach(el => {
+					
+				if(el.article == cur.article.slice(0,-2)){
+					el.ids.push(cur.resid)
+					construct_obj(el,cur)
+					once = true
+				}
+
+			})
+
+			!once && create_new(cats,obj,cur,acc)
+
 			return acc
 		},[])
 
 
-
 		if(arr.length){
+
 			for(const a of arr){
 				await db.mod.where({article: a.article}).delete()
 				await db.mod.put(a)
@@ -356,16 +335,40 @@ export const dx = {
 
 	},
 	async colors_prod_list(prods){
-		let db = this.init()
+		
+		// COLORS в <script>
+		if(!qs('[colors]')){
+			console.log('Не нашел <script colors>')
+			return
+		}
 
+		let db = this.init()
+		
 		for(const prod of prods){
 				let res = await db.mod.where('ids').anyOf(prod.resid).toArray()
-				//console.log(res) 
+				let str = ``
+				if(!res.length){console.log('Не нашел модификацию продукта');return}
+				
+				res[0].prods.map(el => el.color).forEach(c => {
+				
+					let item = COLORS.filter(co => co.name == c)[0]
+					
+					str += `<div class="item"
+
+						${item.image ? `style="background-image:url(${cfg.host}/${item.image})"`:""}
+						${item.code ? `style="background-color: ${item.code}; ${item.code == '#fff' ? `border-color: #ccc`: ``}"` : ``}
+					></div>`
+				})
+				
+				qs(`li[data-prodid="${prod.resid}"] .colors`).innerHTML = str
+				qs(`li[data-prodid="${prod.resid}"] .colors`).classList.remove('loading')
 		}
 	}
 
 
 }
+
+//${item.code == '#fff' ? 'style="border-color: #ccc"':""}
 
 async function check_deleted_category(){
 	
@@ -450,4 +453,29 @@ function size(prods){
 		length: [lmin, lmax],
 	}
 
+}
+
+function construct_obj(obj,cur){
+
+  obj.prods.push({
+    id: cur.resid,
+    article: cur.article,
+    color: cur.color,
+    uri: cur.uri,
+    name: cur.name,
+    material_facade: cur.material_facade,
+    price: cur.price,
+    old_price: cur.old_price,
+    image: cur.image
+  })
+  return obj
+}
+
+function create_new(cats,obj,cur,acc){
+  let cat = cats.filter(c => c.catid == cur.catid )
+  obj.editedon = cat[0].editedon
+  obj.article = cur.article.slice(0,-2)
+  obj.ids.push(cur.resid)
+  construct_obj(obj,cur)
+  acc.push(obj)
 }
