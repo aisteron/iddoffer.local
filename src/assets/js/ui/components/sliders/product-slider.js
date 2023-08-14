@@ -1,4 +1,5 @@
 import { qs, sw } from "../../../libs"
+export let swiper = {}
 export async function product_slider(){
 	if(!qs('body.prod-page')) return
 	if(!qs('.swiper.thumbs')) { console.log('%c На странице не найден слайдер!', "color: #666");return}
@@ -29,7 +30,7 @@ export async function product_slider(){
 		}
 	}
 
-	new Swiper(qs('.swiper.main'), main_slider_options)
+	swiper = new Swiper(qs('.swiper.main'), main_slider_options)
 
 }
 

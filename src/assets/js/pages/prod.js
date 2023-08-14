@@ -1,5 +1,7 @@
 import { cfg, qs, qsa } from "../libs"
 import { dx } from "../ui/filter/dexie";
+import { swiper, product_slider } from "../ui/components/sliders/product-slider";
+
 export async function prod(){
 	if(!qs('.prod-page')) return
 	
@@ -60,7 +62,7 @@ async function draw(){
 }
 
 function listeners(){
-	let resid = +qs('[resid]').getAttribute("resid")
+	//let resid = +qs('[resid]').getAttribute("resid")
 	let lis = qsa('.colors-click-q .colors ul li')
 	lis.forEach(el => {
 		el.addEventListener("click", event => {
@@ -98,6 +100,33 @@ async function redraw(id){
  }
 
  	// swiper reinit
+	swiper.destroy()
+
+	str = ``
+	
+	res.image.split(",").forEach(num => {
+		str += `
+		<div class="swiper-slide">
+			<img src="${cfg.host}/assets/images/products/${res.id}/${num}.jpg" width="646" height="549"/>
+		</div>
+		`
+	})
+	
+	qs('.main .swiper-wrapper').innerHTML = str
+
+	str = ``
+	res.image.split(",").forEach(num => {
+		str += `
+		<div class="swiper-slide">
+			<img src="${cfg.host}/assets/images/products/${res.id}/small/${num}.jpg"/>
+		</div>
+		`
+	})
+
+	qs('.thumbs .swiper-wrapper').innerHTML = str
+
+	swiper.destroy()
+	product_slider()
 
 
 }
