@@ -139,7 +139,7 @@ export const store = configureStore({
   reducer: filterSlice.reducer
 })
 
-window.store = store;
-window.checkbox = checkbox
+// window.store = store;
+// window.checkbox = checkbox
 
 

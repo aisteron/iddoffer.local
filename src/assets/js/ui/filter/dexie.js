@@ -278,6 +278,26 @@ export const dx = {
 		if(response !== 1) console.log('%c ошибка обновления фильтра в категории', 'color: red')
 
 	},
+	async validate_mods(){
+		let db = this.init()
+		let eo = ''
+
+		document.head.querySelector('meta[name="editedon"]')
+		&& (eo = [document.head.querySelector('meta[name="editedon"]').content])
+		
+		document.head.querySelector('meta[name="parenteditedon"]')
+		&& (eo = [document.head.querySelector('meta[name="parenteditedon"]').content])
+		 
+		qs('script[children]') && (eo = children.map(el => el.editedon))
+		
+		let valid = false
+		for(const e of eo){
+			let res = await db.mod.where({editedon: e}).toArray()
+			if(res.length){ valid = true; return valid}
+		}
+		return valid
+
+	},
 	async construct_mods(){
 		let db = this.init()
 		let ids = []
@@ -334,7 +354,8 @@ export const dx = {
 
 
 	},
-	async colors_prod_list(prods){
+	async colors_prod_list(resids){
+
 		
 		// COLORS в <script>
 		if(!qs('[colors]')){
@@ -344,8 +365,8 @@ export const dx = {
 
 		let db = this.init()
 		
-		for(const prod of prods){
-				let res = await db.mod.where('ids').anyOf(prod.resid).toArray()
+		for(const resid of resids){
+				let res = await db.mod.where('ids').anyOf(resid).toArray()
 				let str = ``
 				if(!res.length){console.log('Не нашел модификацию продукта');return}
 				
@@ -360,15 +381,33 @@ export const dx = {
 					></div>`
 				})
 				
-				qs(`li[data-prodid="${prod.resid}"] .colors`).innerHTML = str
-				qs(`li[data-prodid="${prod.resid}"] .colors`).classList.remove('loading')
+				qs(`li[data-prodid="${resid}"] .colors`).innerHTML = str
+				qs(`li[data-prodid="${resid}"] .colors`).classList.remove('loading')
 		}
+	},
+
+	// prod page
+
+	async fill_mods(){
+		let db = dx.init()
+		let resid = +qs('[resid]').getAttribute('resid')
+		let arr = await xml('get_modifications', {id: resid}, '/api/')
+		arr = JSON.parse(arr)
+		
+		if(arr){
+			await db.mod.where({article: arr.article}).delete()
+			await db.mod.put(arr)
+		} else {
+			console.log('Что-то не так с ответом сервера')
+		}
+
 	}
+
+
 
 
 }
 
-//${item.code == '#fff' ? 'style="border-color: #ccc"':""}
 
 async function check_deleted_category(){
 	

@@ -370,11 +370,40 @@ body.prod-page
 						margin-top: 20px
 						margin-bottom: 20px
 						margin-left: 30px
+						&.loading
+							li
+								position: relative
+								background-color: rgb(211,211,211)
+								overflow: hidden
+								border-radius: 5px
+								height: 100%
+								width: 100%
+								min-height: 19px
+								gap: 1rem
+								margin-bottom: 1rem
+								
+								span.name
+									height: 19px
+									width: 100%
+									background-image: linear-gradient(to left, rgba(251,251,251, .05), rgba(251,251,251, .3), rgba(251,251,251, .6), rgba(251,251,251, .3), rgba(251,251,251, .05))
+									animation: loading 1s infinite
+									position: absolute
+									left: -45%
+									height: 100%
+									width: 45%
+									@keyframes loading
+										0%
+											left: -45%
+										100%
+											left: 100%
+										
 						li
 							display: flex
 							align-items: center
 							cursor: pointer
 							margin-bottom: 12px
+							span
+								pointer-events: none
 							&:hover
 								opacity: 0.6
 							span.color

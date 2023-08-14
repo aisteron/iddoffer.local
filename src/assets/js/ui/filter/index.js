@@ -67,6 +67,8 @@ import { Sort } from './sort';
 
 */
 export async function Filter() {
+	
+	if(!qs('.subcat-page')) return
 
 
 	await dx.load()
@@ -101,7 +103,13 @@ export async function Filter() {
 	Pagination()
 	Sort()
 	
-	dx.construct_mods()
+	// модификации товаров
+	!await dx.validate_mods()
+	&& dx.construct_mods()
+
+	// добавление цветов к уже выведенным
+	// движком продуктам
+	color_html_prods()
 
 
 
@@ -393,12 +401,7 @@ function draw_products(state,prods){
 		str += `
 		<li data-prodid="${prod.resid}">
 		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0]}.jpg" width="302" heigth="288">
-		<div class="colors loading">
-			${
-				//prod.colors ? draw_color(prod.colors) : draw_color([prod.color])
-				""
-			}
-		</div>
+		<div class="colors loading"></div>
 		<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
 
 			<span class="size">${prod.width + " x " + prod.height + " x "+ prod.length}</span>
@@ -416,33 +419,23 @@ function draw_products(state,prods){
 	// обнаружить модификации
 	// и врисовать в уже готовую разметку
 	// это облегчит и вывод продуктов на сервере
-	// т.к. можно будет дернуть эту ф-цию и передать ей размтку/массив продуктов
+	// т.к. можно будет дернуть эту ф-цию и передать ей разметку/массив продуктов
 
-	dx.colors_prod_list(prods)
+	dx.colors_prod_list(prods.map(el => el.resid))
 
 	
 
 }
 
-function draw_color(prod_colors){
-	// возвращает html-разметку
-	// при отрисовке карточки товара выводит цвета модификаций или собственный цвет
-	// COLORS - переменная в head
+async function color_html_prods(){
+	let db = dx.init()
+	let ids = Array.from(qsa('#prods ul.prod-list li[data-prodid]')).map(el => +el.dataset.prodid)
+	
+	let arr = [];
 
-	let str = ``
-	prod_colors.forEach(c => {
-
-		let COLOR = COLORS.filter(color => color.name == c)
-
-		if(COLOR.length){
-			COLOR[0].code
-			? str += `<div class="item" style="background-color:${
-				COLOR[0].code == '#fff' ? COLOR[0].code + '; border-color: #ccc' : COLOR[0].code}"></div>`
-			: str += `<div class="item" style="background-image: url(${cfg.host + "/" + COLOR[0].image})"></div>`
-		} else {
-			console.log('%c не нашел цвет в переменной COLORS в head', 'color: red')
-		}
-	})
-
-	return str;
+	for(const id of ids){
+		let res = await db.mod.where('ids').anyOf(id).toArray()
+		res.length && arr.push(id)
+	}
+	dx.colors_prod_list(arr)
 }

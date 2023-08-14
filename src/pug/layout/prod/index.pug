@@ -8,9 +8,12 @@ html(lang='ru')
 		title #{title}
 		meta(name="description", content=description)
 		meta(name="viewport" content="width=device-width, initial-scale=1")
+		meta(name="parenteditedon" content="-")
+		script(colors).
+			const COLORS = [{"code":"#fff","name":"\u0411\u0435\u043b\u044b\u0439"},{"code":"#111","name":"\u0427\u0435\u0440\u043d\u044b\u0439"},{"image":"assets\/images\/847.jpg","name":"\u0411\u0435\u043b\u0435\u043d\u044b\u0439 \u0434\u0443\u0431"}] 
 		block head
 
-	body(class=pageClass)
+	body(class=pageClass resid="20")
 		include ../../ui/header
 		include ./content
 		include ../../ui/footer
