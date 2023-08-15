@@ -4,6 +4,7 @@ import { store, checkbox,design,size } from './store';
 import { Chips } from './chips';
 import { Pagination, draw_pagination, prepare_pagination, listeners as lis } from './pagination';
 import { Sort } from './sort';
+import { cart } from '../../pages/cart';
 
 /*
 	
@@ -110,6 +111,9 @@ export async function Filter() {
 	// добавление цветов к уже выведенным
 	// движком продуктам
 	color_html_prods()
+
+	// слушатель добавить в корзину
+	cart.add(qsa("ul.prod-list li img.cart"))
 
 
 
@@ -422,6 +426,10 @@ function draw_products(state,prods){
 	// т.к. можно будет дернуть эту ф-цию и передать ей разметку/массив продуктов
 
 	dx.colors_prod_list(prods.map(el => el.resid))
+
+	// слушатель добавить в корзину
+	cart.add(qsa("ul.prod-list li img.cart"))
+	
 
 	
 

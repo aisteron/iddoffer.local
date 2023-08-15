@@ -36,6 +36,25 @@ export async function load_toast(){
 	})
 }
 
+export async function load_tippy(){
+  // https://atomiks.github.io/tippyjs/v5/methods/
+  return new Promise(resolve => {
+    if(qs(["tippy"])) {resolve(true); return}
+    
+    let script = document.createElement("script")
+    script.src="/vendors/tippy/popper.min.js"
+    script.setAttribute("tippy","")
+    qs(".scripts-area").appendChild(script)
+    
+    script.onload = () => {
+      let script = document.createElement("script")
+      script.src="/vendors/tippy/tippy-bundle.umd.min.js"
+      qs(".scripts-area").appendChild(script)
+      script.onload = () => resolve(true)
+    }
+  })
+}
+
 export async function xml(action, data, path){
   
   data && (data = JSON.stringify(data))

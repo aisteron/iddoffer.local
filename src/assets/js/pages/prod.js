@@ -1,6 +1,7 @@
 import { cfg, qs, qsa } from "../libs"
 import { dx } from "../ui/filter/dexie";
 import { swiper, product_slider } from "../ui/components/sliders/product-slider";
+import { cart } from "./cart";
 
 export async function prod(){
 	if(!qs('.prod-page')) return
@@ -11,6 +12,9 @@ export async function prod(){
 	!await dx.validate_mods() && await dx.fill_mods()
 	await draw()
 	listeners()
+
+	// добавить в корзину
+	cart.add(qsa(".cart-compare button.cart"))
 
 }
 

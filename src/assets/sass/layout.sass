@@ -475,6 +475,10 @@ body.prod-page
 					border: none
 					border-radius: 3px
 					cursor: pointer
+					&.incart
+						background-color: #ccc
+						&:hover
+							background-color: #ccc	
 					&:hover
 						background-color: darken(#7E8581, 5%)
 				.compare
@@ -1494,6 +1498,9 @@ ul.prod-list
 				cursor: pointer
 				&:hover
 					opacity: 0.5
+				&.incart
+					filter: brightness(0) saturate(100%)
+					filter: invert(50%) sepia(67%) saturate(2771%) hue-rotate(336deg) brightness(99%) contrast(92%)	
 #filter
 	min-width: 238px
 	width: 238px
