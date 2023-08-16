@@ -8,16 +8,16 @@ table.desktop
 			td Итого, <span class="cur">р.</span>
 			td
 	tbody
-		tr
+		tr(data-id="1")
 			td.name
 				a(href="#") Кабинет "Ольса-3"
 				ul.stats
 					li.colors
 						span.name Цвет:
 						.list
-							span.active(style="background-color: #D9D9D9")
-							span(style="background-color: #C2D2B5")
-							span(style="background-color: #B8B5D2")
+							span(data-prodid="1").active(style="background-color: #D9D9D9")
+							span(data-prodid="2")(style="background-color: #C2D2B5")
+							span(data-prodid="3")(style="background-color: #B8B5D2")
 					li.material
 						span.name Материал:
 						span.selected Ольха
