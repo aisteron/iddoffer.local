@@ -1,5 +1,5 @@
-import { load_tippy, xml,qs, qsa, cfg, debounce } from "../../libs"
-import { store, add, recount, replace } from "./store"
+import { load_tippy, xml,qs, qsa, cfg } from "../../libs"
+import { store, add, recount, thunkFunction } from "./store"
 import { dx } from '../../ui/filter/dexie';
 
 export async function Cart(){
@@ -285,7 +285,7 @@ export const cart = {
 			li.addEventListener("click", event => {
 				let id = +event.target.dataset.prodid
 				let replaceid = +event.target.closest('[data-id]').dataset.id
-				store.dispatch(replace({id, replaceid}))
+				store.dispatch(thunkFunction({id, replaceid}))
 				// redux thunk
 			})
 		})
