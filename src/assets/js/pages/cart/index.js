@@ -1,5 +1,5 @@
-import { load_tippy, xml,qs, qsa, cfg } from "../../libs"
-import { store, add, recount, thunkFunction } from "./store"
+import { load_tippy, xml,qs, qsa, cfg, load_toast } from "../../libs"
+import { store, add, recount, thunkFunction, textarea, remove, clean } from "./store"
 import { dx } from '../../ui/filter/dexie';
 
 export async function Cart(){
@@ -22,16 +22,22 @@ export async function Cart(){
 			console.log('prods is empty')
 			return
 		}
-			cart.draw(state.prods)
-			await cart.colors(state.prods)
-			
-			cart.listener_recount()
-			cart.listener_input()
-			cart.listener_color()
 
-	}
-	)
-	store.dispatch(add(res))
+		cart.draw(state.prods)
+		await cart.colors(state.prods)
+		
+		cart.listener_recount()
+		cart.listener_input()
+		cart.listener_color()
+		cart.listener_material()
+		cart.listener_textarea()
+		cart.listener_remove()
+
+	})
+
+	store.dispatch(add(res))	
+	cart.fields()
+	
 }
 
 export const cart = {
@@ -121,9 +127,6 @@ export const cart = {
 		let str = ``
 		
 		if(mob){
-			str += `<div class="mobile">`
-			
-
 			prods.forEach(prod => {
 				str += `
 					<div class="item" key="${prod.key}" data-id="${prod.id}">
@@ -164,7 +167,7 @@ export const cart = {
 
 									</li>
 
-									<li class="comment">
+									<li class="comment ${prod.txt ? `open`:''}" >
 
 										<span class="name">Комментарий:</span>
 										<button>
@@ -172,8 +175,7 @@ export const cart = {
 											<span>Написать</span>
 										</button>
 
-										<textarea>
-										</textarea>
+										<textarea>${prod.txt ? prod.txt : ""}</textarea>
 									</li>
 								</ul>
 							</li>
@@ -181,9 +183,49 @@ export const cart = {
 					</div>
 				`
 			})
-
-			str += `</div>`
 			mob.innerHTML = str
+		}
+		if(dsk){
+			prods.forEach(prod => {
+				str +=`
+				<tr data-id="${prod.id}">
+					<td class="name"><a href="${prod.uri}">${prod.name}</a>
+						<ul class="stats">
+							<li class="colors">
+								<span class="name">Цвет:</span>
+								<div class="list"></div>
+							</li>
+							<li class="material">
+								<span class="name">Материал:</span>
+								
+							</li>
+							<li class="comment ${prod.txt ? `open`: ''}">
+							<span class="name">Комментарий:</span>
+							<span class="st">
+								<img src="/assets/img/icons/write.svg" width="15" height="15">
+								<span>Написать</span>
+							</span>
+							<textarea>${prod.txt ? prod.txt : ''}</textarea>
+							</li>
+						</ul>
+					</td>
+					<td class="price" byn="${prod.price}">${prod.price}</td>
+					<td class="disc">0%</td>
+					<td class="count">
+						<input type="number" min="1" value="${prod.count}">
+						<div class="arrows">
+							<img class="up" src="/assets/img/icons/up.svg" width="11" height="6">
+							<img class="down" src="/assets/img/icons/up.svg" width="11" height="6">
+						</div>
+					</td>
+					<td class="itog" byn="${prod.price * prod.count}">${prod.price * prod.count}</td>
+					<td class="remove">
+						<img class="remove" src="/assets/img/icons/cclose.svg" width="24" height="24">
+					</td>
+				</tr>
+				`
+			})
+			qs('tbody', dsk).innerHTML = str
 		}
 
 		let itog = prods.reduce((acc, cur) => acc += cur.price * cur.count,0)
@@ -192,15 +234,17 @@ export const cart = {
 		qs('.itogo [byn]').setAttribute('byn', itog)
 
 		qs('button.continue').classList.add('open')
-		qs('.root .table .mobile').classList.remove('loading')
+		qs('.root .table .mobile')?.classList.remove('loading')
 
 	},
 	async colors(res){
 		let db = dx.init()
 		let ids = res.map(el => el.id)
+		let dsk = qs('.root .table .desktop')
+		let mob = qs('.root .table .mobile')
 		
 		// colors
-		for(let id of ids){
+		for(let [i,id] of ids.entries()){
 			
 			let str = ``
 			let res = await db.mod.where('ids').anyOf(id).toArray()
@@ -210,28 +254,47 @@ export const cart = {
 				let color = COLORS.filter(co => co.name == c[0])
 				if(!color.length){console.log('Не могу найти цвет среди COLORS'); return}
 				color = color[0]
+				
 				str += `
-					<li
+					<${mob ? `li` : `span`}
 						${c[1] == id ? `class="active"`:""}
 						${color.code ? `style='background-color: ${color.code} ${color.code == "#fff" ? '; border-color: #ccc\'': "'"}`: ""}
 						${color.image ? `style="background-image: url(${cfg.host}/${color.image})"`: ""}
 						data-prodid="${c[1]}"
 						title="${color.name}"
-					></li>`
+					></${mob ? `li` : `span`}>`
+
+
 			})
-			qs(`[data-id="${id}"] .stats .colors .name`).insertAdjacentHTML('afterend', `<ul>`+str+`</ul>`)
+			
+			if(qsa(`[data-id="${id}"]`).length > 1){
+				// когда в списке продуктов оказываются 2 одинаковых из-за модификации
+				mob
+				? qsa(`[data-id="${id}"] .stats .colors .name`)[i].insertAdjacentHTML('afterend', `<ul>`+str+`</ul>`)
+				: qsa(`[data-id="${id}"] .colors .list`)[i].innerHTML = str
+			} else {
+				mob
+				? qs(`[data-id="${id}"] .stats .colors .name`).insertAdjacentHTML('afterend', `<ul>`+str+`</ul>`)
+				: qs(`[data-id="${id}"] .colors .list`).innerHTML = str
+
+			}
 		}
 
 		// material facade
 
-		for(let id of ids){
+		for(let [i,id] of ids.entries()){
 			let str = ``
 			let res = await db.mod.where('ids').anyOf(id).toArray()
 			let selected = res[0].prods.filter(el => el.id == id)[0].material_facade.join()
 			str += `<span class="selected">${selected}</span><ul>`
 			res[0].prods.map(el => [el.material_facade.join(), el.id]).forEach(el => str += `<li data-prodid="${el[1]}">${el[0]}</li>`)
 
-			qs(`[data-id="${id}"] .stats .material .name`).insertAdjacentHTML('afterend', str+'</ul>')
+			if(qsa(`[data-id="${id}"]`).length > 1){
+				qsa(`[data-id="${id}"] .stats .material .name`)[i].insertAdjacentHTML('afterend', str+'</ul>')
+			} else {
+
+				qs(`[data-id="${id}"] .stats .material .name`).insertAdjacentHTML('afterend', str+'</ul>')
+			}
 			
 		}
 	},
@@ -283,12 +346,114 @@ export const cart = {
 	listener_color(){
 		qsa('.colors [data-prodid]').forEach(li => {
 			li.addEventListener("click", event => {
-				let id = +event.target.dataset.prodid
-				let replaceid = +event.target.closest('[data-id]').dataset.id
+				let replaceid = +event.target.dataset.prodid
+				let id = +event.target.closest('[data-id]').dataset.id
+				if(id == replaceid){console.log('Тот же продукт'); return}
+				
 				store.dispatch(thunkFunction({id, replaceid}))
 				// redux thunk
 			})
 		})
+	},
+	listener_material(){
+		// open
+		qsa('.material .selected').forEach(el => {
+			el.addEventListener("click", event => {
+				event.target.closest('.material').classList.toggle('open')
+			})
+		})
+		
+
+		qsa('.material [data-prodid]').forEach(li => {
+			li.addEventListener("click", event => {
+				let replaceid = +event.target.dataset.prodid
+				let id = +event.target.closest('[data-id]').dataset.id
+				if(id == replaceid){
+					console.log('Тот же продукт');
+					tippy(event.target,{content: 'Та же модификация'}).show() 
+					return}
+				
+				store.dispatch(thunkFunction({id, replaceid}))
+
+			})
+		})
+	},
+	listener_textarea(){
+		let mob = qs('.root .table .mobile')
+
+		// open mobile
+		qsa('.item .comment button').forEach(el => {
+			el.addEventListener('click', event => {
+				event.target.closest('.comment').classList.toggle('open')
+			})
+		})
+
+		// open desktop
+		
+		qsa('tr[data-id] .st').forEach(el => {
+			el.addEventListener('click', event => {
+				event.target.closest('.comment').classList.toggle('open')
+			})
+		})
+
+		qsa(`${mob ? `.item`: `tr[data-id]`} .comment textarea`).forEach(t => {
+			t.addEventListener('blur', event => {
+				let id = event.target.closest('[data-id]').dataset.id
+				let value = event.target.value.replace('\t\n\r','').trim();
+				store.dispatch(textarea({id, value}))
+			})
+		})
+
+	},
+	listener_remove(){
+		let mob = qs('.root .table .mobile')
+
+		qsa(`${mob ? `.item`: `tr[data-id]`} img.remove`).forEach(el => {
+			el.addEventListener('click', event => {
+				let id = +event.target.closest('[data-id]').dataset.id
+				let key = store.getState().prods.filter(el => el.id == id)[0].key
+				xml('remove_prod',{k: key}, '/api/cart')
+				store.dispatch(remove(id))
+			})
+		})
+	},
+	fields(){
+		// open
+		qs('button.continue').addEventListener('click', _ =>
+			qs('.root .fields').classList.add('open'))
+		
+		qs('.root .fields form').addEventListener('submit', event =>{
+			event.preventDefault();
+			let user = {
+				name: qs('input[name="name"]').value,
+				email: qs('input[name="email"]').value,
+				phone: qs('input[name="phone"]').value,
+				comment: qs('form textarea').value,
+
+			}
+
+			xml('order_receive',{user, prods: store.getState().prods}, '/api/cart')
+			.then(r => JSON.parse(r))
+			.then(r => {
+				if(r.success){
+					load_toast()
+					.then(_ => {
+						new Snackbar('Успешно отправлено');
+						
+						// [...qsa('form input'), qs('form textarea')].forEach(el =>{
+						// 	el.value = ''
+						// })
+
+						store.dispatch(clean())
+					})
+					
+				}
+			})
+			
+		})
+
+
+
 	}
 	
 }
@@ -297,5 +462,11 @@ function if_empty_order(){
 	qs('h1').innerHTML = 'Ваша корзина пуста';
 	qs('.itogo').remove()
 	qs('button.continue').remove()
+	qs('.root .mobile')
+		? qs('.root .mobile').remove()
+		: qs('.root .desktop').remove()
+	qs('nav.bread').remove()
+	qs('.root .fields').remove()
+	
 	return false;
 }

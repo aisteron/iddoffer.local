@@ -987,8 +987,11 @@ section.cart
 				top: 8px
 				left: 1rem
 		.fields
+			display: none
 			max-width: 237px
 			margin-left: 70px
+			&.open
+				display: block
 			@media(max-width:550px)
 				margin-left: 0
 				margin-top: 1rem
@@ -1031,6 +1034,8 @@ section.cart
 						padding: 10px
 				tbody
 					font-weight: 400
+					tr:nth-of-type(2n)
+						background-color: #eee
 					tr td
 						padding: 10px
 						vertical-align: top
@@ -1070,11 +1075,28 @@ section.cart
 											&:not(last-child)
 												margin-right: 10px
 								&.material
+									position: relative
+									&.open ul
+										background-color: #fff
+										display: block
+										position: absolute
+										right: 0
+										box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+										padding: 1rem
+										z-index: 3
+										li
+											line-height: 27px
+											cursor: pointer
+											&:hover
+												opacity: 0.6
 									span.name
 										display: inline-block
 										margin-right: 10px
 									span.selected
 										position: relative
+										cursor: pointer
+										&:hover
+											opacity: 0.8
 										&:after
 											content: url(/assets/img/icons/c612.svg)
 											position: absolute
@@ -1083,6 +1105,15 @@ section.cart
 									ul
 										display: none		
 								&.comment
+									&.open textarea
+										display: block
+										margin-top: 1rem
+										border: 1px solid #ccc
+										height: 56px
+										text-align: left
+										&:focus
+											outline: none
+											background-color: #eee
 									span.name
 										display: inline-block
 										margin-right: 10px
@@ -1091,6 +1122,9 @@ section.cart
 										align-items: center
 										color: #7B7B7B
 										font-size: 14px
+										cursor: pointer
+										&:hover
+											opacity: 0.8
 										img
 											margin-right: 10px
 									textarea
@@ -1189,7 +1223,11 @@ section.cart
 										-webkit-appearance: none
 										-moz-appearance: textfield !important
 										margin: 0
-							
+							img.remove
+								cursor: pointer
+								&:hover
+									filter: brightness(0) saturate(100%)
+									filter: invert(14%) sepia(82%) saturate(6454%) hue-rotate(353deg) brightness(86%) contrast(113%)
 						>li
 							&:not(:last-child)
 								margin-bottom: 1rem			
@@ -1219,20 +1257,35 @@ section.cart
 													border-color: #606060 !important
 
 									&.material
+										position: relative
 										ul
 											display: none
 										&.open
-											display: block
+											ul
+												background-color: #fff
+												display: block
+												position: absolute
+												right: 0
+												box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+												padding: 1rem
+												z-index: 3
+												li
+													line-height: 27px
+													cursor: pointer
+													&:hover
+														opacity: 0.6
 										span.name
 											display: inline-block
 											margin-right: 10px
 										span.selected
 											position: relative
+											&:hover
+												opacity: 0.8
+												cursor: pointer
 											&:after
 												position: absolute
 												content: url(/assets/img/icons/c612.svg)
 												transform: rotate(90deg)
-												//display: block
 												margin-left: 10px
 									&.comment
 										button
@@ -1243,12 +1296,23 @@ section.cart
 											color: #7B7B7B
 											padding: 0
 											margin-top: 10px
+											cursor: pointer
+											&:hover
+												opacity: 0.8
 											img
 												margin-right: 10px
 										textarea
 											display: none
+											margin-top: 1rem
+											border: 1px solid #ccc
+											height: 56px
+											text-align: left
+											&:focus
+												outline: none
+												background-color: #eee
 										&.open
-											display: block
+											textarea
+												display: inline-block
 
 			.itogo
 				margin-top: 30px
