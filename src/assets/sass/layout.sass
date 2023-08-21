@@ -127,6 +127,11 @@ nav.header
 		width: 115px
 		justify-content: space-between
 		align-items: center
+		.search, .cart, .user
+			img
+				cursor: pointer
+				&:hover
+					opacity: 0.8
 footer
 	@include pw
 	background-color: #7E8581
@@ -927,6 +932,7 @@ section#default
 				line-height: 28px
 		.bold
 			font-weight: 600
+
 section#contacts
 	@include pw()
 	.content
