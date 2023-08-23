@@ -84,7 +84,7 @@ export const cart = {
 			headers: {'Content-Type': 'application/json'},
 			body: '{"action":"get_order"}'
 		}).then(r => r.json())
-		: await xml('get_order',null,'/api/cart')
+		: await xml('get_order',null,'/api/cart').then(r => JSON.parse(r))
 
 		
 	},
@@ -105,6 +105,7 @@ export const cart = {
 	async update_mods(prods){
 		let db = dx.init()
 		let ids = prods.map(el => el.id)
+		
 		for(const id of ids){
 			let resp = await xml('get_modifications', {id: id}, '/api/').then(r => JSON.parse(r))
 			let r = await db.mod.where({article: resp.article}).toArray()
