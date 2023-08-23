@@ -375,7 +375,7 @@ function draw_products(state,prods){
 	prods.forEach(prod => {
 		str += `
 		<li data-prodid="${prod.resid}">
-		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0]}.jpg" width="302" heigth="288">
+		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0].toLowerCase()}.jpg" width="302" heigth="288">
 		<div class="colors loading"></div>
 		<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
 
