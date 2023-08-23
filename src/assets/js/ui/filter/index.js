@@ -37,36 +37,7 @@ import { cart } from '../../pages/cart';
 
 */
 
-/*
-	- get_modifications
-	[1,2,3] | 
-	
-	1: [
-		id
-		url
-		name
-		color
-		material_facade
-		price
-		price_old
-		image[]
 
-	]
-*/
-
-/*
-	script
-	const colors = {
-		"Белый":"#fff",
-		"Орех": "/assets/img/colors/nut.jpg"
-	}
-
-*/
-
-/*
-	meta products per page
-
-*/
 export async function Filter() {
 	
 	if(!qs('.subcat-page')) return

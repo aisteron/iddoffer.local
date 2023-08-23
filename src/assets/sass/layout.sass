@@ -116,6 +116,20 @@ nav.header
 				cursor: pointer
 				&:after
 					content: url(/assets/img/icons/chevron.svg)
+				&.open
+					ul
+						position: absolute
+						top: 52px
+						background-color: #fff
+						z-index: 3
+						box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+						li
+							a
+								&:hover
+									text-decoration: underline
+							&:not(:first-child)
+								a
+									padding-top: 0	
 			a
 				padding: 15px 22px
 				display: inline-block
@@ -864,6 +878,13 @@ body.subcat-page
 						margin-top: 12px
 	section.prod
 		@include pw()
+	section.recently-viewed
+		width: 928px
+		padding: 0
+		margin: 1rem auto
+		@media(max-width:1000px)
+			width: 100%
+			padding: 20px
 section.discount
 	width: 928px
 	margin: 3rem auto
@@ -1508,8 +1529,8 @@ ul.prod-list
 			column-gap: 26px
 			max-width: inherit
 			>img
-				width: 115px
-				height: 110px
+				min-width: 115px
+				min-height: 110px
 				grid-column: 1
 				grid-row: 1/3
 			.color

@@ -10,17 +10,18 @@ html(lang='ru')
 		meta(name="viewport" content="width=device-width, initial-scale=1")
 		meta(name="editedon" content="2023-07-27 14:42:15")
 		meta(name="perpage" content="10")
-		//- script(children).
-		//- 	const children = [{"id":14,"editedon":"2023-07-17 15:38:52","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":12,"editedon":0,"cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":13,"editedon":"2023-07-17 15:37:22","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":11,"editedon":"2023-07-27 14:42:15","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10}] 
+		script(children).
+			const children = [{"id":14,"editedon":"2023-07-17 15:38:52","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":12,"editedon":0,"cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":13,"editedon":"2023-07-17 15:37:22","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10},{"id":11,"editedon":"2023-07-27 14:42:15","cfg":"color,brand,material_facade,material_body,material_upholstery,size,design","parent":10}] 
+
 		
 		script(dictionary).
 			const dict = {"color":"\u0426\u0432\u0435\u0442","brand":"\u0411\u0440\u0435\u043d\u0434","material_facade":"\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b \u0444\u0430\u0441\u0430\u0434\u0430","material_body":"\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b \u043a\u043e\u0440\u043f\u0443\u0441\u0430","material_upholstery":"\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b \u043e\u0431\u0438\u0432\u043a\u0438","size":"\u0420\u0430\u0437\u043c\u0435\u0440\u044b","design":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440\u0441\u043a\u0430\u044f"} 
 		script(colors).
-			const COLORS = [{"code":"#fff","name":"\u0411\u0435\u043b\u044b\u0439"},{"code":"#111","name":"\u0427\u0435\u0440\u043d\u044b\u0439"},{"image":"assets\/images\/847.jpg","name":"\u0411\u0435\u043b\u0435\u043d\u044b\u0439 \u0434\u0443\u0431"}] 
+			const COLORS = [{"code":"#fff","name":"\u0411\u0435\u043b\u044b\u0439","id":1},{"code":"#111","name":"\u0427\u0435\u0440\u043d\u044b\u0439","id":2},{"image":"assets\/images\/847.jpg","name":"\u0411\u0435\u043b\u0435\u043d\u044b\u0439 \u0434\u0443\u0431","id":3},{"image":"assets\/images\/oreh.jpg","name":"\u041e\u0440\u0435\u0445","id":4}] 
 		block head
 
-	//body(class=pageClass resid="10")
-	body(class=pageClass resid="11")
+	body(class=pageClass resid="10")
+		//body(class=pageClass resid="11")
 		include ../../ui/header
 		include ./content
 		include ../../ui/footer

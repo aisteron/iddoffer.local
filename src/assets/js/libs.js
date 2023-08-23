@@ -1,7 +1,8 @@
 import "regenerator-runtime/runtime.js";
 
 export const cfg = {
-	prefix: process.env.NODE_ENV == 'development' ? "dev." : "",
+	//prefix: process.env.NODE_ENV == 'development' ? "dev." : "",
+	prefix: ""
 }
 cfg.host = "https://"+cfg.prefix+"iddoffer.by"
 
@@ -129,3 +130,15 @@ export function debounce(func, wait, immediate) {
 	  if (callNow) func.apply(context, args);
 	}
   }
+	
+	// https://gist.github.com/ShepetaAndrey/d3507a1ac72ff3544cdb734fd1a80178
+	// const result = declension(10, ['монета', 'монеты', 'монет'])
+  // console.log(result) // 'монет'
+
+	export function declension(number, declensions, cases = [2, 0, 1, 1, 1, 2]) {
+		return declensions[
+			number % 100 > 4 && number % 100 < 20
+				? 2
+				: cases[number % 10 < 5 ? number % 10 : 5]
+		];
+	}

@@ -1,4 +1,4 @@
-import { qs,xml,cfg } from "../../libs";
+import { qs,xml,cfg,declension } from "../../libs";
 
 
 
@@ -148,9 +148,12 @@ export const dx = {
 	async validate_editedon(){
 		let db = this.init()
 		db.open()
-		let res = await db.cat.where({editedon:this.ed}).toArray()
 		
-		return !res.length ? (console.log(`%c editedon "${this.ed}" invalid`,"color: #666"),false) : true
+		let resid = +qs('[resid]').getAttribute('resid')
+		let res = await db.cat.where({editedon:this.ed})
+													.and(cat => cat.catid == resid).toArray()
+		
+		return !res.length ? (console.log(`%c resid = ${resid}, editedon "${this.ed}" invalid`,"color: #666"),false) : true
 
 	},
 
@@ -221,7 +224,9 @@ export const dx = {
 		
 		// add products to table prod
 		await db.prod.bulkPut(res.products)
-		console.log(`%c добавил ${res.products.length} товар`, 'color: green')
+		let decl = declension(res.products.length, ['товар', 'товары', 'товаров'])
+	
+		console.log(`%c добавил ${res.products.length} ${decl}`, 'color: green')
 
 
 	},
@@ -252,6 +257,7 @@ export const dx = {
 		if(!prods.length) {console.log(`%c не нашел товары для построения фильтра`,'color: red'); return}
 		
 		cfg = await db.cat.where({catid: resid}).toArray()
+		
 		cfg = cfg[0].cfg.split(",")
 
 
@@ -356,35 +362,25 @@ export const dx = {
 	},
 	async colors_prod_list(resids){
 
-		
 		// COLORS в <script>
 		if(!qs('[colors]')){
-			console.log('Не нашел <script colors>')
+			console.log('%c Не нашел <script colors>', 'color:red; background-color: #fff')
 			return
 		}
 
 		let db = this.init()
 		
 		for(const resid of resids){
-				let res = await db.mod.where('ids').anyOf(resid).toArray()
-				let str = ``
-				if(!res.length){console.log('Не нашел модификацию продукта');return}
-				
-				res[0].prods.map(el => el.color).forEach(c => {
-				
-					let item = COLORS.filter(co => co.name == c)[0]
-					
-					str += `<div class="item"
 
-						${item.image ? `style="background-image:url(${cfg.host}/${item.image})"`:""}
-						${item.code ? `style="background-color: ${item.code}; ${item.code == '#fff' ? `border-color: #ccc`: ``}"` : ``}
-					></div>`
-				})
-				
-				qs(`li[data-prodid="${resid}"] .colors`).innerHTML = str
-				qs(`li[data-prodid="${resid}"] .colors`).classList.remove('loading')
+			let res = await db.mod.where('ids').anyOf(resid).toArray()
+
+			!res.length
+			? console.log('Не нашел товар среди таблицы db.mod')
+			: multi_prod_color(resid,res)
+
 		}
 	},
+
 
 	// prod page
 
@@ -402,9 +398,6 @@ export const dx = {
 		}
 
 	}
-
-
-
 
 }
 
@@ -517,4 +510,77 @@ function create_new(cats,obj,cur,acc){
   obj.ids.push(cur.resid)
   construct_obj(obj,cur)
   acc.push(obj)
+}
+
+async function single_prod_color(){
+
+		console.log('single')
+		return;
+		// single prod
+
+		console.log(`%c Продукт id = ${resid} без модификаций`, 'color: #666');
+	
+	
+		let prod = await db.prod.where({resid:resid}).toArray()
+		if(!prod.length){console.log(`Продукт с id = ${resid} не найден в db.prod`)}
+		
+		let item = COLORS.filter(co => co.name == prod[0].color)
+		
+		if(!item.length){
+			console.log(`%c Нет цвета / материала «${prod[0].color}» в конфиге`, 'color: red')
+		} else {
+			item = item[0]
+			if(!qs(`li[data-prodid="${resid}"] .colors .item[data-id="${item.id}"]`)){
+				str += `<div class="item" data-id="${item.id}"
+				${item.image ? `style="background-image:url(${cfg.host}/${item.image})"`:""}
+				${item.code ? `style="background-color: ${item.code}; ${item.code == '#fff' ? `border-color: #ccc`: ``}"` : ``}
+			></div>`
+			}
+			
+
+			//qs(`li[data-prodid="${resid}"] .colors`).innerHTML = str
+			qs(`li[data-prodid="${resid}"] .colors`).insertAdjacentHTML('beforeend', str)
+			qs(`li[data-prodid="${resid}"] .colors`).classList.remove('loading');
+		}
+		
+}
+
+async function multi_prod_color(resid,res){
+
+	let colors = res[0].prods.map(el => el.color) // ['Белый, Черный'] из запись из db.mod
+	let arr = []
+	let str = ``
+
+	colors.forEach(c => {		
+				
+		let item = COLORS.filter(co => co.name == c)[0]
+		
+		if(!item){
+			console.log(`%c Нет цвета / материала «${c}» в конфиге`, 'color: red')
+		} else {
+
+
+				let obj = {id: item.id}
+				item.image ? obj.image = item.image : obj.code = item.code
+				
+				!arr.filter(el => el.id == item.id).length
+				&& arr.push(obj)
+				
+
+		}
+		
+
+
+	})
+
+	arr.forEach(item => {
+		str += `<div class="item" data-id="${item.id}"
+		${item.image ? `style="background-image:url(${cfg.host}/${item.image})"`:""}
+		${item.code ? `style="background-color: ${item.code}; ${item.code == '#fff' ? `border-color: #ccc`: ``}"` : ``}
+		></div>`
+	})
+	
+	qs(`li[data-prodid="${resid}"] .colors`).innerHTML = str
+	qs(`li[data-prodid="${resid}"] .colors`).classList.remove('loading')
+
 }
