@@ -23,6 +23,7 @@ function tabs(){
 
 	let head_tabs = qsa("section.tabs ul.head li")
 	head_tabs.forEach(el => {
+
 		el.addEventListener("click", event => {
 
 			//underline
@@ -34,7 +35,7 @@ function tabs(){
 			let idx = event.target.dataset.index
 
 			qsa(`.body [data-index]`).forEach(el => el.classList.remove("open"))
-
+			console.log(idx)
 			qs(`.body [data-index="${idx}"]`).classList.add("open")
 		})
 	})
@@ -94,7 +95,7 @@ async function redraw(id){
 	qs('ul.stats .material_facade').innerHTML = res.material_facade.join()
 
 	let str = `<div class="from"><span>от</span><span byn="${res.price}">${res.price}</span><span class="cur">р.</span></div>`
-	res.old_price && (str += `<div class="to"><span>от</span><span byn="${res.old_price}">${res.old_price}</span><span class="cur">р.</span></div>`)
+	res.old_price && (str += `<div class="to"><span>до</span><span byn="${res.old_price}">${res.old_price}</span><span class="cur">р.</span></div>`)
 	qs('.dsc .price').innerHTML = str
 
 

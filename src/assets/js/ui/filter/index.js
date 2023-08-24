@@ -51,7 +51,7 @@ export async function Filter() {
 
 	if(qs('script[children]')){
 		let resp = await dx.validate_children()
-		resp.length && dx.update_children(resp)
+		resp.length && await dx.update_children(resp)
 	}
 
 	await dx.construct_filters()
@@ -77,7 +77,7 @@ export async function Filter() {
 	
 	// модификации товаров
 	!await dx.validate_mods()
-	&& dx.construct_mods()
+	&& await dx.construct_mods()
 
 	// добавление цветов к уже выведенным
 	// движком продуктам
@@ -351,20 +351,24 @@ function draw_products(state,prods){
 	draw_pagination(res)
 	lis()
 
-	// pagination ?
-	if(state.pagination.page > 1){
-		prods = 
-		prods.slice(
-			(state.pagination.perpage * state.pagination.page -1)
-			,(state.pagination.perpage * state.pagination.page + state.pagination.perpage - 1))
-	}
-
 	// sort
 	if(state.sort){
 		state.sort == 'desc'
 		? prods = prods.sort((a,b) => a.price - b.price)
 		: prods = prods.sort((a,b) => b.price - a.price)
 	}
+
+
+	// pagination ?
+	let perpage = state.pagination.perpage
+	let curpage = state.pagination.page
+	state.pagination.page > 1
+	? prods = prods.slice(perpage*curpage-9,perpage*curpage)
+	: prods = prods.slice(0,perpage)
+
+	
+
+	
 
 	if(prods[0] == undefined){
 		qs('ul.prod-list').innerHTML = '<span>Продуктов не найдено</span>'
