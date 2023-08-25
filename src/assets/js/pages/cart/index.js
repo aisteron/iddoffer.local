@@ -308,8 +308,10 @@ export const cart = {
 		
 		arrows.forEach(img => {
 			img.addEventListener("click", event => {
-				let input = undefined
+				let input,value;
 				let resid = +event.target.closest('[data-id]').dataset.id
+				let key = store.getState().prods.filter(el => el.id == resid)[0].key
+				
 				mob 
 					? input = qs('input', event.target.closest('.wrap'))
 					: input = qs('input', event.target.closest('.count'))
@@ -323,8 +325,12 @@ export const cart = {
 				}
 
 				event.target.classList[0] == 'down'
-				? store.dispatch(recount({id: resid, count: +input.value - 1}))
-				: store.dispatch(recount({id: resid, count: +input.value + 1}))
+				? value = +input.value - 1
+				: value = +input.value + 1
+
+				store.dispatch(recount({id: resid, count: value}))
+				xml('recount_prod',{key, value}, '/api/cart')
+
 
 
 			})
