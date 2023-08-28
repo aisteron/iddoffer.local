@@ -80,12 +80,32 @@ header
 			margin-left: auto
 		.currency
 			margin-right: 2rem
+			&.open
+				ul
+					position: absolute
+					background-color: #fff
+					z-index: 3
+					box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2)
+					left: -12px
+					top: 36px
+					li
+						padding: 1rem
+						&:hover
+							background-color: #eee
+			&::after
+				right: -2px
+		.lang
+			&:after
+				right: 8px
 		.currency, .lang
 			position: relative
 			cursor: pointer
 			min-width: 50px
+			&:hover >span
+				opacity: 0.8
 			&:after
 				content: url(/assets/img/icons/chevron.svg)
+				position: absolute
 
 nav.header
 	@include mw
