@@ -76,6 +76,7 @@ export const dx = {
 	async update_editedon(){
 
 		let resid = +qs("body").getAttribute("resid")
+
 		
 		// this.ed - текущий хэш страницы
 		// resid - текущий id страницы
@@ -150,6 +151,7 @@ export const dx = {
 		db.open()
 		
 		let resid = +qs('[resid]').getAttribute('resid')
+	
 		let res = await db.cat.where({editedon:this.ed})
 													.and(cat => cat.catid == resid).toArray()
 		

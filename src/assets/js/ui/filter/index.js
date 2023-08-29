@@ -40,12 +40,15 @@ import { cart } from '../../pages/cart';
 
 export async function Filter() {
 	
-	if(!qs('.subcat-page')) return
+	//if(!qs('.subcat-page')) return
+	if(!qs('#prods')) return
 
 
 	await dx.load()
+
 	
 	let ed = await dx.validate_editedon()
+
 	!ed && await dx.update_editedon()
 
 

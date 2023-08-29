@@ -460,6 +460,9 @@ body.prod-page
 									opacity: 1	
 				.click
 					margin-bottom: 1em
+					cursor: pointer
+					&:hover
+						opacity: 0.8
 					>span:before
 						content: url(/assets/img/icons/hand.svg)
 						margin-right: 1rem
@@ -486,6 +489,17 @@ body.prod-page
 				span[byn]
 					display: inline-block
 					margin: 0 10px
+				&.discount
+						.from span[byn], .from span.cur
+							color: #F46340	
+						.to span[byn], .to span.cur
+							color: #F46340	
+				.op
+					margin-left: 23px
+					span
+						text-decoration: line-through
+						font-size: 24px
+						color: #8D8D8D	
 				.from
 					span
 						font-size: 22px
