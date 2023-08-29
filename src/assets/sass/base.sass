@@ -199,6 +199,28 @@ nav.header
 		&:nth-child(3)
 			top: 6px
 			transform: rotate(-135deg)
+#mobile_menu
+	&.open
+		display: block !important
+		position: absolute
+		top: 49px
+		right: 0
+		left: 0
+		z-index: 2
+		background-color: #B7B7B7
+		font-family: Inter
+		height: 100vh
+		margin-left: -1rem
+		margin-right: -1rem
+		padding-left: 23px
+		padding-top: 32px
+		@media(max-width:990px)
+			margin-left: 0
+			margin-right: 0
+		ul
+			li
+				&:not(:last-child)
+					margin-bottom: 25px
 
 .edit_page
 	position: fixed
