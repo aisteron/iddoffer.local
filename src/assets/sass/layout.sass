@@ -228,6 +228,7 @@ section.prod
 	display: flex
 	justify-content: space-between
 	gap: 1rem
+	position: relative
 section.whywe
 	.row
 		background-color: #fff
@@ -1563,7 +1564,7 @@ aside
 				&:hover
 					text-decoration: none
 				@media(max-width:400px)
-					padding: 12px 14px
+					padding: 15px 14px
 	.sort
 		font-family: "Montserrat"
 		font-size: 14px
@@ -1604,6 +1605,8 @@ aside
 		@media(max-width:1000px)
 			display: block !important
 			margin-right: -2rem
+			&.open
+				filter: invert(43%) sepia(81%) saturate(655%) hue-rotate(328deg) brightness(98%) contrast(94%)
 ul#chips
 	display: flex
 	gap: 1rem
@@ -1741,6 +1744,15 @@ ul.prod-list
 	min-height: 416px
 	@media(max-width:1000px)
 		display: none
+		&.open
+			display: block
+			position: absolute
+			right: 0
+			top: 68px
+			background-color: #fff
+			z-index: 4
+			@media(max-width:400px)
+				top: 66px
 	&.loading
 		position: relative
 		&:after

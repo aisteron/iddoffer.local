@@ -89,6 +89,9 @@ export async function Filter() {
 	// слушатель добавить в корзину
 	cart.add(qsa("ul.prod-list li img.cart"))
 
+	// open / close mobile
+	open_close_mobile()
+
 
 
 }
@@ -424,4 +427,18 @@ async function color_html_prods(){
 		res.length && arr.push(id)
 	}
 	dx.colors_prod_list(arr)
+}
+
+function open_close_mobile(){
+	let f = qs('#pagination img.filter')
+	f.addEventListener("click", event => {
+		f.classList.toggle('open')
+		qs("#filter").classList.toggle('open')
+	})
+
+	document.addEventListener("click", event => {
+		if(event.target == f) return
+		if(qs("#filter").contains(event.target)) return
+		qs("#filter").classList.remove('open')
+	})
 }
