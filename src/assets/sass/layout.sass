@@ -927,12 +927,13 @@ body.ready-page
 			.swiper.main
 				width: 100%
 		.thumbs
-			display: grid
-			grid-template-columns: 110px 110px 110px
+			//display: grid
+			//grid-template-columns: 110px 110px 110px
 			gap: 1rem
 			align-self: baseline
-			@media(max-width:412px)
-				grid-template-columns: 110px 110px
+			display: flex
+			flex-wrap: wrap
+			min-width: 480px
 			img
 				cursor: pointer
 				&:hover
