@@ -1,4 +1,4 @@
-import { qs,xml,cfg,declension } from "../../libs";
+import { qs,xml,cfg,declension, load_toast } from "../../libs";
 
 
 
@@ -56,6 +56,7 @@ export const dx = {
 				image,
 
 				is_designed,
+				discount,
 
 				price,
 				old_price
@@ -316,6 +317,7 @@ export const dx = {
 		let prods = await db.prod.where('catid').anyOf(ids).toArray()	
 		let cats = await db.cat.toArray()
 		
+		
 
 		let arr = prods.reduce((acc, cur) =>{
 		
@@ -381,6 +383,12 @@ export const dx = {
 			: multi_prod_color(resid,res)
 
 		}
+	},
+	async clean(){
+		let db = this.init()
+		await db.delete()
+		await load_toast()
+		new Snackbar("База почищена. Обновите страницу")
 	},
 
 
@@ -490,6 +498,7 @@ function size(prods){
 }
 
 function construct_obj(obj,cur){
+	
 
   obj.prods.push({
     id: cur.resid,
@@ -500,7 +509,8 @@ function construct_obj(obj,cur){
     material_facade: cur.material_facade,
     price: cur.price,
     old_price: cur.old_price,
-    image: cur.image
+    image: cur.image,
+    discount: cur.discount
   })
   return obj
 }

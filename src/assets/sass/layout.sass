@@ -121,7 +121,7 @@ nav.header
 	>ul
 		display: flex
 			
-		li
+		>li
 			@media(max-width:1288px)
 				display: none
 				&.dd
@@ -462,9 +462,16 @@ body.prod-page
 									opacity: 1	
 				.click
 					margin-bottom: 1em
-					cursor: pointer
+					position: relative
+					.callback
+						position: absolute
+						z-index: 2
+						top: 2rem
+					>span
+						cursor: pointer
 					&:hover
-						opacity: 0.8
+						>span
+							opacity: 0.8
 					>span:before
 						content: url(/assets/img/icons/hand.svg)
 						margin-right: 1rem
@@ -472,6 +479,15 @@ body.prod-page
 						top: 2px
 				.q
 					margin-bottom: 30px
+					position: relative
+					>span
+						cursor: pointer
+						&:hover
+							opacity: 0.8
+					.cb
+						position: absolute
+						z-index: 2
+						top: 2rem
 					>span:before
 						content: url(/assets/img/icons/mark.svg)
 						margin-right: 1rem
@@ -876,7 +892,62 @@ section.subtiles
 					position: absolute
 					inset: 0
 					z-index: -1
+body.ready-page
+	section.content
+		font-family: 'Vollkorn'
+		p
+			font-size: 22px
+		ul
+			>li
+				font-size: 20px
+				padding-left: 1rem
+				position: relative
 
+				&:before
+					content: '•'
+					position: absolute
+					left: -2px
+				ul
+					margin: 10px 0
+					li
+						font-size: 18px	
+						padding-left: 1rem
+						line-height: 180%
+						&:before
+							content: ''
+
+	section.gallery
+		@include pw()
+		display: flex
+		justify-content: space-between
+		gap: 1rem
+		@media(max-width:909px)
+			flex-direction: column
+			.swiper.main
+				width: 100%
+		.thumbs
+			display: grid
+			grid-template-columns: 110px 110px 110px
+			gap: 1rem
+			align-self: baseline
+			@media(max-width:412px)
+				grid-template-columns: 110px 110px
+			img
+				cursor: pointer
+				&:hover
+					opacity: 0.8
+				&.active
+					opacity: 0.8	
+	section.content
+		@include pw()	
+body.ready_list-page
+	section.main
+		.txt
+			font-family: 'Vollkorn'
+			font-weight: normal
+			font-size: 22px
+			color: #000
+			line-height: 31px
 body.subcat-page
 	section.main
 		.txt

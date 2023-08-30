@@ -1,4 +1,4 @@
-import { cfg, qs, qsa } from "../libs"
+import { cfg, load_toast, qs, qsa, xml } from "../libs"
 import { dx } from "../ui/filter/dexie";
 import { swiper, product_slider } from "../ui/components/sliders/product-slider";
 import { cart } from "./cart";
@@ -16,6 +16,9 @@ export async function prod(){
 	// добавить в корзину
 	cart.add(qsa(".cart-compare button.cart"))
 
+	// callback popup
+	cb_form()
+	cb_question()
 }
 
 function tabs(){
@@ -84,6 +87,7 @@ function listeners(){
 async function redraw(id){
 	let db = dx.init()
 	let res = await db.mod.where('ids').anyOf(id).toArray()
+	
 	res = res[0].prods.filter(el => el.id == id)
 	if(!res.length){console.log('Не нашел модификацию продукта'); return}
 	res = res[0]
@@ -94,8 +98,24 @@ async function redraw(id){
 	qs('ul.stats .article').innerHTML = res.article
 	qs('ul.stats .material_facade').innerHTML = res.material_facade.join()
 
-	let str = `<div class="from"><span>от</span><span byn="${res.price}">${res.price}</span><span class="cur">р.</span></div>`
-	res.old_price && (str += `<div class="to"><span>до</span><span byn="${res.old_price}">${res.old_price}</span><span class="cur">р.</span></div>`)
+	let str = ``
+	if(res.discount){
+		str += `<div class="op"><span byn="${res.price}">${res.price}</div>`
+		let final = res.price*(100-res.discount)/100
+		str += `<div class="from"><span>от</span><span byn="${final}">${final}</span><span class="cur">р.</span></div>`
+	} else {
+		str += `<div class="from"><span>от</span><span byn="${res.price}">${res.price}</span><span class="cur">р.</span></div>`
+	}
+	
+	if(res.old_price){
+		if(res.discount){
+			str += `<div class="op"><span byn="${res.old_price}">${res.old_price}</div>`
+			let final = res.old_price*(100-res.discount)/100
+			str += `<div class="to"><span>до</span><span byn="${final}">${final}</span><span class="cur">р.</span></div>`
+		} else {
+				str += `<div class="to"><span>до</span><span byn="${res.old_price}">${res.old_price}</span><span class="cur">р.</span></div>`
+		}
+	}
 	qs('.dsc .price').innerHTML = str
 
 
@@ -133,5 +153,105 @@ async function redraw(id){
 	swiper.destroy()
 	product_slider()
 
+
+}
+
+function cb_form(){
+	if(!qs('.cb.callback')) return
+	
+	// open / hide
+	qs('.colors-click-q .click span').addEventListener('click', event => {
+		qs('.cb.callback').classList.add('open')
+	})
+
+	qs('.cb.callback img.close').addEventListener('click', event => {
+		qs('.cb.callback').classList.remove('open')
+	})
+
+	document.addEventListener("click", event => {
+		if(event.target == qs('.colors-click-q .click span')) return
+		if(event.target == qs('.cb.callback img.close')) return
+		if(qs('.cb.callback').contains(event.target)) return
+		qs('.cb.callback').classList.remove('open')
+	})
+
+	// submit
+
+	qs('.cb.callback form').addEventListener('submit', async event => {
+		
+		event.preventDefault()
+
+		let input = qs("input[type='text']", event.target)
+		
+		let obj = {
+			tel: input.value,
+			resid: +qs('body').getAttribute('resid')
+		}
+
+		let res = await xml("callback", obj, '/api/')
+		res = JSON.parse(res)
+		
+		await load_toast()
+		
+		if(res.success){
+			new Snackbar("Успешно отправлено")
+			input.value = ''
+			qs('.cb.callback').classList.remove('open')
+		} else {
+			new Snackbar("Ошибка отправки")
+		}
+		
+	})
+}
+
+function cb_question(){
+	if(!qs('.cb.q')) return
+
+	// open / hide
+	qs('.colors-click-q .q span').addEventListener('click', event => {
+		qs('.cb.q').classList.add('open')
+	})
+
+	qs('.cb.q img.close').addEventListener('click', event => {
+		qs('.cb.q').classList.remove('open')
+	})
+
+	document.addEventListener("click", event => {
+		if(event.target == qs('.colors-click-q .q span')) return
+		if(event.target == qs('.cb.q img.close')) return
+		if(qs('.cb.q').contains(event.target)) return
+		qs('.cb.q').classList.remove('open')
+	})
+
+	// submit
+
+	qs('.cb.q form').addEventListener('submit', async event => {
+		
+		event.preventDefault()
+
+		let email_input = qs("input[type='text']", event.target)
+		let ta = qs("textarea", event.target)
+		
+		let obj = {
+			email: email_input.value,
+			q: ta.value,
+		}
+
+
+		let res = await xml("question", obj, '/api/')
+		res = JSON.parse(res)
+		
+		await load_toast()
+		
+		if(res.success){
+			new Snackbar("Успешно отправлено")
+			email_input.value = ''
+			ta.value = ''
+			qs('.cb.q').classList.remove('open')
+		} else {
+			new Snackbar("Ошибка отправки")
+		}
+		
+	})
 
 }

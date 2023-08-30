@@ -1,6 +1,9 @@
 import { qs } from "../../libs"
+import { dx } from "../filter/dexie"
 export function mobile_menu(){
 	open()
+	clean_dexie()
+	
 }
 
 function open(){
@@ -15,4 +18,18 @@ function open(){
 		qs('#mobile_menu').classList.remove("open")
 		qs("#nav-icon1").classList.remove('open')
 	})
+	
+}
+
+function clean_dexie(){
+	let remove = qs('#mobile_menu .remove')
+	if(!remove) return
+
+	remove.addEventListener("click", async event => {
+		await dx.load()
+		//await dx.init()
+		await dx.clean()
+		remove.style.visibility = 'hidden'
+	})
+
 }

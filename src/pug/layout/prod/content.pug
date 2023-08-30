@@ -51,8 +51,21 @@ section.gallery.mt2
 						span.name
 			.click
 				span Купить в 1 клик
+				.cb.callback(style="display: none")
+					img.close(src="/assets/img/icons/dclose.svg" height="28" width="28")
+					form
+						input(type="text" required placeholder="Ваш телефон")
+						button(type="submit") Отправить
+
 			.q
 				span Задать вопроc
+				.cb.q(style="display: none")
+					img.close(src="/assets/img/icons/dclose.svg" height="28" width="28")
+					form
+						input(type="text" required placeholder="Ваша почта")
+						textarea(required)
+						button(type="submit") Отправить
+
 		
 		ul.stats
 			li Артикул: <span class="article">16513</span>

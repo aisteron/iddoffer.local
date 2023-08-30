@@ -10,7 +10,7 @@ export async function Cart(){
 	if(!res.length) return if_empty_order()
 	await load_tippy()
 	
-	!await cart.validate_mods(res) && cart.update_mods(res)
+	!await cart.validate_mods(res) && await cart.update_mods(res)
 
 
 	store.subscribe(async _ => {
@@ -446,14 +446,15 @@ export const cart = {
 					load_toast()
 					.then(_ => {
 						new Snackbar('Успешно отправлено');
-						
-						// [...qsa('form input'), qs('form textarea')].forEach(el =>{
-						// 	el.value = ''
-						// })
-
 						store.dispatch(clean())
 					})
 					
+				} else {
+					load_toast()
+					.then(_ => new Snackbar(r.message))
+					r.data.foreach(el => {
+						console.log(el)
+					})
 				}
 			})
 			
