@@ -117,7 +117,10 @@ async function draw() {
 	let db = dx.init();
 	let obj = await db.cat.where({ catid: resid }).toArray();
 	let str = ``
-	
+	if(!obj[0].filter){
+		console.log('Пустой объект фильтра')
+		return
+	}
 	obj[0].filter.forEach(f => {
 		
 		switch(f.name){
@@ -286,7 +289,7 @@ export async function prepare_products(state){
 	prods = await db.prod.where('catid').anyOf(ids).toArray()
 	console.log('all prods: ',prods)
 
-	if(!prods.length){console.log('%c продукты не найдены','color: red'); return}
+	if(!prods.length){console.log('%c продукты не найдены','color: red'); return []}
 
 
 

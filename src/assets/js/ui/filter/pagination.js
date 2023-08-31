@@ -10,6 +10,7 @@ export async function Pagination(){
 	// нужно в draw() пагинации это кол-во передавать
 
 	let res = await prepare_products(store.getState())
+	if(!res.length){console.log('Продукты не найдены'); return}
 	res = prepare_pagination(res.length) // вернет {curpage, [1,2,3,>]}
 	draw_pagination(res)
 	listeners()

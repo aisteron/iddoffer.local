@@ -8,6 +8,7 @@ export async function default_slider(){
 
 	qsa(".swiper.default").forEach(el =>{
 		
+		
 		let default_slider_options = {
 			slidesPerView: get_slide_count(),
 			spaceBetween: 18,
@@ -16,8 +17,7 @@ export async function default_slider(){
 				prevEl: qs(".swiper-button-prev", el),
 			},
 		}
-
-		sw.init(qs('.swiper.default'), default_slider_options)	
+		sw.init(el, default_slider_options)	
 	})
 
 	

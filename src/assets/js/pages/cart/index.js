@@ -451,9 +451,14 @@ export const cart = {
 					
 				} else {
 					load_toast()
-					.then(_ => new Snackbar(r.message))
-					r.data.foreach(el => {
-						console.log(el)
+					.then(_ => new Snackbar(r.message +" "+r.data.join()))
+					r.data.forEach(el => {
+						el == 'receiver' && (el = 'name')
+						qs(`.fields input[name='${el}']`).classList.add('error')
+						
+						setTimeout(()=>{
+							qs(`.fields input[name='${el}']`).classList.remove('error')
+						},2000)
 					})
 				}
 			})

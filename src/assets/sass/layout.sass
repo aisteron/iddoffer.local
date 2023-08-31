@@ -778,6 +778,7 @@ section.recently-viewed
 		flex-wrap: wrap
 		li
 			position: relative
+			max-width: 200px
 			a
 				display: block
 				margin-top: 14px
@@ -1050,9 +1051,11 @@ section.discount
 section#default
 	@include pw()
 	.default-swiper
+		.swiper
+			margin-bottom: 2rem
 		@media(max-width:400px)
 			h2.p30
-				margin-bottom: -1rem
+				//margin-bottom: -1rem
 	.content
 		font-family: 'Vollkorn'
 		font-weight: normal
@@ -1151,6 +1154,8 @@ section.cart
 					color: #989898
 					font-size: 14px
 					padding: 8px
+					&.error
+						border-color: $red
 				button
 					width: 136px
 					background-color: #E7E7E7
