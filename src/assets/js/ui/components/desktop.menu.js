@@ -2,23 +2,30 @@ import { doc, qs, qsa, xml } from "../../libs";
 
 export async function desktop_menu(){
 
-	
-	qs('nav.header li.dd')
-	&& dropdown_menu()
+	dropdown_menu()
 	
 
-	// header lang / currency dropdown
+	// header currency dropdown
 
 	await currency()
 
-	qs('.cl .currency')
-	&& currency_show()
-
+	currency_show()
 	
+
+
+	let current = localStorage.getItem('cur')
+	if(!current) return
+	current = JSON.parse(current).filter(el => el.current)
+	if(!current.length) return
+	if(current[0].current == "BYN") return
+
+	replace_currency(current[0].current)
 	
 }
 
 function dropdown_menu(){
+
+	if(!qs('nav.header li.dd')) return
 
 	qs('nav.header li.dd span').addEventListener("click", event => {
 		event.target.closest('li').classList.toggle('open')
@@ -34,10 +41,12 @@ function dropdown_menu(){
 
 function currency_show(){
 
+	if(!qs('.cl .currency')) return
 	qs('.cl .currency span').addEventListener('click', event => {
 		event.target.closest('.dd').classList.toggle('open')
 	})
-
+	
+	
 	document.addEventListener("click", event => {
 		if(event.target == qs('.cl .currency span')) return
 		if(qs('.cl .currency').contains(event.target)) return
@@ -81,13 +90,13 @@ function currency_show(){
 	cur = JSON.parse(localStorage.getItem('cur')).filter(el => el.current)
 	if(cur.length){
 		let current = cur[0].current
-		if(current == 'BYN') return
-		qs('.currency.dd span').innerHTML = current
+		if(current !== 'BYN') qs('.currency.dd span').innerHTML = current
 	}
 
 	// global listener
 
 	document.addEventListener("cur", e => {
+		
 		let c = e.detail.cur
 		let cur = JSON.parse(localStorage.getItem("cur"))
 		
@@ -98,6 +107,8 @@ function currency_show(){
 		
 		localStorage.setItem('cur',JSON.stringify(cur))
 		console.log('custom event cur = '+c)
+
+		replace_currency(c)
 	})
 
 
@@ -147,4 +158,29 @@ async function currency(){
 
 
 
+}
+
+function replace_currency(current){
+	// !current
+	// &&
+
+	let cur = JSON.parse(localStorage.getItem('cur'))
+	
+	qsa('[byn]').forEach(el =>{
+		
+		let byn = +el.getAttribute('byn')
+		
+		switch(current){
+			case 'BYN':
+				el.innerHTML = byn;
+				break;
+			case 'USD':
+			case 'EUR':	
+				let value = cur.filter(el => el.key == current)[0].value
+				el.innerHTML = (byn / value).toFixed(2)
+
+		}
+	})
+
+	qsa('span.cur').forEach(el => el.innerHTML = current)
 }
