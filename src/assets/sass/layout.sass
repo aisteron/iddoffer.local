@@ -118,6 +118,8 @@ nav.header
 	@media(max-width:768px)
 		margin: 0
 		padding: 0 1rem
+	@media(max-width:470px)	
+		position: relative
 	>ul
 		display: flex
 			
@@ -170,12 +172,19 @@ nav.header
 					opacity: 0.8
 		.search
 			position: relative
+			@media(max-width:470px)
+				position: initial
 			.area
 				&.open
 					display: block !important
 					position: absolute
 					top: 34px
 					right: 0
+					z-index: 2
+					@media(max-width:1288px)
+						top: 33px
+					@media(max-width:470px)	
+						top: 49px
 				form
 					padding: 1rem
 					background-color: #D2D1D1
