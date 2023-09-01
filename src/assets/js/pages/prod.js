@@ -2,16 +2,19 @@ import { cfg, load_toast, qs, qsa, xml } from "../libs"
 import { dx } from "../ui/filter/dexie";
 import { swiper, product_slider } from "../ui/components/sliders/product-slider";
 import { cart } from "./cart";
+import { replace_currency } from "../ui/components/desktop.menu";
 
 export async function prod(){
 	if(!qs('.prod-page')) return
 	
 	tabs()
+	social_share()
 
 	await dx.load()
 	!await dx.validate_mods() && await dx.fill_mods()
 	await draw()
 	listeners()
+	
 
 	
 	// callback popup
@@ -125,6 +128,7 @@ async function redraw(id){
 		}
 	}
 	qs('.dsc .price').innerHTML = str
+	replace_currency()
 
 
 	if (window.history.replaceState) {
@@ -262,4 +266,26 @@ function cb_question(){
 		
 	})
 
+}
+
+function social_share(){
+	if(!qs(".share")){console.log('share buttons not found'); return}
+
+	let obj = {
+		url: window.location.href,
+		title: qs('h1').innerHTML
+	}
+	qsa(".share a").forEach(el => {
+		switch(el.classList[0]){
+			case 'vk':
+				qs('a.vk').href = `https://vk.com/share.php?url=${obj.url}&title=${obj.title}`;
+				break;
+			case 'tw':
+				qs('a.tw').href = `https://twitter.com/intent/tweet?text=${obj.title}&url=${obj.url}`;
+				break;
+			case 'ok':
+				qs('a.ok').href = `https://connect.ok.ru/offer?url=${obj.url}&title=${obj.url}`;
+				break;
+		}
+	})
 }

@@ -1,9 +1,9 @@
-import { qs } from "../../libs";
+import { qs, xml } from "../../libs";
 
-let addr = "https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A7ae8dedd5cb95038381d129ba15b1f89022ffc9059c1e4e0a279019742a69d95&amp;width=100&amp;lang=ru_RU&amp;scroll=true"
+let addr = ""
 
-export function map(){
-
+export async function map(){
+	addr = await xml("get_map",null,"/api/")
 	footer_map()
 	contacts_map()
 	

@@ -207,19 +207,23 @@ function search(){
 		qs('.actions .search .area').classList.remove("open")
 	})
 
+	
 	// send
+
 	let button = qs('.search button[type="submit"]')
+
 	qs('.actions .search .area form').addEventListener("submit", async event => {
+		
 		event.preventDefault()
 		button.classList.add('loading')
+		
 		let res = await xml("search", {str: qs('input', event.target).value}, '/api/')
+		res = JSON.parse(res)
 		button.classList.remove('loading')
 		qs('.actions .search .results').classList.add('open')
-		res = JSON.parse(res)
-		if(res.success === false){
-			qs('.area .results ul').innerHTML = res.message
-			return;
-		}
+		
+		if(res.success === false){ qs('.area .results ul').innerHTML = res.message; return;}
+		
 		let str = ``
 		res.forEach(el => {
 			str += `
