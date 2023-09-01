@@ -13,12 +13,20 @@ export async function prod(){
 	await draw()
 	listeners()
 
-	// добавить в корзину
-	cart.add(qsa(".cart-compare button.cart"))
-
+	
 	// callback popup
 	cb_form()
 	cb_question()
+	
+	// добавить в корзину
+	cart.add(qsa(".cart-compare button.cart"))
+	
+	// похожие товары
+	qs('.similar img.cart') && cart.add(qsa(".similar img.cart"))
+	
+	// товары на скидке
+	qs('.discount img.cart') && cart.add(qsa(".discount img.cart"))
+
 }
 
 function tabs(){

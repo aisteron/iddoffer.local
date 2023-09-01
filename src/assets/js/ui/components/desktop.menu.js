@@ -3,23 +3,14 @@ import { doc, qs, qsa, xml } from "../../libs";
 export async function desktop_menu(){
 
 	dropdown_menu()
+	search()
 	
 
 	// header currency dropdown
 
 	await currency()
-
 	currency_show()
-	
-
-
-	let current = localStorage.getItem('cur')
-	if(!current) return
-	current = JSON.parse(current).filter(el => el.current)
-	if(!current.length) return
-	if(current[0].current == "BYN") return
-
-	replace_currency(current[0].current)
+	replace_currency()
 	
 }
 
@@ -160,11 +151,26 @@ async function currency(){
 
 }
 
-function replace_currency(current){
-	// !current
-	// &&
+export function replace_currency(current){
 
-	let cur = JSON.parse(localStorage.getItem('cur'))
+	// current ~ USD: string
+
+	let cur = localStorage.getItem('cur')
+
+	if(!current){
+
+		// on page load case
+
+		if(!cur) return
+		current = JSON.parse(cur).filter(el => el.current)
+		
+		if(!cur.length) return
+		if(cur[0].current == "BYN") return
+		current = current[0].current 
+
+	}
+
+	cur = JSON.parse(cur)
 	
 	qsa('[byn]').forEach(el =>{
 		
@@ -175,7 +181,8 @@ function replace_currency(current){
 				el.innerHTML = byn;
 				break;
 			case 'USD':
-			case 'EUR':	
+			case 'EUR':
+
 				let value = cur.filter(el => el.key == current)[0].value
 				el.innerHTML = (byn / value).toFixed(2)
 
@@ -183,4 +190,46 @@ function replace_currency(current){
 	})
 
 	qsa('span.cur').forEach(el => el.innerHTML = current)
+}
+
+function search(){
+	
+	// open / hide
+	let img = qs('.actions .search img')
+	if(!qs('.actions .search')) return
+	img.addEventListener("click", event => {
+		qs('.actions .search .area').classList.toggle('open')
+	})
+
+	document.addEventListener("click", event =>{
+		if(event.target == img) return
+		if(qs('.actions .search .area').contains(event.target)) return
+		qs('.actions .search .area').classList.remove("open")
+	})
+
+	// send
+	let button = qs('.search button[type="submit"]')
+	qs('.actions .search .area form').addEventListener("submit", async event => {
+		event.preventDefault()
+		button.classList.add('loading')
+		let res = await xml("search", {str: qs('input', event.target).value}, '/api/')
+		button.classList.remove('loading')
+		qs('.actions .search .results').classList.add('open')
+		res = JSON.parse(res)
+		if(res.success === false){
+			qs('.area .results ul').innerHTML = res.message
+			return;
+		}
+		let str = ``
+		res.forEach(el => {
+			str += `
+			<li data-prodid="${el.id}">
+				<a href="${el.uri}">${el.name}</a>
+			</li>
+			`
+		})
+		
+		qs('.area .results ul').innerHTML = str
+	})
+
 }

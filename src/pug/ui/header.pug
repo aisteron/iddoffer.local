@@ -55,6 +55,12 @@ nav.header
 	.actions
 		.search
 			img(src="/assets/img/icons/search.svg" width="16" height="16")
+			.area(style="display:none")
+				form
+					input(type="text" required placeholder="Поиск")
+					button(type="submit") Найти
+				.results
+					ul
 		a.cart(href="/cart.html")
 			img(src="/assets/img/icons/cart.svg" width="16" height="18")
 		.user

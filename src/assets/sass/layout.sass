@@ -168,6 +168,73 @@ nav.header
 				cursor: pointer
 				&:hover
 					opacity: 0.8
+		.search
+			position: relative
+			.area
+				&.open
+					display: block !important
+					position: absolute
+					top: 34px
+					right: 0
+				form
+					padding: 1rem
+					background-color: #D2D1D1
+					display: flex
+					align-items: center
+					gap: 1rem
+					input
+						width: 196px
+						padding: 9px
+						border: none
+						outline: none
+						&::placeholder
+							font-family: Inter
+						&:focus
+							background-color: #eee
+					button
+						height: 37px
+						font-family: Inter
+						background-color: #939393
+						font-size: 14px
+						color: #FDFDFD
+						width: 94px	
+						border: none
+						transition: all 0.3s ease
+						cursor: pointer
+						&.loading
+							position: relative
+							&:after
+								content: url('/assets/img/icons/loader.svg')
+								width: 15px
+								height: 15px
+								display: block
+								position: absolute
+								top: 12px
+								opacity: 0.6
+								animation: spin 2s linear infinite
+								
+								
+						&:hover
+							outline: none
+							background-color: darken(#939393, 5%)
+				.results
+					padding: 1rem
+					background-color: #D2D1D1
+					margin-top: 1em
+					font-family: Inter
+					max-height: 200px
+					overflow-y: auto
+					display: none
+					&.open
+						display: block
+					ul
+						li
+							line-height: 180%
+					a
+						color: #5C635F
+						font-size: 14px
+						&:hover
+							text-decoration: underline
 footer
 	@include pw
 	background-color: #7E8581

@@ -6,17 +6,17 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     prods: [],
-		total: null
+		//total: null
   },
   reducers: {
 		add:(state, action) =>{
 			state.prods = action.payload
-			state.total = action.payload.reduce((acc, cur) => acc += cur.price * cur.count, 0)
+			//state.total = action.payload.reduce((acc, cur) => acc += cur.price * cur.count, 0)
 		},
     recount: (state,action) => {
 			const {id, count} = action.payload
 			state.prods.map(el => el.id == id && (el.count = count))
-			state.total = state.prods.reduce((acc, cur) => acc += cur.price * cur.count, 0)
+			//state.total = state.prods.reduce((acc, cur) => acc += cur.price * cur.count, 0)
     },
 		replace: (state,action)=>{
 			const{id, obj} = action.payload

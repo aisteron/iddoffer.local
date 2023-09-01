@@ -5,6 +5,7 @@ import { Chips } from './chips';
 import { Pagination, draw_pagination, prepare_pagination, listeners as lis } from './pagination';
 import { Sort } from './sort';
 import { cart } from '../../pages/cart';
+import { replace_currency } from '../components/desktop.menu';
 
 /*
 	
@@ -384,8 +385,10 @@ function draw_products(state,prods){
 		return
 	}
 	
+	
 	let str = ``
 	prods.forEach(prod => {
+		
 		str += `
 		<li data-prodid="${prod.resid}">
 		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0].toLowerCase()}.jpg" width="302" heigth="288">
@@ -413,11 +416,11 @@ function draw_products(state,prods){
 
 	// слушатель добавить в корзину
 	cart.add(qsa("ul.prod-list li img.cart"))
-	
-
-	
+	replace_currency()
 
 }
+
+
 
 async function color_html_prods(){
 	let db = dx.init()

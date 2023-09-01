@@ -1,6 +1,7 @@
 import { load_tippy, xml,qs, qsa, cfg, load_toast } from "../../libs"
 import { store, add, recount, thunkFunction, textarea, remove, clean } from "./store"
 import { dx } from '../../ui/filter/dexie';
+import { replace_currency } from "../../ui/components/desktop.menu";
 
 export async function Cart(){
 	
@@ -37,6 +38,7 @@ export async function Cart(){
 
 	store.dispatch(add(res))	
 	cart.fields()
+	replace_currency()
 	
 }
 
@@ -46,6 +48,7 @@ export const cart = {
 		await load_tippy()
 		
 		els.forEach(el => {
+
 			el.addEventListener("click", async (event) => {
 				let prodid = undefined
 				
@@ -58,17 +61,24 @@ export const cart = {
 				let res = await xml('add_to_cart', {id: prodid}, '/api/cart')
 				res = JSON.parse(res)
 				
-				const instance = tippy(event.target,{
-					content: `Товар в корзине`,
-					placement: "bottom",
-					animation: 'fade',
-			 	});
-		 
-			 
-				instance.show();
-				event.target.classList.add('incart')
-				event.target.nodeName == 'BUTTON'
-				&& (event.target.innerHTML = 'В корзине')
+				if(res.success){
+						const instance = tippy(event.target,{
+						content: `Товар в корзине`,
+						placement: "bottom",
+						animation: 'fade',
+					});
+			
+				
+					instance.show();
+					event.target.classList.add('incart')
+					event.target.nodeName == 'BUTTON'
+					&& (event.target.innerHTML = 'В корзине')
+				} else {
+					await load_toast()
+					new Snackbar(res.message)
+				}
+				
+				
 				
 				//setTimeout(()=>{instance.destroy()},2000)
 
@@ -236,6 +246,8 @@ export const cart = {
 
 		qs('button.continue').classList.add('open')
 		qs('.root .table .mobile')?.classList.remove('loading')
+
+		replace_currency()
 
 	},
 	async colors(res){
