@@ -34,7 +34,14 @@ export async function product_slider(){
 
 	// remove 90% width if less 3 thumb slides
 	
-	qsa('.swiper.thumbs .swiper-slide').length < 3 && (qs('.wrap.thumbs').style = "width: 100% !important")
+	if(
+		qsa('.swiper.thumbs .swiper-slide').length < 3
+		&& window.innerWidth <= 500
+	){
+		qs('.wrap.thumbs').style = "width: 100% !important"
+	}
+
+
 
 
 }
