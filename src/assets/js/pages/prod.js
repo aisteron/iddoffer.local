@@ -275,6 +275,7 @@ function social_share(){
 		url: window.location.href,
 		title: qs('h1').innerHTML
 	}
+	
 	qsa(".share a").forEach(el => {
 		switch(el.classList[0]){
 			case 'vk':

@@ -1,4 +1,4 @@
-import { qs, sw } from "../../../libs"
+import { qs, sw,qsa } from "../../../libs"
 export let swiper = {}
 export async function product_slider(){
 	if(!qs('body.prod-page')) return
@@ -31,6 +31,11 @@ export async function product_slider(){
 	}
 
 	swiper = new Swiper(qs('.swiper.main'), main_slider_options)
+
+	// remove 90% width if less 3 thumb slides
+	
+	qsa('.swiper.thumbs .swiper-slide').length < 3 && (qs('.wrap.thumbs').style = "width: 100% !important")
+
 
 }
 
