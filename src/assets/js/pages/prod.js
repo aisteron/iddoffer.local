@@ -111,17 +111,25 @@ async function redraw(id){
 
 	let str = ``
 	if(res.discount){
-		str += `<div class="op"><span byn="${res.price}">${res.price}</div>`
-		let final = res.price*(100-res.discount)/100
-		str += `<div class="from"><span>от</span><span byn="${final}">${final}</span><span class="cur">р.</span></div>`
+		str += `<div class="op">
+			<span>от</span>
+			<span byn="${res.price}">${res.price}</span>
+			<span class="cur">BYN</span>
+			</div>`
+		let final = (res.price*(100-res.discount)/100).toFixed(2)
+		str += `<div class="from"><span>от</span><span byn="${final}">${final}</span><span class="cur">BYN</span></div>`
 	} else {
-		str += `<div class="from"><span>от</span><span byn="${res.price}">${res.price}</span><span class="cur">р.</span></div>`
+		str += `<div class="from"><span>от</span><span byn="${res.price}">${res.price}</span><span class="cur">BYN</span></div>`
 	}
 	
 	if(res.old_price){
 		if(res.discount){
-			str += `<div class="op"><span byn="${res.old_price}">${res.old_price}</div>`
-			let final = res.old_price*(100-res.discount)/100
+			str += `<div class="op">
+			<span>до</span>
+			<span byn="${res.old_price}">${res.old_price}<span>
+			<span class="cur">BYN</span>
+			</div>`
+			let final = (res.old_price*(100-res.discount)/100).toFixed(2)
 			str += `<div class="to"><span>до</span><span byn="${final}">${final}</span><span class="cur">р.</span></div>`
 		} else {
 				str += `<div class="to"><span>до</span><span byn="${res.old_price}">${res.old_price}</span><span class="cur">р.</span></div>`
