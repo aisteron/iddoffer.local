@@ -382,6 +382,11 @@ section.about
 section.reviews
 	overflow: hidden
 	position: relative
+	h2
+		position: relative
+		&.pika
+			&:after
+				width: calc(113% - 200px)
 	@media(max-width:840px)
 		.swiper-pagination
 			bottom: -4px
