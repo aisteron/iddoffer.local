@@ -11,6 +11,7 @@ import { default_slider } from "./components/sliders/default-slider";
 import { mobile_menu } from "./components/mobile.menu";
 import { desktop_menu } from "./components/desktop.menu";
 import { ready_slider } from "./components/sliders/ready-slider";
+import { xml } from "../libs";
 
 export function Ui(){
 
@@ -28,4 +29,12 @@ export function Ui(){
 	subcat_slider()
 	default_slider()
 	ready_slider()
+
+	
+	console.log(0)
+	let obj = {
+		username: "timotheus@list.ru",
+		password: "12345678"
+	}
+	xml("login",obj, '/api/user')
 }
