@@ -170,10 +170,73 @@ nav.header
 				cursor: pointer
 				&:hover
 					opacity: 0.8
+		.user
+			position: relative
+			.user_modal
+				display: none
+				
+				&.open
+					background-color: #D2D1D1
+					width: 275px
+					padding: 1rem
+					display: block
+					position: absolute
+					z-index: 4
+					left: -259px
+					top: 38px
+				form
+					display: flex
+					flex-direction: column
+					gap: 1rem
+					&.forgot .buttons
+						flex-wrap: wrap
+
+				input[name="pswd"], input[type="text"], input[name="repeat_pswd"]
+					padding: 10px
+					border: 1px solid rgba(0, 0, 0, 0.22)
+					width: 100%
+					&:focus
+						outline: none
+						background-color: #eee
+				.forgot
+					font-family: Inter
+					text-align: right
+					font-size: 13px
+					color: #616161
+					span
+						cursor: pointer
+						text-decoration: underline
+						&:hover
+							text-decoration: none
+				.buttons
+					display: flex
+					justify-content: space-between
+				button
+					cursor: pointer
+					padding: 10px 25px
+					font-size: 14px
+					font-family: Inter
+					border: none
+					outline: none
+					&.regular
+						background-color: #939393
+						color: #FDFDFD
+						&:hover
+							background-color: darken(#939393, 10%)
+					&.transparent
+						background-color: transparent
+						text-decoration: underline
+
+						&:hover
+							text-decoration: none
+
+
+
 		.search
 			position: relative
 			@media(max-width:470px)
 				position: initial
+				
 			.area
 				&.open
 					display: block !important
