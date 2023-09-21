@@ -1,6 +1,7 @@
 import { qs } from "../../libs"
 import { dx } from "../filter/dexie"
 export function mobile_menu(){
+	if(!qs("#nav-icon1")) return
 	open()
 	clean_dexie()
 	

@@ -5,8 +5,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
 		open: false,
-    mode: "auth",
-		errors: []
+    mode: "logged",
+		errors: [],
+		username: null
   },
 
   reducers: {
@@ -34,8 +35,10 @@ const userSlice = createSlice({
 
     },
 		mode:(state,action) => {
-			state.mode = action.payload,
+			state.mode = action.payload.mode,
 			state.open = true
+			action.payload.username
+			&& (state.username = action.payload.username)
 		}
   
 		
