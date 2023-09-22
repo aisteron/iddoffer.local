@@ -1,7 +1,12 @@
-import { qs,qsa, xml } from "../../libs"
+import { qs, xml } from "../../libs"
 import { store, mode } from "./store"
 
 export function User(){
+
+	let icon = qs('.actions .user img')
+	if(!icon) return
+
+	predraw()
 	
 	store.subscribe(_=>{
 
@@ -31,33 +36,15 @@ export function User(){
 	
 	})
 		
-	
-	let icon = qs('.actions .user img')
-	if(!icon) return
 
-	if(!qs('.actions .user .user_modal'))
-		qs('.actions .user img')
-			.insertAdjacentHTML('afterend',`<div class="user_modal"></div>`)
-
-	icon.addEventListener("click", async event => {
-		
-		let u = await user.get_user()
-		
-		if(u.username == '(anonymous)'){
-
-			store.dispatch(mode({mode:"auth"}))
-		}
-
-	})
-	qs('.user_modal').classList.add('open')
-	user.draw_logged()
-	user.listeners()
 }
 
-const user = {
+export const user = {
 	async get_user(){ return await xml("get_current_user",null, '/api/user').then(r => JSON.parse(r))
 	},
 	async login(obj){
+
+		// receive obj {username:"",password:""}
 
 		let res = await xml("login",obj, '/api/user').then(r => JSON.parse(r));
 		let inps = [qs('form.auth input[name="pswd"]'), qs('form.auth input[name="email"]')];
@@ -243,4 +230,18 @@ const user = {
 			store.dispatch(mode({mode:"auth"})))
 		}
 	}
+}
+
+async function predraw(){
+	let icon = qs('.actions .user img')	
+	icon.insertAdjacentHTML('afterend',`<div class="user_modal"></div>`)
+
+	let u = await user.get_user()
+	
+	u.username == '(anonymous)'
+	? store.dispatch(mode({mode:"auth"}))
+	: store.dispatch(mode({mode:"logged", user: u.username}))
+
+	icon.addEventListener("click", _ => qs('.user_modal').classList.toggle('open'))
+
 }

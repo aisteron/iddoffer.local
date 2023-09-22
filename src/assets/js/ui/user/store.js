@@ -5,7 +5,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState: {
 		open: false,
-    mode: "logged",
+    mode: "auth",
 		errors: [],
 		username: null
   },

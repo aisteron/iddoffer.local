@@ -26,7 +26,7 @@ module.exports = {
   },
   entry: {
     app: PATHS.src,
-    // module: `${PATHS.src}/your-module.js`,
+    module: `${PATHS.src}/lk.jsx`,
   },
   output: {
     filename: `${PATHS.assets}js/[name].[hash].js`,
@@ -72,7 +72,20 @@ module.exports = {
       test: /\.js$/,
       loader: 'babel-loader',
       exclude: '/node_modules/'
-    }, {
+    },
+		{
+			test: /\.jsx?$/,
+			exclude: /node_modules/,
+			use: [
+				{
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-react']
+					}
+				}
+			],
+		},
+		{
       test: /\.vue$/,
       loader: 'vue-loader',
       options: {
