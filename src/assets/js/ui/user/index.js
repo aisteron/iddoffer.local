@@ -238,7 +238,7 @@ async function predraw(){
 
 	let u = await user.get_user()
 	
-	u.username == '(anonymous)'
+	u.username == null
 	? store.dispatch(mode({mode:"auth"}))
 	: store.dispatch(mode({mode:"logged", user: u.username}))
 

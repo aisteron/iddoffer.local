@@ -4,6 +4,7 @@ let addr = ""
 
 export async function map(){
 	addr = await xml("get_map",null,"/api/")
+
 	footer_map()
 	contacts_map()
 	
