@@ -1,52 +1,41 @@
 import { createSlice, configureStore} from '@reduxjs/toolkit'
-
+import {xml} from '../libs'
 
 const lkSlice = createSlice({
   name: 'lk',
   initialState: {
-    
+    loading: true
   },
   reducers: {
+
 		add:(state, action) =>{
 			state.prods = action.payload
 
+		},
+		set_current_user:(state, action) => {
+			
+			console.log(action.payload)
+			state.data = action.payload
+			state.loading = false
+			
 		}
 
 		
   }
 })
 
-export const { add } = lkSlice.actions
+export const { add,set_current_user } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer
 })
 
 
-export const thunkFunction = ({id, replaceid}) => {
-	let db = dx.init()
+export const fetch_user_thunk = () => {
+	
+	return async function fetchUser(dispatch, getState){
 
-	return async function fetch(dispatch, getState){
-		let old = getState().prods.filter(el => el.id == id)[0]
-		
-		let resp = await xml('replace_prod', {k: old.key, replaceid}, '/api/cart') // string new key
-
-		let res = await db.mod.where('ids').anyOf(id).toArray()
-		if(!res.length){console.log('Не нашел модификацию'); return}
-
-		
-
-		res = res[0].prods.filter(el => el.id == replaceid)[0]
-		let obj = {
-			id: res.id,
-			article: res.article,
-			count: old.count,
-			key: resp,
-			name: res.name,
-			price: res.price,
-			uri: res.uri
-		}
-		
-		dispatch(replace({id, obj}))
+		const response = await xml("get_current_user",null,"/api/user").then(r => JSON.parse(r))
+		dispatch(set_current_user(response))
 	}
 }
