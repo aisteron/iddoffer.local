@@ -156,15 +156,15 @@ export function replace_currency(current){
 	// current ~ USD: string
 
 	let cur = localStorage.getItem('cur')
-
+	
 	if(!current){
 
 		// on page load case
-
+		
 		if(!cur) return
 		current = JSON.parse(cur).filter(el => el.current)
 		
-		if(!cur.length) return
+		if(!current.length) return
 		if(cur[0].current == "BYN") return
 		current = current[0].current 
 

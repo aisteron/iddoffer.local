@@ -39,6 +39,7 @@ export async function Cart(){
 	store.dispatch(add(res))	
 	cart.fields()
 	replace_currency()
+
 	
 }
 
@@ -62,8 +63,9 @@ export const cart = {
 				res = JSON.parse(res)
 				
 				if(res.success){
-						const instance = tippy(event.target,{
-						content: `Товар в корзине`,
+
+					const instance = tippy(event.target,{
+						content: `Товар в вашем заказе`,
 						placement: "bottom",
 						animation: 'fade',
 					});
@@ -72,7 +74,9 @@ export const cart = {
 					instance.show();
 					event.target.classList.add('incart')
 					event.target.nodeName == 'BUTTON'
-					&& (event.target.innerHTML = 'В корзине')
+					&& (event.target.innerHTML = 'В вашем заказе')
+
+					cart.draw_cart_count()
 				} else {
 					await load_toast()
 					new Snackbar(res.message)
@@ -312,6 +316,26 @@ export const cart = {
 		}
 	},
 
+	async draw_cart_count(){
+		let count = +await xml('get_order_count', null,'/api/cart')
+		let cart_a = qs('.header .actions a.cart')
+		
+		if(!count){
+			if(qs('.circle', cart_a)){
+				qs('.circle', cart_a).remove()
+			}
+		} else {
+			if(qs('.circle', cart_a)){
+				if(qs('.circle', cart_a)){
+					qs('.circle', cart_a).innerHTML = count
+				} else {
+					let str = ` <span class="circle">${count}</span> `
+					cart_a.insertAdjacentHTML("beforeend", str)
+				}
+			}
+		}
+	},
+
 	listener_recount(){
 		let dsk = qs('.root .table .desktop')
 		let mob = qs('.root .table .mobile')
@@ -433,6 +457,7 @@ export const cart = {
 				let key = store.getState().prods.filter(el => el.id == id)[0].key
 				xml('remove_prod',{k: key}, '/api/cart')
 				store.dispatch(remove(id))
+				this.draw_cart_count()
 			})
 		})
 	},
@@ -484,7 +509,7 @@ export const cart = {
 }
 
 function if_empty_order(){
-	qs('h1').innerHTML = 'Ваша корзина пуста';
+	qs('h1').innerHTML = 'Ваш заказ пуст';
 	qs('.itogo').remove()
 	qs('button.continue').remove()
 	qs('.root .mobile')
