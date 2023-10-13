@@ -12,25 +12,10 @@ const userSlice = createSlice({
 
   reducers: {
 
-    checkbox: (state,action) => {
+    close: (state,action) => {
 
 
-      if(!action.payload.data.length) {
-        state.filters = state.filters.filter(f => f.name !== action.payload.name)
-        return;
-      }
-      if(!state.filters.length){
-        state.filters.push(action.payload)
-        return;
-      }
-
-      state.filters.forEach(f => {
-
-        f.name == action.payload.name
-        ? f.data = action.payload.data
-        : state.filters.push(action.payload)
-          
-      })
+      state.open = false
       
 
     },
@@ -45,7 +30,7 @@ const userSlice = createSlice({
   }
 })
 
-export const { checkbox, mode } = userSlice.actions
+export const { close, mode } = userSlice.actions
 
 export const store = configureStore({
   reducer: userSlice.reducer

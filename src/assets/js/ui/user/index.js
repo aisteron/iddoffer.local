@@ -1,5 +1,5 @@
 import { qs, xml } from "../../libs"
-import { store, mode } from "./store"
+import { store, mode, close } from "./store"
 
 export function User(){
 
@@ -14,7 +14,10 @@ export function User(){
 		
 		console.log(state)
 		
-		if(!state.open) {qs('.user_modal').innerHTML = ''; return}
+		if(!state.open) {
+			qs('.user_modal').classList.remove('open').innerHTML = '';
+
+			return}
 
 			switch(state.mode){
 				case 'auth':
@@ -28,6 +31,9 @@ export function User(){
 					break;
 				case 'logged':
 					user.draw_logged()
+					break;
+				case 'repair':
+					user.draw_repair()
 					break;
 			}
 
@@ -60,6 +66,11 @@ export const user = {
 			store.dispatch(mode(obj))
 		}
 
+
+	},
+	async repair_forgot(email){
+		await xml("repair_password",{email:email},"/api/user")
+		store.dispatch(mode({mode:"repair"}))
 
 	},
 	draw_auth(){
@@ -167,6 +178,14 @@ export const user = {
 		qs('.user_modal').innerHTML = str
 	},
 
+	draw_repair(){
+		let str = `
+			<p>Если пользователь с такой почтой существует, ему будет отправлено письмо с ссылкой на восстановление пароля</p>
+			<button class="regular" type="button">Закрыть</button>
+		`
+		qs('.user_modal').innerHTML = str
+	},
+
 	listeners(){
 
 		let state = store.getState()
@@ -187,6 +206,9 @@ export const user = {
 				}
 				this.login(obj)
 			})
+
+			qs('.forgot span').addEventListener("click", _ =>
+			store.dispatch(mode({mode:"forgot"})))
 		}
 
 		if(state.mode == "reg"){
@@ -220,15 +242,21 @@ export const user = {
 
 		}
 
-		if(qs('.forgot span')){
-			qs('.forgot span').addEventListener("click", _ =>
-			store.dispatch(mode({mode:"forgot"})))
-		}
-
-		if(qs('form.forgot button.back')){
+		if(state.mode == "forgot"){
 			qs('form.forgot button.back').addEventListener("click", _ => 
 			store.dispatch(mode({mode:"auth"})))
+
+			qs('form.forgot').addEventListener("submit", event => {
+				event.preventDefault()
+				
+				this.repair_forgot(qs('input', event.target).value)
+			})
 		}
+		if(state.mode == 'repair'){
+			qs('.user_modal.open button').addEventListener("click", _ =>
+			store.dispatch(close()))
+		}
+
 	}
 }
 
