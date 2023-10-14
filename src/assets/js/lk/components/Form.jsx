@@ -8,7 +8,6 @@ export const Form = () => {
 	const[mode, setMode] = useState("auth")
 	if(user == undefined) return
 	if(user.username !== null) return 
-	
 	let form;
 	switch(mode){
 		case "auth":

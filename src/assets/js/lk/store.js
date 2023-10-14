@@ -18,13 +18,17 @@ const lkSlice = createSlice({
 			state.data = action.payload
 			state.loading = false
 			
+		},
+		repair_password:(state, action) => {
+			state.loading = false
+			state.repair = true
 		}
 
 		
   }
 })
 
-export const { add,set_current_user } = lkSlice.actions
+export const { add,set_current_user,repair_password } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer
