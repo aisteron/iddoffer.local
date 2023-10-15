@@ -4,9 +4,11 @@ import {xml} from '../libs'
 const lkSlice = createSlice({
   name: 'lk',
   initialState: {
-    loading: true
+    loading: true,
+		mode: null
   },
-  reducers: {
+  
+	reducers: {
 
 		add:(state, action) =>{
 			state.prods = action.payload
@@ -14,21 +16,23 @@ const lkSlice = createSlice({
 		},
 		set_current_user:(state, action) => {
 			
-			console.log(action.payload)
+			//console.log(action.payload)
+			action.payload.username === null && (state.mode = "auth")
 			state.data = action.payload
 			state.loading = false
 			
 		},
-		repair_password:(state, action) => {
+
+		set_mode:(state,action) => {
 			state.loading = false
-			state.repair = true
+			state.mode = action.payload
 		}
 
 		
   }
 })
 
-export const { add,set_current_user,repair_password } = lkSlice.actions
+export const { add,set_current_user,reset_password,set_mode } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer

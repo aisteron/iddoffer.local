@@ -1,32 +1,26 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { qs, xml } from "../../libs";
-import { set_current_user, store } from "../store";
+import { set_current_user, set_mode } from "../store";
 
 export const Form = () => {
-	const user = useSelector(state => state.data)
-	const[mode, setMode] = useState("auth")
-	if(user == undefined) return
-	if(user.username !== null) return 
-	let form;
-	switch(mode){
-		case "auth":
-			form = <FormAuth setMode={setMode}/>
-			break;
-		case "reg":
-			form = <FormReg setMode={setMode}/>
-			break;
-		case "repair":
-			form = <FormRepair setMode={setMode}/>	
-			break;
-	}
-	return form;
+
+	return(
+		<>
+			<FormAuth/>
+			<FormReg/>
+			<FormRepair/>
+			<FormReset />
+		</>
+	)
 	
 }
 
-export const FormAuth = ({setMode}) => {
+export const FormAuth = () => {
+	const mode = useSelector(state => state.mode)
 	const dispatch = useDispatch()
 	const[error, setError] = useState()
+	if(mode !== 'auth') return
 
 	const submit_auth = (e) => {
 		
@@ -58,14 +52,15 @@ export const FormAuth = ({setMode}) => {
 			<input type="submit" value="Submit"/>
 			<span className="error">{error}</span>
 		</form>
-		<p onClick={()=> setMode("reg")} className="create">Нет аккаунта? Создать</p>
-		<p onClick={()=> setMode("repair")} className="create">Восстановить пароль</p>
+		<p onClick={()=> dispatch(set_mode("reg"))} className="create">Нет аккаунта? Создать</p>
+		<p onClick={()=> dispatch(set_mode("repair"))} className="create">Восстановить пароль</p>
 		</>
 	)
 }
-
-
-export const FormReg = ({setMode}) => {
+export const FormReg = () => {
+	const mode = useSelector(state => state.mode)
+	const dispatch = useDispatch()
+	if(mode !== 'reg') return
 	return(
 		<>
 		<h3>Регистрация</h3>
@@ -76,12 +71,14 @@ export const FormReg = ({setMode}) => {
 			<input type="submit" value="Submit"/>
 			<span className="error"></span>
 		</form>
-		<p onClick={()=> setMode("auth")} className="create">Уже зареганы? Авторизоваться</p>
+		<p onClick={()=> dispatch(set_mode("auth"))} className="create">Уже зареганы? Авторизоваться</p>
 		</>
 	)
 }
-
-export const FormRepair = ({setMode}) => {
+export const FormRepair = () => {
+	const mode = useSelector(state => state.mode)
+	const dispatch = useDispatch()
+	if(mode !== 'repair') return
 	return(
 		<>
 		<h3>Восстановление пароля</h3>
@@ -90,7 +87,47 @@ export const FormRepair = ({setMode}) => {
 			<input type="submit" value="Submit"/>
 			<span className="error"></span>
 		</form>
-		<p onClick={()=> setMode("auth")} className="create">Назад</p>
+		<p onClick={()=> dispatch(set_mode("auth"))} className="create">Назад</p>
+		</>
+	)
+}
+const FormReset = () => {
+	
+	const mode = useSelector(state => state.mode)
+	const[error, setError] = useState()
+	const[message, setMessage] = useState()
+
+	const queryParameters = new URLSearchParams(window.location.search)
+  const token = queryParameters.get("token")
+
+	if(mode !== "reset") return
+
+	const submit_reset = async e => {
+		e.preventDefault()
+		let pswd = qs('[name="pswd"]',e.target)
+		let npswd = qs('[name="npswd"]',e.target)
+		
+		if(pswd.value !== npswd.value){
+			setError('Пароли не совпадают')
+			return;
+		}
+
+		await xml("reset_password",{pswd: pswd.value, token: token}, "/api/user")
+
+	}
+	
+	return(
+		<>
+		<h3>Сброс пароля</h3>
+		<form className="repair" onSubmit={e=>submit_reset(e)}>
+			
+			<input type="password" placeholder="Новый пароль" name="pswd"/>
+			<input type="password" placeholder="Повторите новый пароль" name="npswd"/>
+			<input type="submit" value="Submit"/>
+			<span className="error">{error}</span>
+			<span className="error">{message}</span>
+		</form>
+		
 		</>
 	)
 }
