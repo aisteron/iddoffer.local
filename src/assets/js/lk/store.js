@@ -16,10 +16,10 @@ const lkSlice = createSlice({
 		},
 		set_current_user:(state, action) => {
 			
-			//console.log(action.payload)
 			action.payload.username === null && (state.mode = "auth")
 			state.data = action.payload
 			state.loading = false
+			state.mode = action.payload.role
 			
 		},
 

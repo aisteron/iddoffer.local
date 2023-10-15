@@ -96,6 +96,7 @@ const FormReset = () => {
 	const mode = useSelector(state => state.mode)
 	const[error, setError] = useState()
 	const[message, setMessage] = useState()
+	const dispatch = useDispatch()
 
 	const queryParameters = new URLSearchParams(window.location.search)
   const token = queryParameters.get("token")
@@ -112,7 +113,15 @@ const FormReset = () => {
 			return;
 		}
 
-		await xml("reset_password",{pswd: pswd.value, token: token}, "/api/user")
+		let res = await xml("reset_password",{pswd: pswd.value, token: token}, "/api/user").then(r => JSON.parse(r))
+		
+		if(!res.success){
+			setError(res.message)
+			return
+		} else {
+			dispatch(set_current_user(res))
+		}
+		
 
 	}
 	
