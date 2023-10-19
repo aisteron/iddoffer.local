@@ -11,6 +11,7 @@ export const Form = () => {
 			<FormReg/>
 			<FormRepair/>
 			<FormReset />
+			<FormExpired />
 		</>
 	)
 	
@@ -78,6 +79,9 @@ export const FormReg = () => {
 export const FormRepair = () => {
 	const mode = useSelector(state => state.mode)
 	const dispatch = useDispatch()
+	const params = new URLSearchParams(window.location.search);
+	console.log(params)
+	params.delete("token");
 	if(mode !== 'repair') return
 	return(
 		<>
@@ -138,5 +142,19 @@ const FormReset = () => {
 		</form>
 		
 		</>
+	)
+}
+
+const FormExpired = () => {
+	const mode = useSelector(state => state.mode)
+	const dispatch = useDispatch()
+	
+	if(mode !== "expired") return
+
+	return(
+		<div className="expired">
+			<h3>Срок действия ссылки истек</h3>
+			<p>Вы можете попытаться отправить письмо <span onClick={_ => dispatch(set_mode("repair"))}>заново</span></p>
+		</div>
 	)
 }

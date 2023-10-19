@@ -19,7 +19,8 @@ const lkSlice = createSlice({
 			action.payload.username === null && (state.mode = "auth")
 			state.data = action.payload
 			state.loading = false
-			state.mode = action.payload.role
+
+			//state.mode = action.payload.role
 			
 		},
 
@@ -45,5 +46,15 @@ export const fetch_user_thunk = () => {
 
 		const response = await xml("get_current_user",null,"/api/user").then(r => JSON.parse(r))
 		dispatch(set_current_user(response))
+	}
+}
+
+export const check_expired_token_thunk = (token) => {
+	
+	return async function fetchUser(dispatch, getState){
+
+		const response = await xml("check_expired_token",{token: token},"/api/user").then(r => JSON.parse(r))
+		response.success ? dispatch(set_mode("reset")) : dispatch(set_mode("expired"))
+		//dispatch(set_current_user(response))
 	}
 }
