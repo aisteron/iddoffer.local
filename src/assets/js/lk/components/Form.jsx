@@ -12,6 +12,7 @@ export const Form = () => {
 			<FormRepair/>
 			<FormReset />
 			<FormExpired />
+			<FormRepairEmailSended />
 		</>
 	)
 	
@@ -79,13 +80,19 @@ export const FormReg = () => {
 export const FormRepair = () => {
 	const mode = useSelector(state => state.mode)
 	const dispatch = useDispatch()
+
+	const repair = async e => {
+		e.preventDefault()
+		await xml("repair_password",{email: qs('[type="email"]',e.target).value},'/api/user')
+		dispatch(set_mode("repair_email_sended"))
+	}
 	
 	if(mode !== 'repair') return
 	return(
 		<>
 		<h3>Восстановление пароля</h3>
-		<form className="repair">
-			<input type="email" placeholder="E-mail" />
+		<form className="repair" onSubmit={e=>repair(e)}>
+			<input type="email" placeholder="E-mail" required/>
 			<input type="submit" value="Submit"/>
 			<span className="error"></span>
 		</form>
@@ -157,6 +164,20 @@ const FormExpired = () => {
 					window.history.replaceState(null, '', window.location.pathname)
 					dispatch(set_mode("repair"))
 					}}>заново</span></p>
+		</div>
+	)
+}
+
+const FormRepairEmailSended = () => {
+	const mode = useSelector(state => state.mode)
+	const dispatch = useDispatch()
+	
+	if(mode !== "repair_email_sended") return
+
+	return(
+		<div className="expired">
+			<h3>Письмо с восстановлением пароля отправлено</h3>
+			<p>Если пользователь с таким адресом будет найден, к нему придет письмо с восстановлением пароля</p>
 		</div>
 	)
 }

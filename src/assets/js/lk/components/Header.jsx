@@ -10,8 +10,8 @@ export const Header = () => {
 	return(
 		<div id="header">
 			<SaveButton />
-			<a href="/">На сайт</a>
-			<span>Выйти</span>
+			<a href="/" className="tohome">На сайт</a>
+			<span className="exit">Выйти</span>
 			<img src="/assets/img/icons/user.svg" />
 		</div>
 	)

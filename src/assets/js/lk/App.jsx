@@ -4,6 +4,7 @@ import { Header } from "./components/Header.jsx";
 import { fetch_user_thunk, set_mode, store,check_expired_token_thunk } from "./store";
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./components/Form.jsx";
+import { UserForm } from "./components/UserForm.jsx";
 
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
 			<Loader/>
 			<Header/>
 			<Form />
+			<UserForm />
 			
 		</>
   );
