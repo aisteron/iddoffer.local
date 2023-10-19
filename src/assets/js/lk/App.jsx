@@ -15,7 +15,6 @@ export default function App() {
 	const queryParameters = new URLSearchParams(window.location.search)
   const token = queryParameters.get("token")
 	
-	// удалить search param token when reset password
 	
 	useEffect(()=>{
 		token

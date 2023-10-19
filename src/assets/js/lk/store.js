@@ -20,7 +20,7 @@ const lkSlice = createSlice({
 			state.data = action.payload
 			state.loading = false
 
-			//state.mode = action.payload.role
+			action.payload.role && (state.mode = action.payload.role)
 			
 		},
 

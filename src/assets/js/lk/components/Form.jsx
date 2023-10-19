@@ -49,7 +49,7 @@ export const FormAuth = () => {
 		<h3>Авторизация в личном кабинете</h3>
 		<form className="auth" onSubmit={e=>submit_auth(e)}>
 			<input type="email" placeholder="E-mail" required defaultValue="timotheus@list.ru"/>
-			<input type="password" placeholder="Password" required defaultValue="12345678"/>
+			<input type="password" placeholder="Password" required defaultValue="1"/>
 			<input type="submit" value="Submit"/>
 			<span className="error">{error}</span>
 		</form>
@@ -79,9 +79,7 @@ export const FormReg = () => {
 export const FormRepair = () => {
 	const mode = useSelector(state => state.mode)
 	const dispatch = useDispatch()
-	const params = new URLSearchParams(window.location.search);
-	console.log(params)
-	params.delete("token");
+	
 	if(mode !== 'repair') return
 	return(
 		<>
@@ -154,7 +152,11 @@ const FormExpired = () => {
 	return(
 		<div className="expired">
 			<h3>Срок действия ссылки истек</h3>
-			<p>Вы можете попытаться отправить письмо <span onClick={_ => dispatch(set_mode("repair"))}>заново</span></p>
+			<p>Вы можете попытаться отправить письмо&nbsp;
+				<span onClick={_ => {
+					window.history.replaceState(null, '', window.location.pathname)
+					dispatch(set_mode("repair"))
+					}}>заново</span></p>
 		</div>
 	)
 }
