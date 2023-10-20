@@ -3,8 +3,23 @@ import { useSelector } from "react-redux"
 
 export const UserForm = () => {
 	const user = useSelector(state => state.data)
-	const [file, setFile] = useState([])
+	const [file, setFile] = useState(null)
+	const [error, setError] = useState()
 	if(!user?.username) return
+
+	const handleFile = e => {
+
+		let file = e.target.files[0]
+		if((file.size / 1024 / 1024) > 5){
+				setError("Файл больше 5 Мб")
+		} else {
+		setFile(file)
+		}
+	}
+
+	const uploadFile = e => {
+
+	}
 	
 
 
@@ -37,7 +52,14 @@ export const UserForm = () => {
 				}): ''}
 			</ul>
 
-			<input type="file" />
+			<input type="file" onChange={e=>handleFile(e)}/>
+			{(file && !error) ? <button onClick={e=>uploadFile()}>Загрузить на сервер</button> : ''}
+			
+			<div className="comment">
+				<p>Размер файла до 5 Мб</p>
+				<p>Типы файлов: pdf, doc, docx, jpg</p>
+			</div>
+			
 
 
 		</div>

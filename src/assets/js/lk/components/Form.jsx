@@ -170,7 +170,6 @@ const FormExpired = () => {
 
 const FormRepairEmailSended = () => {
 	const mode = useSelector(state => state.mode)
-	const dispatch = useDispatch()
 	
 	if(mode !== "repair_email_sended") return
 
