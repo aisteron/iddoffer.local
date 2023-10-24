@@ -27,13 +27,24 @@ const lkSlice = createSlice({
 		set_mode:(state,action) => {
 			state.loading = false
 			state.mode = action.payload
+		},
+		user_upload_file:(state, action) =>{
+			let obj = {name: action.payload.name, path: action.payload.path}
+			
+			if(state.data.files){
+				let files = JSON.parse(state.data.files)
+				files.push(obj)
+				state.data.files = JSON.stringify(files)
+			} else {
+				state.data.files = "["+JSON.stringify(obj)+"]"
+			}
 		}
 
 		
   }
 })
 
-export const { add,set_current_user,reset_password,set_mode } = lkSlice.actions
+export const { add,set_current_user,reset_password,set_mode,user_upload_file } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer

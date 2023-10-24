@@ -1,13 +1,17 @@
-import React, { useState } from "react"
-import { useSelector } from "react-redux"
+import React, { useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { cfg } from "../../libs"
+import {user_upload_file} from '../store';
 
 export const UserForm = () => {
 	const user = useSelector(state => state.data)
+	const dispatch = useDispatch()
 	const [file, setFile] = useState(null)
 	const [error, setError] = useState()
+	const [loading, setLoading] = useState(false)
+	const fileInputRef = useRef(null)
 	if(!user?.username) return
-
+	
 	const handleFile = e => {
 		setError(null)
 		
@@ -44,6 +48,8 @@ export const UserForm = () => {
 			var formData = new FormData();
 			formData.append("myfile", file);
 			formData.append("action", "user_upload_file");
+			process.env.NODE_ENV && formData.append("userid", 2);
+			
 
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', `${cfg.host}/api/user`, true);
@@ -51,25 +57,34 @@ export const UserForm = () => {
 			xhr.onload = function () {
 				var status = xhr.status;
 				let resp = JSON.parse(xhr.response)
+				setLoading(false)
+				setFile(null)
 
 				if (status == 200) {
 					resolve(resp);
-					// вернется путь и имя файла
-					// надо обновить state, добавив туда их
-					// состояние кнопки загрузки
+					dispatch(user_upload_file(resp));
+					fileInputRef.current.value = ''
 				} else {
 					setError(resp.message)
 					reject(resp);
 				}
-		};
-
+				
+			};
+			setLoading(true)
 			xhr.send(formData);
 		})
 		
 
 	}
-	
 
+	const removeFileHandler = async e => {
+
+		let obj = {
+			name: e.target.previousElementSibling.innerHTML
+		}
+		process.env.NODE_ENV && (obj.userid = 2);
+		console.log(obj)
+	}
 
 	return(
 		<div className="userform">
@@ -84,7 +99,7 @@ export const UserForm = () => {
 
 			<span className="status">
 				<span>Статус:</span>
-				{user.status == 'approved'
+				{user.approved
 				? <span className="approved">Документы проверены</span>
 				: <span className="not_approved">Документы не проверены</span>
 			}
@@ -95,14 +110,17 @@ export const UserForm = () => {
 					return(
 						<li key={i}>
 							<a href={el.path} download>{el.name}</a>
-							<img src="/assets/img/icons/close_file.svg" className="remove"/>
+							<img src="/assets/img/icons/close_file.svg" className="remove" onClick={e=>removeFileHandler(e)}/>
 						</li>)
-				}): '<h5>Нет загруженных файлов</h5>'}
+				}): <h5>Нет загруженных файлов</h5>}
 			</ul>
 
 			{error && <span className="error">{error}</span>}
-			<input type="file" onChange={e=>handleFile(e)}/>
-			{(file && !error) ? <button onClick={e=>uploadFile(e)}>Загрузить на сервер</button> : ''}
+			<input type="file" onChange={e=>handleFile(e)} ref={fileInputRef}/>
+			{(file && !error)
+				? <button onClick={e=>uploadFile(e)}
+					className={`upload ${loading ? 'loading': ''}`}>Загрузить на сервер</button>
+				: ''}
 			
 			<div className="comment">
 				<p>Размер файла до 5 Мб</p>
