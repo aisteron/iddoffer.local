@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { cfg } from "../../libs"
-import {user_upload_file} from '../store';
+import { cfg, xml } from "../../libs"
+import {user_upload_file,user_remove_file} from '../store';
 
 export const UserForm = () => {
 	const user = useSelector(state => state.data)
@@ -17,7 +17,7 @@ export const UserForm = () => {
 		
 		let file = e.target.files[0]
 		let filetype = false
-		if(!file) return
+		if(!file){ setFile(null); return}
 
 		if((file.size / 1024 / 1024) > 5){
 			setError("Файл больше 5 Мб")
@@ -77,13 +77,19 @@ export const UserForm = () => {
 
 	}
 
-	const removeFileHandler = async e => {
+	const removeFile = async e => {
 
-		let obj = {
-			name: e.target.previousElementSibling.innerHTML
-		}
+		let obj = { name: e.target.previousElementSibling.innerHTML}
 		process.env.NODE_ENV && (obj.userid = 2);
-		console.log(obj)
+		
+		let res = await xml("user_remove_file", obj, '/api/user') // name, success
+		res = JSON.parse(res);
+
+		if(!res.success){
+			setError(res.message)
+		} else {
+			dispatch(user_remove_file(res.name));
+		}
 	}
 
 	return(
@@ -110,7 +116,7 @@ export const UserForm = () => {
 					return(
 						<li key={i}>
 							<a href={el.path} download>{el.name}</a>
-							<img src="/assets/img/icons/close_file.svg" className="remove" onClick={e=>removeFileHandler(e)}/>
+							<img src="/assets/img/icons/close_file.svg" className="remove" onClick={e=>removeFile(e)}/>
 						</li>)
 				}): <h5>Нет загруженных файлов</h5>}
 			</ul>
@@ -132,3 +138,11 @@ export const UserForm = () => {
 		</div>
 	)
 }
+
+// анимация иконки удаления
+// удаление / добавление => localStorage {notify: true}
+// клик по сохранить в хидере
+// добавит поле к отправляемому объекту notify, 
+// наличие которого отправит письмо менеджеру о том, что у пользователя
+// обновились документы
+// - и затрет localStorage

@@ -38,13 +38,18 @@ const lkSlice = createSlice({
 			} else {
 				state.data.files = "["+JSON.stringify(obj)+"]"
 			}
+		},
+		user_remove_file:(state, action) =>{
+			let files = JSON.parse(state.data.files)
+			files = files.filter(el => el.name !== action.payload)
+			state.data.files = JSON.stringify(files)
 		}
 
 		
   }
 })
 
-export const { add,set_current_user,reset_password,set_mode,user_upload_file } = lkSlice.actions
+export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer
