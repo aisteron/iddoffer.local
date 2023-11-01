@@ -46,7 +46,11 @@ export function User(){
 }
 
 export const user = {
-	async get_user(){ return await xml("get_current_user",null, '/api/user').then(r => JSON.parse(r))
+	async get_user(){ 
+		let access_token = localStorage.getItem("access_token")
+		
+		return await xml("get_current_user",{access_token: access_token}, '/api/user').then(r => JSON.parse(r))
+
 	},
 	async login(obj){
 
@@ -61,7 +65,8 @@ export const user = {
 		} else {
 			let obj = {
 				mode: "logged",
-				username: res.username
+				username: res.username,
+				access_token: res.access_token
 			}
 			store.dispatch(mode(obj))
 		}
@@ -73,17 +78,20 @@ export const user = {
 		store.dispatch(mode({mode:"repair"}))
 
 	},
+	async user_reg(obj){
+		await xml("user_reg", obj, "/api/user")
+	},
 	draw_auth(){
 		let str = `
 			<form class="auth">
 
 				<label>
-					<input type="text" required name="email" placeholder="Email">
+					<input type="text" required name="email" placeholder="Email" value="timotheus@list.ru">
 					<span class="error"></span>
 				</label>
 
 				<label>
-					<input type="password" required name="pswd" placeholder="Password">
+					<input type="password" required name="pswd" placeholder="Password" value="1">
 					<span class="error"></span>
 				</label>
 
@@ -212,13 +220,23 @@ export const user = {
 		}
 
 		if(state.mode == "reg"){
+			
 			qs('.buttons .transparent').addEventListener("click", _ =>{
 				store.dispatch(mode({mode:"auth"}))
 			})
-			qs('form.reg').addEventListener("sumbit", event => {
-				event.preventDefault()
-				console.log(0)
+
+			qs('form.reg').addEventListener("submit",  e => {
+				e.preventDefault()
+				let obj = {
+					email: qs('[name="email"]', e.target).value,
+					pswd: qs('[name="pswd"]', e.target).value
+				}
+				this.user_reg(obj)
+
 			})
+
+			compare_pswds()
+
 		}
 
 		if(state.mode == "logged"){
@@ -236,7 +254,8 @@ export const user = {
 			})
 
 			qs('.buttons .transparent').addEventListener("click", event => {
-				xml("logout", null, "/api/user")
+				//xml("logout", null, "/api/user")
+				localStorage.removeItem("access_token")
 				store.dispatch(mode({mode:"auth", username: null}))
 			})
 
@@ -265,11 +284,32 @@ async function predraw(){
 	icon.insertAdjacentHTML('afterend',`<div class="user_modal"></div>`)
 
 	let u = await user.get_user()
-	
+
 	u.username == null
 	? store.dispatch(mode({mode:"auth"}))
-	: store.dispatch(mode({mode:"logged", user: u.username}))
+	: store.dispatch(mode({mode:"logged", username: u.username}))
 
 	icon.addEventListener("click", _ => qs('.user_modal').classList.toggle('open'))
 
+}
+
+function compare_pswds(){
+	let p = qs('form.reg [name="pswd"]')
+	let np = qs('form.reg [name="repeat_pswd"]');
+	let erspan = qs('span.error', np.closest('label'));
+	
+	[p,np].forEach(el => {
+
+			["blur", "keyup"].forEach(ev => {
+				el.listen(ev, _ => {
+				+p.value !== +np.value 
+				? (erspan.innerHTML = "Пароли не совпадают", qs('form.reg [type="submit"]').disabled = true)
+				: (erspan.innerHTML = '', qs('form.reg [type="submit"]').disabled = false)
+				
+			})
+
+		})
+		
+	})
+	
 }

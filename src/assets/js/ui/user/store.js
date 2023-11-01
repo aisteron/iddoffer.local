@@ -12,19 +12,14 @@ const userSlice = createSlice({
 
   reducers: {
 
-    close: (state,action) => {
-
-
-      state.open = false
-      
-
-    },
+    close: (state) => { state.open = false },
 		mode:(state,action) => {
 			state.mode = action.payload.mode,
 			state.open = true
-			action.payload.username
-			&& (state.username = action.payload.username)
-		}
+			
+			action.payload.username !== undefined && (state.username = action.payload.username)
+			action.payload.access_token && localStorage.setItem("access_token", action.payload.access_token)
+		},
   
 		
   }

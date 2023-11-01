@@ -1,5 +1,5 @@
 import "regenerator-runtime/runtime.js";
-
+Node.prototype.listen = Node.prototype.addEventListener;
 export const cfg = {
 	//prefix: process.env.NODE_ENV == 'development' ? "dev." : "",
 	prefix: ""
