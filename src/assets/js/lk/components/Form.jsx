@@ -13,6 +13,9 @@ export const Form = () => {
 			<FormReset />
 			<FormExpired />
 			<FormRepairEmailSended />
+			<FormActivated />
+			<FormExpiredActivation />
+			<FormInvalidToken/>
 		</>
 	)
 	
@@ -170,7 +173,6 @@ const FormExpired = () => {
 
 const FormRepairEmailSended = () => {
 	const mode = useSelector(state => state.mode)
-	
 	if(mode !== "repair_email_sended") return
 
 	return(
@@ -180,3 +182,52 @@ const FormRepairEmailSended = () => {
 		</div>
 	)
 }
+
+const FormActivated = () => {
+	const mode = useSelector(state => state.mode)
+	const dispatch = useDispatch()
+	if(mode !== "activated") return
+
+	return(
+		<div className="activated">
+			<h3>Профиль активирован</h3>
+			<p>Для авторизации кликните <span onClick={_ => {
+					window.history.replaceState(null, '', window.location.pathname)
+					dispatch(set_mode("auth"))
+					}} className="link">сюда</span></p>
+		</div>
+	)
+}
+
+const FormExpiredActivation = () => {
+	const mode = useSelector(state => state.mode)
+	
+	if(mode !== "expired_activation") return
+
+	return(
+		<div className="expired_activation">
+			<h3>Срок действия ссылки истек</h3>
+			<p>Больше по этой ссылке нельзя активировать пользователя</p>
+		</div>
+	)
+}
+
+const FormInvalidToken = () => {
+	const dispatch = useDispatch()
+	const mode = useSelector(state => state.mode)
+	
+	if(mode !== "invalid_token") return
+
+	return(
+		<div className="invalid_token">
+			<h3>Ошибка проверки токена</h3>
+			<p>Invalid token</p>
+			<p>(токен не найден)</p>
+			<p>Для авторизации кликните <span onClick={_ => {
+					window.history.replaceState(null, '', window.location.pathname)
+					dispatch(set_mode("auth"))
+					}} className="link">сюда</span></p>
+		</div>
+	)
+}
+

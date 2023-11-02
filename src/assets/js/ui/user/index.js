@@ -15,29 +15,30 @@ export function User(){
 		console.log(state)
 		
 		if(!state.open) {
-			qs('.user_modal').classList.remove('open').innerHTML = '';
+			qs('.user_modal').classList.remove('open')
+			qs('.user_modal').innerHTML = '';
+			return
+		}
 
-			return}
+		switch(state.mode){
+			case 'auth':
+				user.draw_auth()
+				break;
+			case 'reg':
+				user.draw_reg()
+				break;
+			case 'forgot':
+				user.draw_forgot()
+				break;
+			case 'logged':
+				user.draw_logged()
+				break;
+			case 'repair':
+				user.draw_repair()
+				break;
+		}
 
-			switch(state.mode){
-				case 'auth':
-					user.draw_auth()
-					break;
-				case 'reg':
-					user.draw_reg()
-					break;
-				case 'forgot':
-					user.draw_forgot()
-					break;
-				case 'logged':
-					user.draw_logged()
-					break;
-				case 'repair':
-					user.draw_repair()
-					break;
-			}
-
-			user.listeners()	
+		user.listeners()	
 
 	
 	})
@@ -79,7 +80,24 @@ export const user = {
 
 	},
 	async user_reg(obj){
-		await xml("user_reg", obj, "/api/user")
+		let res = await xml("user_reg", obj, "/api/user").then(r => JSON.parse(r))
+		
+		if(!res.success){
+			res.message.includes('1062') && (res.message = 'Пользователь с такой почтой существует')
+			qs('[name="repeat_pswd"]').nextElementSibling.innerHTML = res.message 
+			return
+		}
+
+		let str = `
+			<h3>Успешно!</h3>
+			<p>На указанную почту было отправлено письмо с активацией аккаунта </p>
+			<button class="regular" type="button">Закрыть</button>
+		`
+		qs('.user_modal').innerHTML = str 
+
+		qs('.user_modal.open button').addEventListener("click", _ =>
+		store.dispatch(close()))
+
 	},
 	draw_auth(){
 		let str = `

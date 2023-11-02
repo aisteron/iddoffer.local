@@ -65,12 +65,30 @@ export const fetch_user_thunk = () => {
 	}
 }
 
-export const check_expired_token_thunk = (token) => {
-	
-	return async function fetchUser(dispatch, getState){
+export const check_expired_token_thunk = (token, type) => {
 
-		const response = await xml("check_expired_token",{token: token},"/api/user").then(r => JSON.parse(r))
-		response.success ? dispatch(set_mode("reset")) : dispatch(set_mode("expired"))
-		//dispatch(set_current_user(response))
+	
+	
+	return async function fetchUser(dispatch){
+
+
+		const response = await xml("check_expired_token",{type:type, token: token},"/api/user").then(r => JSON.parse(r))
+
+		if(response.message == "Invalid token"){
+			dispatch(set_mode("invalid_token"))
+			return
+		}
+
+
+		if(type == 'repair'){
+			response.success ? dispatch(set_mode("reset")) : dispatch(set_mode("expired"))
+		}
+
+		(type == 'activate' && response.success) && dispatch(set_mode("activated"))
+
+
+		
 	}
+
+
 }

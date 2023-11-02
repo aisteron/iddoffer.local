@@ -15,13 +15,16 @@ export default function App() {
 
 	const queryParameters = new URLSearchParams(window.location.search)
   const token = queryParameters.get("token")
-	
-	
+	const activate_token = queryParameters.get("activate_token")
+
+
 	useEffect(()=>{
-		token
-		//? dispatch(set_mode("reset"))
-		? dispatch(check_expired_token_thunk(token))
-		: dispatch(fetch_user_thunk())
+
+		if(token) { dispatch(check_expired_token_thunk(token, 'repair')); return }
+		if(activate_token) { dispatch(check_expired_token_thunk(activate_token, 'activate')); return}
+
+		dispatch(fetch_user_thunk())
+		
 	},[])
 	
 	
