@@ -10,10 +10,7 @@ const lkSlice = createSlice({
   
 	reducers: {
 
-		add:(state, action) =>{
-			state.prods = action.payload
 
-		},
 		set_current_user:(state, action) => {
 			
 			action.payload.username === null && (state.mode = "auth")
@@ -43,13 +40,18 @@ const lkSlice = createSlice({
 			let files = JSON.parse(state.data.files)
 			files = files.filter(el => el.name !== action.payload)
 			state.data.files = JSON.stringify(files)
+		},
+		user_exit:(state, action) =>{
+			localStorage.removeItem("access_token")
+			delete state.data
+			state.mode = "auth"
 		}
 
 		
   }
 })
 
-export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file } = lkSlice.actions
+export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file, user_exit } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer

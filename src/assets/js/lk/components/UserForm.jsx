@@ -94,7 +94,7 @@ export const UserForm = () => {
 
 	return(
 		<div className="userform">
-			<input type="text" className="fullname" defaultValue={user.fullname}/>
+			<input type="text" className="fullname" defaultValue={user.fullname} placeholder="Полное имя"/>
 			<input type="email" className="email" defaultValue={user.email} disabled/>
 			
 			<label>

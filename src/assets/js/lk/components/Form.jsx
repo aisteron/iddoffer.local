@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { qs, xml } from "../../libs";
 import { set_current_user, set_mode } from "../store";
@@ -65,16 +65,32 @@ export const FormAuth = () => {
 export const FormReg = () => {
 	const mode = useSelector(state => state.mode)
 	const dispatch = useDispatch()
+	const pswd_input = useRef()
+	const r_pswd_input = useRef()
+	const [error, setError] = useState(null)
 	if(mode !== 'reg') return
+
+	const reg = e => {
+		e.preventDefault()
+		console.log(0)
+
+	}
+
+	const check = () => {
+		pswd_input.current.value !== r_pswd_input.current.value
+		? setError("Пароли отличаются")
+		: setError(null)
+	}
+	
 	return(
 		<>
 		<h3>Регистрация</h3>
-		<form className="auth">
-			<input type="email" placeholder="E-mail" />
-			<input type="password" placeholder="Password" />
-			<input type="password" placeholder="Repeat password" />
-			<input type="submit" value="Submit"/>
-			<span className="error"></span>
+		<form className="auth" onSubmit={e => reg(e)}>
+			<input type="text" placeholder="E-mail" required/>
+			<input type="password" placeholder="Password" required ref={pswd_input} onBlur={_=>check()} onKeyUp={_=>check()}/>
+			<input type="password" placeholder="Repeat password" required ref={r_pswd_input} onBlur={_=>check()}/>
+			<input type="submit" value="Submit" disabled={error ? 'disabled' : false}/>
+			<span className="error">{error}</span>
 		</form>
 		<p onClick={()=> dispatch(set_mode("auth"))} className="create">Уже зареганы? Авторизоваться</p>
 		</>
