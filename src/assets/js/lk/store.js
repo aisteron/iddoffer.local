@@ -18,6 +18,8 @@ const lkSlice = createSlice({
 			state.loading = false
 
 			action.payload.role && (state.mode = action.payload.role)
+			localStorage.setItem("access_token", action.payload.access_token)
+
 			
 		},
 
@@ -45,13 +47,17 @@ const lkSlice = createSlice({
 			localStorage.removeItem("access_token")
 			delete state.data
 			state.mode = "auth"
+		},
+
+		user_rename:(state,action) =>{
+			state.data.fullname = action.payload
 		}
 
 		
   }
 })
 
-export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file, user_exit } = lkSlice.actions
+export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file, user_exit,user_rename } = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer
@@ -61,8 +67,8 @@ export const store = configureStore({
 export const fetch_user_thunk = () => {
 	
 	return async function fetchUser(dispatch, getState){
-
-		const response = await xml("get_current_user",null,"/api/user").then(r => JSON.parse(r))
+		let access_token = localStorage.getItem("access_token") || null
+		const response = await xml("get_current_user",{access_token},"/api/user").then(r => JSON.parse(r))
 		dispatch(set_current_user(response))
 	}
 }

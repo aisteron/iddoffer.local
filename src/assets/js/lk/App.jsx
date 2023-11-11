@@ -34,7 +34,7 @@ export default function App() {
 			<Header/>
 			<Form />
 			<UserForm />
-			
+			<div className="scripts-area"></div>
 		</>
   );
 }

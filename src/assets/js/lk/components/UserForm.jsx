@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { cfg, xml } from "../../libs"
-import {user_upload_file,user_remove_file} from '../store';
+import {user_upload_file,user_remove_file, user_rename} from '../store';
 
 export const UserForm = () => {
 	const user = useSelector(state => state.data)
@@ -44,11 +44,13 @@ export const UserForm = () => {
 	}
 
 	const uploadFile = async e => {
+		let access_token = localStorage.getItem("acess_token")
+
 		return new Promise((resolve, reject) => {
 			var formData = new FormData();
 			formData.append("myfile", file);
 			formData.append("action", "user_upload_file");
-			process.env.NODE_ENV && formData.append("userid", 2);
+			formData.append("access_token", access_token);
 			
 
 			var xhr = new XMLHttpRequest();
@@ -92,9 +94,14 @@ export const UserForm = () => {
 		}
 	}
 
+
 	return(
 		<div className="userform">
-			<input type="text" className="fullname" defaultValue={user.fullname} placeholder="Полное имя"/>
+			<input type="text" 
+			className="fullname" 
+			defaultValue={user.fullname} 
+			placeholder="Полное имя" 
+			onBlur={e=>dispatch(user_rename(e.target.value))}/>
 			<input type="email" className="email" defaultValue={user.email} disabled/>
 			
 			<label>
@@ -139,10 +146,3 @@ export const UserForm = () => {
 	)
 }
 
-// анимация иконки удаления
-// удаление / добавление => localStorage {notify: true}
-// клик по сохранить в хидере
-// добавит поле к отправляемому объекту notify, 
-// наличие которого отправит письмо менеджеру о том, что у пользователя
-// обновились документы
-// - и затрет localStorage
