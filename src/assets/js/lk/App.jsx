@@ -5,6 +5,7 @@ import { fetch_user_thunk, set_mode, store,check_expired_token_thunk } from "./s
 import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./components/Form.jsx";
 import { UserForm } from "./components/UserForm.jsx";
+import { AdminForm } from "./components/AdminForm.jsx";
 
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
 			<Header/>
 			<Form />
 			<UserForm />
+			<AdminForm />
 			<div className="scripts-area"></div>
 		</>
   );

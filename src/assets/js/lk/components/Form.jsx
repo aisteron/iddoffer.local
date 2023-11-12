@@ -32,7 +32,7 @@ export const FormAuth = () => {
 		e.preventDefault()
 		
 		let obj = {
-			username: qs('input[type="email"]', e.target).value,
+			username: qs('input[type="text"]', e.target).value,
 			password: qs('input[type="password"]', e.target).value
 		}
 
@@ -52,8 +52,8 @@ export const FormAuth = () => {
 		<>
 		<h3>Авторизация в личном кабинете</h3>
 		<form className="auth" onSubmit={e=>submit_auth(e)}>
-			<input type="email" placeholder="E-mail" required defaultValue="timotheus@list.ru"/>
-			<input type="password" placeholder="Password" required defaultValue="1"/>
+			<input type="text" placeholder="E-mail" required defaultValue="iddoffer"/>
+			<input type="password" placeholder="Password" required defaultValue="po106714"/>
 			<input type="submit" value="Submit"/>
 			<span className="error">{error}</span>
 		</form>

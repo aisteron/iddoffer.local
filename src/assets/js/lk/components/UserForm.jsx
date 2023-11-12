@@ -10,7 +10,7 @@ export const UserForm = () => {
 	const [error, setError] = useState()
 	const [loading, setLoading] = useState(false)
 	const fileInputRef = useRef(null)
-	if(!user?.username) return
+	if(user?.role !== "user") return
 	
 	const handleFile = e => {
 		setError(null)
@@ -44,7 +44,7 @@ export const UserForm = () => {
 	}
 
 	const uploadFile = async e => {
-		let access_token = localStorage.getItem("acess_token")
+		let access_token = localStorage.getItem("access_token")
 
 		return new Promise((resolve, reject) => {
 			var formData = new FormData();
@@ -81,8 +81,11 @@ export const UserForm = () => {
 
 	const removeFile = async e => {
 
-		let obj = { name: e.target.previousElementSibling.innerHTML}
-		process.env.NODE_ENV && (obj.userid = 2);
+		let obj = { 
+			name: e.target.previousElementSibling.innerHTML,
+			access_token: localStorage.getItem("access_token")
+		}
+
 		
 		let res = await xml("user_remove_file", obj, '/api/user') // name, success
 		res = JSON.parse(res);
