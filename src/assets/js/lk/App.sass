@@ -116,3 +116,28 @@ body.lk-page
 				cursor: pointer
 				&:hover
 					text-decoration: none
+	#admin_area
+		ul.header, ul.body li
+			display: grid
+			grid-template-columns: 150px repeat(3, 1fr)
+			align-items: center
+			gap: 10px
+		ul.header
+			background-color: #eee
+			margin-bottom: 1rem
+		ul.body li
+			&:not(:last-child)
+				margin-bottom: 10px
+			select, input[type="number"]
+				width: 50px
+			&:nth-of-type(2n)
+				background-color: #f6f6f6
+	.user_area
+		display: flex
+		flex-direction: column
+		gap: 1rem
+		input[type="text"]
+			width:  30%
+
+					
+

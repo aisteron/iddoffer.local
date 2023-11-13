@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form } from "./components/Form.jsx";
 import { UserForm } from "./components/UserForm.jsx";
 import { AdminForm } from "./components/AdminForm.jsx";
-
+import { BrowserRouter } from 'react-router-dom';
 
 export default function App() {
 
@@ -30,14 +30,14 @@ export default function App() {
 	
 	
 	return (
-		<>
+		<BrowserRouter>
 			<Loader/>
 			<Header/>
 			<Form />
 			<UserForm />
 			<AdminForm />
 			<div className="scripts-area"></div>
-		</>
+		</BrowserRouter>
   );
 }
 

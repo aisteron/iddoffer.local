@@ -21,6 +21,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       app.use(bodyParser.urlencoded({extended : true}));
       app.use(bodyParser.json());
 
+
+
+			app.get('/users/*', (req, res) => {
+				res.redirect('/lk.html');
+			});
+
       app.post('/api/cart', (req, res) => {
           
           if(req.body.action == 'get_order'){

@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { user_exit } from "../store";
 import { load_toast, xml } from "../../libs";
+import { useLocation, Link } from "react-router-dom";
 
 export const Header = () => {
 	const user = useSelector(state => state.data)
@@ -18,6 +19,7 @@ export const Header = () => {
 	
 	return(
 		<div id="header">
+			<BackToUsersList />
 			<SaveButton />
 			<a href="/" className="tohome">На сайт</a>
 			<span className="exit" onClick={_=>exit()}>Выйти</span>
@@ -44,5 +46,24 @@ const SaveButton = () => {
 		<div className="save">
 			<button className="save" onClick={_=>save()}>Сохранить</button>
 		</div>
+	)
+}
+
+const BackToUsersList = ()=> {
+	const mode = useSelector(state => state.mode)
+	const location = useLocation();
+	if(mode !== 'admin') return
+	
+
+  useEffect(() => {
+    console.log('Location changed', location);
+  }, [location]);
+
+	if(!location.pathname.includes('users')) return
+
+	return(
+		<Link to={'/lk.html'} >
+			<span>К списку</span>
+		</Link>
 	)
 }
