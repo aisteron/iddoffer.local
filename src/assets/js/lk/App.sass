@@ -138,6 +138,31 @@ body.lk-page
 		gap: 1rem
 		input[type="text"]
 			width:  30%
+		label
+			cursor: pointer
+			&:hover
+				opacity: 0.8
+			input
+				& + span
+					display: inline-block
+					margin-left: 5px
+				&:checked ~ span
+					color: blue	
+
+		ul.files
+			li
+				display: flex
+				align-items: center
+				gap: 10px
+				a
+					text-decoration: underline
+					color: blue
+					&:hover
+						text-decoration: none
+				img.remove
+					cursor: pointer
+					&:hover
+						opacity: 0.6
 
 					
 

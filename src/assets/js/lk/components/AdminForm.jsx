@@ -63,11 +63,13 @@ const User = () => {
 	return(
 		<div className="user_area">
 			<input type="text" defaultValue={u.email} disabled/>
+			
 			<label>
-
 				<input type="text" defaultValue={u.discount}/>
 				<span> % скидки</span>
 			</label>
+
+			<UserFiles files={u.files}/>
 
 			<label>
 				<input type="checkbox" defaultChecked={u.approved}/>
@@ -79,5 +81,26 @@ const User = () => {
 				<span>Заблокирован</span>
 			</label>
 		</div>
+	)
+}
+
+const UserFiles = ({files}) => {
+	if(!files.length) return <p>Документы не загружены</p>
+
+	const remove = () =>{
+		console.log('remove')
+	}
+
+	return(
+		<ul className="files">
+			{files.map(f => {
+				return(
+					<li key={f.path}>
+						<a href={f.path} target="_blank" >{f.name}</a>
+						<img src="/assets/img/icons/close_file.svg" className="remove" onClick = {_=>remove()}/>
+					</li>
+				)
+			})}
+		</ul>
 	)
 }

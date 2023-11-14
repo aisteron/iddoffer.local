@@ -56,7 +56,7 @@ const BackToUsersList = ()=> {
 	
 
   useEffect(() => {
-    console.log('Location changed', location);
+    //console.log('Location changed', location);
   }, [location]);
 
 	if(!location.pathname.includes('users')) return
