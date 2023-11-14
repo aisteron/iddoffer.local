@@ -20,7 +20,8 @@ export const Header = () => {
 	return(
 		<div id="header">
 			<BackToUsersList />
-			<SaveButton />
+			<SaveButtonUserMode />
+			<SaveButtonAdminMode />
 			<a href="/" className="tohome">На сайт</a>
 			<span className="exit" onClick={_=>exit()}>Выйти</span>
 			<img src="/assets/img/icons/user.svg" />
@@ -28,9 +29,12 @@ export const Header = () => {
 	)
 }
 
-const SaveButton = () => {
+const SaveButtonUserMode = () => {
 
 	const user = useSelector(state => state.data)
+	const mode = useSelector(state => state.mode)
+	if(mode !== 'user') return
+
 	let access_token = localStorage.getItem('access_token')
 
 	const save = async () => {
@@ -53,17 +57,35 @@ const BackToUsersList = ()=> {
 	const mode = useSelector(state => state.mode)
 	const location = useLocation();
 	if(mode !== 'admin') return
-	
-
-  useEffect(() => {
-    //console.log('Location changed', location);
-  }, [location]);
-
 	if(!location.pathname.includes('users')) return
 
 	return(
 		<Link to={'/lk.html'} >
 			<span>К списку</span>
 		</Link>
+	)
+}
+
+const SaveButtonAdminMode = () => {
+	const mode = useSelector(state => state.mode)
+	const users = useSelector(state => state.data.users)
+	const selectedUserId = useSelector(state => state.selected)
+	const location = useLocation();
+	if(mode !== 'admin') return
+	if(!location.pathname.includes('users')) return
+
+	const save = async () => {
+		let u = users.filter(u => u.id == selectedUserId)[0]
+		let token = localStorage.getItem('access_token')
+
+		await xml('admin_save_user', {user:u, access_token:token}, '/api/user')
+		console.log('save')
+	}
+	
+
+	return(
+		<div className="save au">
+			<button className="save" onClick={_=>save()} disabled={!selectedUserId}>Сохранить</button>
+		</div>
 	)
 }

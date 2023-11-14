@@ -51,13 +51,31 @@ const lkSlice = createSlice({
 
 		user_rename:(state,action) =>{
 			state.data.fullname = action.payload
-		}
+		},
+
+		admin_update_user_page: (state, action) => {
+			state.data.users = state.data.users.map(u => u.id == action.payload.id ? action.payload : u)
+			state.selected = action.payload.id
+		},
+
 
 		
   }
 })
 
-export const { add,set_current_user,reset_password,set_mode,user_upload_file,user_remove_file, user_exit,user_rename } = lkSlice.actions
+export const { set_current_user,
+	reset_password,
+	set_mode,
+
+	user_upload_file,
+	user_remove_file, 
+	user_exit,
+	user_rename,
+
+	admin_update_user_page,
+	select_user
+
+} = lkSlice.actions
 
 export const store = configureStore({
   reducer: lkSlice.reducer

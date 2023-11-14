@@ -32,7 +32,8 @@ body.lk-page
 		#header
 			display: flex
 			align-items: center
-			justify-content: space-between
+			//justify-content: space-between
+			justify-content: flex-end
 			gap: 1rem
 			margin: 0 -1rem
 			padding: 0 1rem
@@ -41,6 +42,10 @@ body.lk-page
 			border-bottom: 1px solid #ccc
 			.save
 				flex-grow: 1
+				&.au button
+
+					&:before
+						content: '✔ '
 			.exit, .tohome
 				cursor: pointer
 				text-decoration: underline
