@@ -1,8 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { user_exit } from "../store";
 import { load_toast, xml } from "../../libs";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useSearchParams } from "react-router-dom";
 
 export const Header = () => {
 	const user = useSelector(state => state.data)
@@ -13,6 +13,7 @@ export const Header = () => {
 	const exit = () => {
 		localStorage.removeItem('access_token')
 		dispatch(user_exit())
+
 	}
 
 
@@ -23,7 +24,7 @@ export const Header = () => {
 			<SaveButtonUserMode />
 			<SaveButtonAdminMode />
 			<a href="/" className="tohome">На сайт</a>
-			<span className="exit" onClick={_=>exit()}>Выйти</span>
+			<Link to="/lk.html" className="exit" onClick={_=>exit()}>Выйти</Link>
 			<img src="/assets/img/icons/user.svg" />
 		</div>
 	)
@@ -69,23 +70,41 @@ const BackToUsersList = ()=> {
 const SaveButtonAdminMode = () => {
 	const mode = useSelector(state => state.mode)
 	const users = useSelector(state => state.data.users)
-	const selectedUserId = useSelector(state => state.selected)
 	const location = useLocation();
+	const selectedUserId = +location.pathname.split("/")[2]
+	const [error, setError] = useState(null)
 	if(mode !== 'admin') return
 	if(!location.pathname.includes('users')) return
 
 	const save = async () => {
 		let u = users.filter(u => u.id == selectedUserId)[0]
 		let token = localStorage.getItem('access_token')
+		
+		let resp = await xml(
+			'admin_save_user', 
+			{user:u, access_token:token}, 
+			'/api/user')
+			
+			try {
+				resp = JSON.parse(resp)
+			} catch(e){
+				setError("Ошибка сервера")
+				setTimeout(()=>setError(null),2000)
+			}
+			
+			if(!error){
+				await load_toast()
+				new Snackbar(resp.success ? 'Успешно сохранено': resp.message)
 
-		await xml('admin_save_user', {user:u, access_token:token}, '/api/user')
-		console.log('save')
+			}
 	}
 	
 
+
 	return(
 		<div className="save au">
-			<button className="save" onClick={_=>save()} disabled={!selectedUserId}>Сохранить</button>
+			<button className="save" onClick={_=>save()}>Сохранить</button>
+			<span className="error">{error}</span>
 		</div>
 	)
 }

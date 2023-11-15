@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux"
-import { admin_update_user_page,select_user } from "../store";
+import { admin_update_user_page, } from "../store";
+import { load_toast, xml } from "../../libs";
 
 export const AdminForm = () => {
 	const mode = useSelector(state => state.mode)
@@ -17,7 +18,31 @@ export const AdminForm = () => {
 	)
 }
 
-const Table = (users) => {
+const Table = ({users}) => {
+	const dispatch = useDispatch()
+	
+	const change = async (e, userid, type) => {
+		
+		let u = users.filter(u => u.id == userid)[0]
+		let val = e.target.value == 'да' ? true : e.target.value == 'нет' ? false : +e.target.value
+
+		u = {...u, [type]: val}
+
+		dispatch(admin_update_user_page(u))
+
+		let token = localStorage.getItem('access_token')
+		
+		let resp = await xml(
+			'admin_save_user', 
+			{user:u, access_token:token}, 
+			'/api/user').then(r => JSON.parse(r))
+		
+			await load_toast()
+			new Snackbar(resp.success ? 'Успешно сохранено': resp.message)
+		
+
+		
+	}
 
 	
 	return(
@@ -29,23 +54,30 @@ const Table = (users) => {
 				<li>Заблокирован</li>
 			</ul>
 			<ul className="body">
-				{users.users.map(u => {
+				{users.map(u => {
 
-					return(
+					return (
 						<li key={u.id}>
+
 								<Link to={'/users/' + u.id}>
 									<span>{u.email}</span>
 								</Link>
 
-								<select>
-									<option defaultValue={u.approved}> да</option>
-									<option > нет</option>
+								<select
+									defaultValue={u.approved ? 'да': 'нет'}
+									onChange={e => change(e, u.id, 'approved')}>
+										<option> да</option>
+										<option> нет</option>
 								</select>
 
-								<input type="number" defaultValue={u.discount} min="1" max="100"/>
+								<input type="number"
+									defaultValue={u.discount} min="1" max="100"
+									onChange={e => change(e, u.id, 'discount')}/>
 
-								<select>
-									<option defaultValue={u.blocked}> да</option>
+								<select
+								defaultValue={u.blocked ? 'да': 'нет'}
+								onChange={e => change(e, u.id, 'blocked')}>
+									<option> да</option>
 									<option> нет</option>
 								</select>
 						</li>
@@ -140,8 +172,5 @@ const UserFiles = ({user}) => {
 	)
 }
 
-// выход из iddoffer поменять url на lk.html
-// по сохранению юзера показать попап
-// и дизейбл кнопки "сохранить"
 
 // работа со списком пользователей

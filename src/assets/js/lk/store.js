@@ -55,7 +55,6 @@ const lkSlice = createSlice({
 
 		admin_update_user_page: (state, action) => {
 			state.data.users = state.data.users.map(u => u.id == action.payload.id ? action.payload : u)
-			state.selected = action.payload.id
 		},
 
 
