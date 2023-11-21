@@ -312,6 +312,11 @@ async function predraw(){
 	: store.dispatch(mode({mode:"logged", username: u.username}))
 
 	icon.addEventListener("click", _ => qs('.user_modal').classList.toggle('open'))
+	document.listen("click", e => {
+		if(e.target == icon) return
+		if(qs('.user_modal').contains(e.target)) return
+		qs('.user_modal').classList.remove('open')
+	})
 
 }
 

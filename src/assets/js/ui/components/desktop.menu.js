@@ -185,6 +185,8 @@ export function replace_currency(selectedCur){
 
 	qsa('span.cur').forEach(el => el.innerHTML = selectedCurrencyInLocalStorage ? selectedCurrencyInLocalStorage : 'BYN')
 
+	replace_cart_discount()
+
 
 }
 
@@ -230,6 +232,25 @@ function search(){
 		})
 		
 		qs('.area .results ul').innerHTML = str
+	})
+
+}
+
+function replace_cart_discount(){
+	if(!qs('.cart-page')) return
+	if(!qs('.item[key]')) return
+
+	qsa('.item[key]').forEach(el =>{
+
+		let prod_discount = +qs('.right .prod_discount', el).innerHTML.split("%")[0]
+		let user_discount = +localStorage.getItem("discount")
+		let final_discount = (prod_discount - user_discount > 0) ? prod_discount : user_discount
+		
+		qs('.right .prod_discount', el).innerHTML = prod_discount + '%'
+		qs('.right .user_discount', el).innerHTML = user_discount + '%'
+		qs('.right .final_discount', el).innerHTML = final_discount + '%'
+
+			
 	})
 
 }

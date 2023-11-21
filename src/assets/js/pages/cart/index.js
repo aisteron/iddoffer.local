@@ -151,20 +151,22 @@ export const cart = {
 						
 						<ul class="left">
 							<li class="name">Наименование</li>
-							<li class="price">Цена, <span class="cur">р.</span></li>
+							<li class="price">Цена, BYN</li>
 							<li class="prod_discount">Скидка продукта</li>
 							<li class="user_discount">Скидка пользователя</li>
 							<li class="final_discount">Скидка итоговая</li>
+							<li class="final_price">Цена со скидкой, <span class="cur">р.</span></li>
 							<li class="count">Количество</li>
 							<li class="itog">Итого, <span class="cur">р.</span></li>
 						</ul>
 
 						<ul class="right">
 							<li class="name"><a href="${cfg.host}/${prod.uri}">${prod.name}</a></li>
-							<li class="price" byn="${prod.price}">${price}</li>
-							<li class="prod_discount">${prod.discount} %</li>
-							<li class="user_discount">${user_discount ? user_discount : "-"} %</li>
-							<li class="final_discount">${final_discount ? final_discount : "-"} %</li>
+							<li class="price">${prod.price}</li>
+							<li class="prod_discount">${prod.discount ? prod.discount+`%`: "-"}</li>
+							<li class="user_discount">${user_discount ? user_discount+`%` : "-"}</li>
+							<li class="final_discount">${final_discount ? final_discount+`%` : "-"}</li>
+							<li class="final_price" byn="${price}">${price}</li>
 							<li class="count">
 
 								<div class="wrap">
@@ -175,7 +177,7 @@ export const cart = {
 								<img class="remove" src="/assets/img/icons/trash.svg" width="18" height="17">
 
 							</li>
-							<li class="itog" byn="${prod.price * prod.count}">${price * prod.count}</li>
+							<li class="itog" byn="${price * prod.count}">${price * prod.count}</li>
 							<li>
 								<ul class="stats">
 									
