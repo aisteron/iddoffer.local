@@ -151,45 +151,41 @@ async function currency(){
 
 }
 
-export function replace_currency(current){
+export function replace_currency(selectedCur){
 
-	// current ~ USD: string
+	// selectedCur <string | undefined>
 
-	let cur = localStorage.getItem('cur')
-	
-	if(!current){
+	const LSCurrency = localStorage.getItem("cur")  // string | undefined
+	let userDiscount = localStorage.getItem("discount") // string | undefined
+	const selectedCurrencyInLocalStorage = LSCurrency ? JSON.parse(LSCurrency).filter(el => el.current)[0]?.current : null
 
-		// on page load case
-		
-		if(!cur) return
-		current = JSON.parse(cur).filter(el => el.current)
-		
-		if(!current.length) return
-		if(cur[0].current == "BYN") return
-		current = current[0].current 
-
-	}
-
-	cur = JSON.parse(cur)
 	
 	qsa('[byn]').forEach(el =>{
 		
 		let byn = +el.getAttribute('byn')
+		let productDiscount = +el.getAttribute("prod_discount")
+
+		let finalDiscount = (productDiscount - userDiscount ) > 0 ? productDiscount : userDiscount
+
+		//if(userDiscount) byn = +((100 - +userDiscount)/100 * byn).toFixed(2)
+		if(finalDiscount) byn = +((100 - +finalDiscount)/100 * byn).toFixed(2)
+
 		
-		switch(current){
+		switch(selectedCurrencyInLocalStorage){
 			case 'BYN':
 				el.innerHTML = byn;
 				break;
 			case 'USD':
 			case 'EUR':
-
-				let value = cur.filter(el => el.key == current)[0].value
+				let value = JSON.parse(LSCurrency).filter(el => el.key == selectedCurrencyInLocalStorage)[0].value
 				el.innerHTML = (byn / value).toFixed(2)
 
 		}
 	})
 
-	qsa('span.cur').forEach(el => el.innerHTML = current)
+	qsa('span.cur').forEach(el => el.innerHTML = selectedCurrencyInLocalStorage ? selectedCurrencyInLocalStorage : 'BYN')
+
+
 }
 
 function search(){

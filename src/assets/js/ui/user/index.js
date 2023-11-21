@@ -1,5 +1,6 @@
 import { qs, xml } from "../../libs"
 import { store, mode, close } from "./store"
+import { replace_currency } from "../components/desktop.menu"
 
 export function User(){
 
@@ -67,9 +68,11 @@ export const user = {
 			let obj = {
 				mode: "logged",
 				username: res.username,
-				access_token: res.access_token
+				access_token: res.access_token,
+				discount: res.discount
 			}
 			store.dispatch(mode(obj))
+			replace_currency()
 		}
 
 
@@ -263,18 +266,19 @@ export const user = {
 
 				let ext = ".html"
 				process.env.NODE_ENV == 'development'
-				? ext = "html"
+				? ext = ".html"
 				: ext = ""
 
-				let page = `/lk.${ext}`;
+				let page = `/lk${ext}`;
 
 				location.href = page
 			})
 
 			qs('.buttons .transparent').addEventListener("click", event => {
-				//xml("logout", null, "/api/user")
 				localStorage.removeItem("access_token")
+				localStorage.removeItem("discount")
 				store.dispatch(mode({mode:"auth", username: null}))
+				replace_currency()
 			})
 
 		}

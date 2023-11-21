@@ -387,21 +387,24 @@ function draw_products(state,prods){
 	
 	
 	let str = ``
-	prods.forEach(prod => {
-		
-		str += `
-		<li data-prodid="${prod.resid}">
-		<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0].toLowerCase()}.jpg" width="302" heigth="288">
-		<div class="colors loading"></div>
-		<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
 
-			<span class="size">${prod.width + " x " + prod.height + " x "+ prod.length}</span>
-      <div class="price">
-				<span byn="${prod.price}">${prod.price}</span>
-				<span class="cur">BYN</span>
-				<img class="cart" src="/assets/img/icons/bag.svg" width="20" heigth="23">
-			</div>
-    </li>
+	prods.forEach(prod => {
+
+
+		str += `
+			<li data-prodid="${prod.resid}">
+				<img src="${cfg.host}/assets/images/products/${prod.resid}/medium/${prod.image[0].toLowerCase()}.jpg" width="302" heigth="288">
+				<div class="colors loading"></div>
+				<a href="${ cfg.host +"/"+ prod.uri}">${prod.name}</a>
+
+					<span class="size">${prod.width + " x " + prod.height + " x "+ prod.length}</span>
+					
+					<div class="price">
+						<span byn="${prod.price}" ${prod.discount ? `prod_discount="${prod.discount}"`: ""}>${prod.price}</span>
+						<span class="cur">BYN</span>
+						<img class="cart" src="/assets/img/icons/bag.svg" width="20" heigth="23">
+					</div>
+			</li>
 		`
 	})
 	qs('ul.prod-list').innerHTML = str

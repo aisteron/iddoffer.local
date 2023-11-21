@@ -19,6 +19,7 @@ const userSlice = createSlice({
 			
 			action.payload.username !== undefined && (state.username = action.payload.username)
 			action.payload.access_token && localStorage.setItem("access_token", action.payload.access_token)
+			action.payload.discount && localStorage.setItem("discount", action.payload.discount)
 		},
   
 		

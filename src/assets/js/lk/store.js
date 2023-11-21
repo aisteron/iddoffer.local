@@ -19,6 +19,7 @@ const lkSlice = createSlice({
 
 			action.payload.role && (state.mode = action.payload.role)
 			localStorage.setItem("access_token", action.payload.access_token)
+			action.payload.discount && localStorage.setItem("discount", action.payload.discount)
 
 			
 		},
@@ -45,6 +46,7 @@ const lkSlice = createSlice({
 		},
 		user_exit:(state, action) =>{
 			localStorage.removeItem("access_token")
+			localStorage.removeItem("discount")
 			delete state.data
 			state.mode = "auth"
 		},
