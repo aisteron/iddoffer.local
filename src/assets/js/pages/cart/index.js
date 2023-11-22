@@ -330,7 +330,7 @@ export const cart = {
 	async draw_cart_count(){
 		let res = process.env.NODE_ENV == "development"
 		? await fetch("/api/cart",{method:"POST",headers: {'Content-Type': 'application/json'},body: '{"action":"get_order"}'}).then(r => r.json())
-		: await xml("get_order",null, '/api/').then(r => JSON.parse(r))
+		: await xml("get_order",null, '/api/cart').then(r => JSON.parse(r))
 
 		res = res.length
 
