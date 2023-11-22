@@ -47,13 +47,15 @@ export const FormAuth = () => {
 		})
 		
 	}
+
+	let is_dev = process.env.NODE_ENV == 'development'
 	
 	return(
 		<>
 		<h3>Авторизация в личном кабинете</h3>
 		<form className="auth" onSubmit={e=>submit_auth(e)}>
-			<input type="text" placeholder="E-mail" required defaultValue="iddoffer"/>
-			<input type="password" placeholder="Password" required defaultValue="po106714"/>
+			<input type="text" placeholder="E-mail" required defaultValue={is_dev ? "iddoffer" : ""}/>
+			<input type="password" placeholder="Password" required/>
 			<input type="submit" value="Submit"/>
 			<span className="error">{error}</span>
 		</form>

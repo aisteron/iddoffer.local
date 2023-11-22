@@ -339,7 +339,7 @@ export const cart = {
 		
 
 
-		if(res){
+		if(res && c){
 			c
 			? c.innerHTML = res
 			: qs('.actions a.cart').insertAdjacentHTML('beforeend', str)

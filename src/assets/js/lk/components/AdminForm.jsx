@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { admin_update_user_page, } from "../store";
 import { load_toast, xml } from "../../libs";
 
+export let lk_path = process.env.NODE_ENV == 'development' ? '/lk.html':"/lk"
+
 export const AdminForm = () => {
 	const mode = useSelector(state => state.mode)
 	const users = useSelector(state => state?.data?.users)
@@ -12,7 +14,7 @@ export const AdminForm = () => {
 
 	return(
 		<Routes>
-			<Route path="/lk.html" element={<Table users={users}/>}></Route>
+			<Route path={lk_path} element={<Table users={users}/>}></Route>
 			<Route path="/users/:id" element={<User/>} />
 		</Routes>
 	)

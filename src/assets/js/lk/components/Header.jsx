@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, {  useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { user_exit } from "../store";
 import { load_toast, xml } from "../../libs";
-import { useLocation, Link, useSearchParams } from "react-router-dom";
+import { useLocation, Link} from "react-router-dom";
+import { lk_path } from "./AdminForm.jsx";
 
 export const Header = () => {
 	const user = useSelector(state => state.data)
@@ -24,7 +25,7 @@ export const Header = () => {
 			<SaveButtonUserMode />
 			<SaveButtonAdminMode />
 			<a href="/" className="tohome">На сайт</a>
-			<Link to="/lk.html" className="exit" onClick={_=>exit()}>Выйти</Link>
+			<Link to={lk_path} className="exit" onClick={_=>exit()}>Выйти</Link>
 			<img src="/assets/img/icons/user.svg" />
 		</div>
 	)
@@ -61,7 +62,7 @@ const BackToUsersList = ()=> {
 	if(!location.pathname.includes('users')) return
 
 	return(
-		<Link to={'/lk.html'} >
+		<Link to={lk_path} >
 			<span>К списку</span>
 		</Link>
 	)
