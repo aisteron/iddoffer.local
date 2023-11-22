@@ -147,9 +147,11 @@ export const cart = {
 			
 			
 			prods.forEach(prod => {
-
+				prod = {...prod}
+				prod.discount = prod.discount ? prod.discount : 0
 				let final_discount = (prod.discount - user_discount) > 0 ? prod.discount : user_discount
-				//let price = final_discount ? ((100-final_discount) / 100 * prod.price).toFixed(2) : prod.price
+				console.log(final_discount)
+
 				
 				str += `
 					<div class="item" key="${prod.key}" data-id="${prod.id}">
@@ -169,7 +171,8 @@ export const cart = {
 
 							<li class="name"><a href="${cfg.host}/${prod.uri}">${prod.name}</a></li>
 							<li class="price" byn="${prod.price}">${prod.price}</li>
-							<li class="prod_discount">${prod.discount ? prod.discount+`%`: "-"}</li>
+						
+							<li class="prod_discount">${prod.discount}%</li>
 							<li class="user_discount">${user_discount ? user_discount+`%` : "-"}</li>
 							<li class="final_discount">${final_discount ? final_discount+`%` : "-"}</li>
 							
@@ -314,14 +317,14 @@ export const cart = {
 			let str = ``
 			let res = await db.mod.where('ids').anyOf(id).toArray()
 			let selected = res[0].prods.filter(el => el.id == id)[0].material_facade.join()
-			str += `<span class="selected">${selected}</span><ul>`
+			str += `<span class="selected">${selected}<ul>`
 			res[0].prods.map(el => [el.material_facade.join(), el.id]).forEach(el => str += `<li data-prodid="${el[1]}">${el[0]}</li>`)
 
 			if(qsa(`[data-id="${id}"]`).length > 1){
-				qsa(`[data-id="${id}"] .stats .material .name`)[i].insertAdjacentHTML('afterend', str+'</ul>')
+				qsa(`[data-id="${id}"] .stats .material .name`)[i].insertAdjacentHTML('afterend', str+'</ul></span>')
 			} else {
 
-				qs(`[data-id="${id}"] .stats .material .name`).insertAdjacentHTML('afterend', str+'</ul>')
+				qs(`[data-id="${id}"] .stats .material .name`).insertAdjacentHTML('afterend', str+'</ul></span>')
 			}
 			
 		}

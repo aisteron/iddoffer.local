@@ -280,7 +280,7 @@ function replace_cart_discount(){
 
 	// itogo
 
-	qs('.itogo [byn]').innerHTML = itogo
+	qs('.itogo [byn]').innerHTML = itogo.toFixed(2)
 
 }
 
