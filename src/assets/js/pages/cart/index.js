@@ -335,14 +335,15 @@ export const cart = {
 		res = res.length
 
 		let c = qs('.actions a.cart span.circle')
+		let a = qs('.actions a.cart')
 		let str = `<span class="circle">${res}</span>`
 		
 
 
-		if(res && c){
+		if(res){
 			c
 			? c.innerHTML = res
-			: qs('.actions a.cart').insertAdjacentHTML('beforeend', str)
+			: a && a.insertAdjacentHTML('beforeend', str)
 		} else {
 			c && c.remove()
 		}

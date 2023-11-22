@@ -61,6 +61,7 @@ export const FormAuth = () => {
 		</form>
 		<p onClick={()=> dispatch(set_mode("reg"))} className="create">Нет аккаунта? Создать</p>
 		<p onClick={()=> dispatch(set_mode("repair"))} className="create">Восстановить пароль</p>
+		<p><a href="/">Вернуться на сайт</a></p>
 		</>
 	)
 }

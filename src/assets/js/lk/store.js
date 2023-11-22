@@ -18,7 +18,7 @@ const lkSlice = createSlice({
 			state.loading = false
 
 			action.payload.role && (state.mode = action.payload.role)
-			localStorage.setItem("access_token", action.payload.access_token)
+			action.payload.access_token && localStorage.setItem("access_token", action.payload.access_token)
 			action.payload.discount && localStorage.setItem("discount", action.payload.discount)
 
 			
@@ -86,7 +86,9 @@ export const store = configureStore({
 export const fetch_user_thunk = () => {
 	
 	return async function fetchUser(dispatch, getState){
-		let access_token = localStorage.getItem("access_token") || null
+		let access_token = localStorage.getItem("access_token")
+		access_token == "undefined" && localStorage.removeItem("access_token")
+		!access_token && (access_token = null)
 		const response = await xml("get_current_user",{access_token},"/api/user").then(r => JSON.parse(r))
 		dispatch(set_current_user(response))
 	}
