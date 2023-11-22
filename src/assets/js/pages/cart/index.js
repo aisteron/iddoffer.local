@@ -140,33 +140,40 @@ export const cart = {
 		let dsk = qs('.root .table .desktop')
 		let mob = qs('.root .table .mobile')
 		let str = ``
+		let user_discount = localStorage.getItem("discount")
 		
 		if(mob){
-			let user_discount = localStorage.getItem("discount")
+
+			
+			
 			prods.forEach(prod => {
+
 				let final_discount = (prod.discount - user_discount) > 0 ? prod.discount : user_discount
-				let price = final_discount ? ((100-final_discount) / 100 * prod.price).toFixed(2) : prod.price
+				//let price = final_discount ? ((100-final_discount) / 100 * prod.price).toFixed(2) : prod.price
+				
 				str += `
 					<div class="item" key="${prod.key}" data-id="${prod.id}">
 						
 						<ul class="left">
 							<li class="name">Наименование</li>
-							<li class="price">Цена, BYN</li>
+							<li class="price">Цена, <span class="cur">BYN</span></li>
 							<li class="prod_discount">Скидка продукта</li>
 							<li class="user_discount">Скидка пользователя</li>
 							<li class="final_discount">Скидка итоговая</li>
-							<li class="final_price">Цена со скидкой, <span class="cur">р.</span></li>
+							<!--li class="final_price">Цена со скидкой, <span class="cur">р.</span></li-->
 							<li class="count">Количество</li>
 							<li class="itog">Итого, <span class="cur">р.</span></li>
 						</ul>
 
 						<ul class="right">
+
 							<li class="name"><a href="${cfg.host}/${prod.uri}">${prod.name}</a></li>
-							<li class="price">${prod.price}</li>
+							<li class="price" byn="${prod.price}">${prod.price}</li>
 							<li class="prod_discount">${prod.discount ? prod.discount+`%`: "-"}</li>
 							<li class="user_discount">${user_discount ? user_discount+`%` : "-"}</li>
 							<li class="final_discount">${final_discount ? final_discount+`%` : "-"}</li>
-							<li class="final_price" byn="${price}">${price}</li>
+							
+							
 							<li class="count">
 
 								<div class="wrap">
@@ -177,7 +184,8 @@ export const cart = {
 								<img class="remove" src="/assets/img/icons/trash.svg" width="18" height="17">
 
 							</li>
-							<li class="itog" byn="${price * prod.count}">${price * prod.count}</li>
+
+							<li class="itog" byn="${prod.price * prod.count}">${prod.price * prod.count}</li>
 							<li>
 								<ul class="stats">
 									
@@ -320,22 +328,23 @@ export const cart = {
 	},
 
 	async draw_cart_count(){
-		let count = +await xml('get_order_count', null,'/api/cart')
-		let cart_a = qs('.header .actions a.cart')
+		let res = process.env.NODE_ENV == "development"
+		? await fetch("/api/cart",{method:"POST",headers: {'Content-Type': 'application/json'},body: '{"action":"get_order"}'}).then(r => r.json())
+		: await xml("get_order",null, '/api/').then(r => JSON.parse(r))
+
+		res = res.length
+
+		let c = qs('.actions a.cart span.circle')
+		let str = `<span class="circle">${res}</span>`
 		
-		if(!count){
-			if(qs('.circle', cart_a)){
-				qs('.circle', cart_a).remove()
-			}
+
+
+		if(res){
+			c
+			? c.innerHTML = res
+			: qs('.actions a.cart').insertAdjacentHTML('beforeend', str)
 		} else {
-			if(qs('.circle', cart_a)){
-				if(qs('.circle', cart_a)){
-					qs('.circle', cart_a).innerHTML = count
-				} else {
-					let str = ` <span class="circle">${count}</span> `
-					cart_a.insertAdjacentHTML("beforeend", str)
-				}
-			}
+			c && c.remove()
 		}
 	},
 

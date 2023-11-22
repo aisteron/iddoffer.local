@@ -79,28 +79,32 @@ section.gallery.mt2
 			li Наличие: под заказ
 
 		.price.discount
-			//- .op
-			//- 	span от
-			//- 	span 19
-			//- 	span.cur BYN
-			//- .from
-			//- 	span от
-			//- 	span(byn="19" prod_discount="2") 18.81
-			//- 	span.cur BYN
-
-			//- .op
-			//- 	span до
-			//- 	span 20
-			//- 	span.cur BYN
-			//- .to
-			//- 	span до
-			//- 	span(byn="20" prod_discount="2") 19.8
-			//- 	span.cur BYN
-
-			.from
+			.op
 				span от
 				span(byn="19") 19
 				span.cur BYN
+			.from
+				span от
+				span(byn="19" prod_discount="2") 18.81
+				span.cur BYN
+
+			.op
+				span до
+				span(byn="20") 20
+				span.cur BYN
+			.to
+				span до
+				span(byn="20" prod_discount="2") 19.8
+				span.cur BYN
+
+			//- .from
+			//- 	span от
+			//- 	span(byn="19") 19
+			//- 	span.cur BYN
+			//- .to
+			//- 	span до
+			//- 	span(byn="20") 20
+			//- 	span.cur BYN	
 
 		.cart-compare
 			button.cart(data-prodid="1") Заказать

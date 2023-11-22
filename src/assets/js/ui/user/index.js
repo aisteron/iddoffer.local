@@ -102,6 +102,15 @@ export const user = {
 		store.dispatch(close()))
 
 	},
+	async remove_cookie(){
+		process.env.NODE_ENV == 'development'
+		? fetch("/api/", {
+				method: "POST",
+				headers: {'Content-Type': 'application/json'},
+				body: '{"action":"remove_cookie"}'
+			})
+		: await xml("remove_cookie", null, "/api/")
+	},
 	draw_auth(){
 		let str = `
 			<form class="auth">
@@ -279,6 +288,7 @@ export const user = {
 				localStorage.removeItem("discount")
 				store.dispatch(mode({mode:"auth", username: null}))
 				replace_currency()
+				this.remove_cookie()
 			})
 
 		}

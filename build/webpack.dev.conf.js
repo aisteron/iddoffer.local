@@ -36,6 +36,15 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
           
       }); 
+      app.post('/api/', (req, res) => {
+          
+          if(req.body.action == 'remove_cookie'){
+            const data = '{"success":true}'
+            res.send(data)
+          }
+
+          
+      }); 
       
       app.post('/api/search', (req, res) => {
           const data = fs.readFileSync('./src/static/api/search.json', 'utf8')

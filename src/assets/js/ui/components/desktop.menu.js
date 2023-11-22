@@ -1,5 +1,5 @@
-import { doc, qs, qsa, xml } from "../../libs";
-
+import { qs, qsa, xml } from "../../libs";
+import { cart } from "../../pages/cart";
 export async function desktop_menu(){
 
 	dropdown_menu()
@@ -11,6 +11,9 @@ export async function desktop_menu(){
 	await currency()
 	currency_show()
 	replace_currency()
+
+	// count products in cart icon
+	await cart.draw_cart_count()
 	
 }
 
@@ -186,6 +189,8 @@ export function replace_currency(selectedCur){
 	qsa('span.cur').forEach(el => el.innerHTML = selectedCurrencyInLocalStorage ? selectedCurrencyInLocalStorage : 'BYN')
 
 	replace_cart_discount()
+	replace_prod_discount()
+
 
 
 }
@@ -237,6 +242,7 @@ function search(){
 }
 
 function replace_cart_discount(){
+
 	if(!qs('.cart-page')) return
 	if(!qs('.item[key]')) return
 
@@ -245,12 +251,41 @@ function replace_cart_discount(){
 		let prod_discount = +qs('.right .prod_discount', el).innerHTML.split("%")[0]
 		let user_discount = +localStorage.getItem("discount")
 		let final_discount = (prod_discount - user_discount > 0) ? prod_discount : user_discount
+
+		let orig_price = +qs('.right .price', el).innerHTML
+
+		let final_price = final_discount ? ((100-final_discount) / 100 * orig_price).toFixed(2) : orig_price
+		let count = +qs('input[type="number"]', el).value
 		
 		qs('.right .prod_discount', el).innerHTML = prod_discount + '%'
 		qs('.right .user_discount', el).innerHTML = user_discount + '%'
 		qs('.right .final_discount', el).innerHTML = final_discount + '%'
 
+		//qs('.right .final_price', el).innerHTML = final_price
+		
+		qs('.right .itog', el).innerHTML = final_price * count
+
 			
 	})
 
+}
+
+function replace_prod_discount(){
+	let prod_discount = +qs('[prod_discount]')?.getAttribute('prod_discount')
+	let user_discount = +localStorage.getItem("discount")
+	let final_discount = (prod_discount - user_discount > 0) ? prod_discount : user_discount
+
+	
+	qsa('.dsc .price [byn]').forEach(el => {
+		let orig_price = +el.getAttribute("byn")
+		let final_price = final_discount ? ((100-final_discount) / 100 * orig_price).toFixed(2) : orig_price
+		if(el.closest('.op')){
+			el.innerHTML = orig_price
+		}
+		else {
+			el.innerHTML = final_price
+		}
+	})
+
+	
 }
