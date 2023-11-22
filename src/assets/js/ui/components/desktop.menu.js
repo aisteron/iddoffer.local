@@ -246,27 +246,41 @@ function replace_cart_discount(){
 	if(!qs('.cart-page')) return
 	if(!qs('.item[key]')) return
 
+	let itogo = 0;
+	const LSCurrency = localStorage.getItem("cur")
+	const selectedCurrencyInLocalStorage = LSCurrency ? JSON.parse(LSCurrency).filter(el => el.current)[0]?.current : null
+
 	qsa('.item[key]').forEach(el =>{
 
 		let prod_discount = +qs('.right .prod_discount', el).innerHTML.split("%")[0]
 		let user_discount = +localStorage.getItem("discount")
 		let final_discount = (prod_discount - user_discount > 0) ? prod_discount : user_discount
 
-		let orig_price = +qs('.right .price', el).innerHTML
+		let orig_price = +qs('.right .price', el).getAttribute('byn')
 
 		let final_price = final_discount ? ((100-final_discount) / 100 * orig_price).toFixed(2) : orig_price
+
+		switch(selectedCurrencyInLocalStorage){
+			case 'USD':
+			case 'EUR':
+				let value = JSON.parse(LSCurrency).filter(el => el.key == selectedCurrencyInLocalStorage)[0].value
+				final_price = (final_price / value).toFixed(2)
+
+		}
 		let count = +qs('input[type="number"]', el).value
 		
 		qs('.right .prod_discount', el).innerHTML = prod_discount + '%'
 		qs('.right .user_discount', el).innerHTML = user_discount + '%'
 		qs('.right .final_discount', el).innerHTML = final_discount + '%'
 
-		//qs('.right .final_price', el).innerHTML = final_price
-		
 		qs('.right .itog', el).innerHTML = final_price * count
-
+		itogo += final_price * count
 			
 	})
+
+	// itogo
+
+	qs('.itogo [byn]').innerHTML = itogo
 
 }
 

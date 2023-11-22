@@ -254,10 +254,10 @@ export const cart = {
 			qs('tbody', dsk).innerHTML = str
 		}
 
-		let itog = prods.reduce((acc, cur) => acc += cur.price * cur.count,0)
+		//let itog = prods.reduce((acc, cur) => acc += cur.price * cur.count,0)
 
-		qs('.itogo [byn]').innerHTML = itog
-		qs('.itogo [byn]').setAttribute('byn', itog)
+		//qs('.itogo [byn]').innerHTML = itog
+		//qs('.itogo [byn]').setAttribute('byn', itog)
 
 		qs('button.continue').classList.add('open')
 		qs('.root .table .mobile')?.classList.remove('loading')
@@ -481,12 +481,14 @@ export const cart = {
 		qs('.root .fields form').addEventListener('submit', event =>{
 			event.preventDefault();
 			let user = {
-				name: qs('input[name="name"]').value,
-				email: qs('input[name="email"]').value,
-				phone: qs('input[name="phone"]').value,
-				comment: qs('form textarea').value,
+				name: qs('.fields input[name="name"]').value,
+				email: qs('.fields input[name="email"]').value,
+				phone: qs('.fields input[name="phone"]').value,
+				comment: qs('.fields form textarea').value,
 
 			}
+			localStorage.getItem("access_token") && (user.access_token = localStorage.getItem("access_token"))
+
 
 			xml('order_receive',{user, prods: store.getState().prods}, '/api/cart')
 			.then(r => JSON.parse(r))
