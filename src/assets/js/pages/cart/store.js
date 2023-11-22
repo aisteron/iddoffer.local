@@ -72,6 +72,7 @@ export const thunkFunction = ({id, replaceid}) => {
 		
 
 		res = res[0].prods.filter(el => el.id == replaceid)[0]
+
 		let obj = {
 			id: res.id,
 			article: res.article,
@@ -79,7 +80,8 @@ export const thunkFunction = ({id, replaceid}) => {
 			key: resp,
 			name: res.name,
 			price: res.price,
-			uri: res.uri
+			uri: res.uri,
+			discount: res.discount
 		}
 		
 		dispatch(replace({id, obj}))

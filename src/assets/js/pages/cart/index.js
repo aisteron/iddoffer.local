@@ -150,7 +150,7 @@ export const cart = {
 				prod = {...prod}
 				prod.discount = prod.discount ? prod.discount : 0
 				let final_discount = (prod.discount - user_discount) > 0 ? prod.discount : user_discount
-				console.log(final_discount)
+				//console.log(final_discount)
 
 				
 				str += `
