@@ -116,12 +116,12 @@ export const user = {
 			<form class="auth">
 
 				<label>
-					<input type="text" required name="email" placeholder="Email" value="timotheus@list.ru">
+					<input type="text" required name="email" placeholder="Email" value="">
 					<span class="error"></span>
 				</label>
 
 				<label>
-					<input type="password" required name="pswd" placeholder="Password" value="1">
+					<input type="password" required name="pswd" placeholder="Password" value="">
 					<span class="error"></span>
 				</label>
 
